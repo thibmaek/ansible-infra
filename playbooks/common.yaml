@@ -1,0 +1,29 @@
+hosts: all
+tasks:
+  - name: Install apt packages
+    become: true
+    apt:
+      pkg:
+        - git
+        - zsh
+        - build-essential
+        - python3-dev # // TODO: is this all for Python 3
+        - curl
+        - moreutils #// TODO: what is this?
+
+  - name: Install oh-my-zsh
+    become: true
+    become_user: "{{ admin_user }}"
+    shell:
+      cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+      creates: "/home/{{ admin_user }}/.oh-my-zsh"
+    register: ohmyzsh
+  - name: Set ZSH as default shell
+    become: true
+    user:
+      name: "{{ admin_user }}"
+      shell: /usr/bin/zsh
+  - name: Install Starship shell
+    become_user: {{ admin_user }}
+    shell: curl -fsSL https://starship.rs/install.sh | bash
+    # eval "$(starship init zsh)" // TODO: append to zshrc

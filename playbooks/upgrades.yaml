@@ -1,0 +1,18 @@
+---
+- hosts: all
+  serial: 2 # // TODO: what is this?
+  tasks:
+    - name: Upgrade apt packages
+      become: true
+      apt:
+        update_cache: true
+        upgrade: dist
+      notify:
+        - Reboot
+
+  handlers:
+    - name: Reboot
+      when: "'physical' not in group_names and not ci_host" # // TODO: what is this?
+      become: true
+      reboot:
+

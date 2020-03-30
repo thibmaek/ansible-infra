@@ -1,0 +1,11 @@
+---
+- hosts: all
+  tasks:
+    - name: Create new user
+      become: true
+      user:
+        name: thibmaek
+        comment: Main user
+        groups: sudo
+        append: true
+        password: "{{ password_hash }}"
