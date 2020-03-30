@@ -5,6 +5,7 @@ all:
   children:
     rpi:
       hosts:
-        default_rpi_host: raspberrypi.local
+        default_rpi_host:
+          ansible_host: raspberrypi.local
       vars:
         ansible_user: pi
