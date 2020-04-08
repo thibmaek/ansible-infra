@@ -1,0 +1,33 @@
+- name: Install APT HTTPS transport
+  become: true
+  apt:
+    name: "apt-transport-https"
+    state: present
+
+- name: Download Telegraf apt key
+  become: true
+  apt_key:
+    url: "https://repos.influxdata.com/influxdb.key"
+    id: 2582E0C5
+    state: present
+
+- name: Add Telegraf repository
+  become: true
+  apt_repository:
+    # yamllint disable-line rule:line-length
+    repo: deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+    filename: "telegraf"
+    state: present
+
+- name: Install Telegraf apt package
+  become: true
+  apt:
+    name: telegraf
+    state: latest
+    update_cache: true
+
+- name: Restart telegraf.service
+  become: true
+  systemd:
+    name: telegraf
+    state: restart

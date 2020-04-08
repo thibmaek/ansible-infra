@@ -1,4 +1,3 @@
----
 - hosts: all
   serial: 2 # // TODO: what is this?
   tasks:
@@ -15,4 +14,3 @@
       when: "'physical' not in group_names and not ci_host" # // TODO: what is this?
       become: true
       reboot:
-

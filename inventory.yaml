@@ -1,11 +1,17 @@
 all:
-  ansible_python_interpreter: /usr/bin/python3
-  ansible_user: root
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_user: root
+    main_user: thibmaek
 
   children:
     rpi:
       hosts:
-        default_rpi_host:
-          ansible_host: raspberrypi.local
+        rpi_node_tresor:
+          ansible_host: rpi-node-tresor
+        rpi_node_fuse:
+          ansible_host: rpi-node-fuse
       vars:
         ansible_user: pi
+        main_user: pi
+        ansible_python_interpreter: /usr/bin/python3

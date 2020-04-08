@@ -1,0 +1,26 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Check if docker is installed already
+      package:
+        name:
+          - docker-ce
+        state: absent
+      register: has_docker_installed
+
+    - name: Install docker from official script
+      shell: >
+        curl -sSL https://get.docker.com | sh
+      when: has_docker_installed is failed
+
+    - name: Add user to the docker group
+      shell: >
+        usermod -aG docker {{ ansible_user }}
+      when: has_docker_installed is failed
+    - name: Report the Docker version
+      shell: docker --version
+
+    - name: Install docker-compose
+      pip:
+        executable: pip3
+        name: docker-compose

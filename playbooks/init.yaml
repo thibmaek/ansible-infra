@@ -1,11 +1,31 @@
 ---
 - hosts: all
   tasks:
-    - name: Create new user
+    - name: Create main user
       become: true
+      when: main_user is not pi
       user:
-        name: thibmaek
-        comment: Main user
+        name: "{{ main_user }}"
+        comment: Create main user
         groups: sudo
         append: true
         password: "{{ password_hash }}"
+
+    - name: Create .ssh directory
+      become: true
+      when: main_user is not pi
+      file:
+        path: "/home/{{ main_user }}/.ssh"
+        state: directory
+        owner: "{{ main_user }}"
+        group: "{{ main_user }}"
+        mode: 0700
+
+    - name: Copy authorised keys
+      become: true
+      copy:
+        src: ssh_authorized_keys
+        dest: "/home/{{ main_user }}/.ssh/authorized_keys"
+        owner: "{{ main_user }}"
+        group: "{{ main_user }}"
+        mode: 0600
