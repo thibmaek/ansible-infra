@@ -1,0 +1,48 @@
+- name: Clone mjpg-streamer
+  git:
+    repo: "https://github.com/jacksonliam/mjpg-streamer"
+    dest: "/home/{{ main_user }}/mjpg-streamer"
+
+- name: Install dependencies
+  become: true
+  apt:
+    pkg:
+      - cmake
+      - libjpeg-dev
+      - gcc
+      - g++
+
+- name: Compile and install
+  become: true
+  shell: >
+    make && make install
+  args:
+    chdir: "/home/{{ main_user }}/mjpg-streamer/mjpg-streamer-experimental"
+
+- name: Install systemd unit
+  become: true
+  # yamllint disable rule:line-length
+  blockinfile:
+    create: true
+    path: /etc/systemd/system/mjpg-streamer.service
+    block: |
+      [Unit]
+      Description=A server for streaming Motion-JPEG from a video capture device
+      After=network.target
+
+      [Service]
+      User=pi
+      Environment=LD_LIBRARY_PATH=/home/{{ main_user }}/mjpg-streamer/mjpg-streamer-experimental
+      ExecStart=/usr/local/bin/mjpg_streamer -o "output_http.so -w ./www" -i "input_raspicam.so -x 1280 -y 720 -fps 30"
+
+      [Install]
+      WantedBy=multi-user.target
+  # yamllint enable line-length
+
+- name: Start mjpg-streamer.service
+  become: true
+  systemd:
+    name: mjpg-streamer
+    daemon_reload: true
+    state: restarted
+    enabled: true
