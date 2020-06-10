@@ -14,9 +14,18 @@
       when: has_docker_installed is failed
 
     - name: Add user to the docker group
+      when: has_docker_installed is failed
       shell: >
         usermod -aG docker {{ ansible_user }}
-      when: has_docker_installed is failed
+        usermod -aG docker {{ main_user }}
+
+    - name: Upgrade Docker
+      when: has_docker_installed is succeeded
+      apt:
+        name: docker-ce docker-ce-cli
+        state: latest
+        update_cache: yes
+
     - name: Report the Docker version
       shell: docker --version
 
@@ -24,3 +33,18 @@
       pip:
         executable: pip3
         name: docker-compose
+        extra_args: --upgrade
+      register: has_docker_compose_installed
+
+    - name: Create config dir for docker-compose files
+      when: has_docker_compose_installed is succeeded
+      file:
+        path: "/home/{{ main_user }}/docker-compose"
+        state: directory
+
+    - name: Add script to update all containers in docker-compose config dir
+      when: has_docker_compose_installed is succeeded
+      copy:
+        src: ../files/scripts/docker/update-all-container.sh
+        dest: "/home/{{ main_user }}/docker-compose/update-all-containers.sh"
+        mode: 0755
