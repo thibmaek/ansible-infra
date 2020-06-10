@@ -14,3 +14,7 @@ $ ansible-playbook -v playbooks/init.yaml
 # Performa a play on a specific host
 $ ansible-playbook -v playbooks/common.yaml -l rpi_node_tresor
 ```
+
+## Performing common plays
+
+Common plays (like common.yaml and upgrades.yaml) are available with make: `play_common`

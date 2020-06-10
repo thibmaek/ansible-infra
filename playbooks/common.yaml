@@ -14,3 +14,8 @@
           - screen
           - tree
           - vim
+
+    - name: Install dotfiles repository
+      git:
+        repo: https://github.com/thibmaek/linux-confs
+        dest: "/home/{{ main_user }}/.linux-confs"
