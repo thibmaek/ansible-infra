@@ -1,0 +1,5 @@
+- hosts: rpi
+  tasks:
+    - name: Install mjpeg-streamer
+      when: has_csi_camera is defined
+      include_tasks: ../tasks/mjpeg-streamer-rpi.yaml
