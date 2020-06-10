@@ -1,4 +1,4 @@
-all: lint_yaml
-
-lint_yaml: # Use yamllint to validate YAML files
-	yamllint .
+install:
+	pip install --upgrade ansible pre-commit
+	ansible-galaxy install -r requirements.yaml
+	ansible all -m ping
