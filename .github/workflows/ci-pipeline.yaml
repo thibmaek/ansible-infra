@@ -6,20 +6,9 @@ on:
       - master
 
 jobs:
-  shellcheck:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checking out repository
-        uses: actions/checkout@v1
-      - name: Run shellcheck
-        uses: ludeeus/action-shellcheck@0.1.0
-
-  yamllint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checking out repository
-        uses: actions/checkout@v1
-      - name: Running YAMLlint
-        uses: "docker://pipelinecomponents/yamllint:latest"
-        with:
-          args: yamllint .
+      - uses: actions/checkout@v1
+      - name: Lint Code Base
+        uses: docker://github/super-linter:v2.1.0
