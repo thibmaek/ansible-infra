@@ -21,6 +21,9 @@ all:
           ansible_host: rpi-node-kompass
           has_csi_camera: true
           rev_code: 9000c1
+        rpi_node_bati:
+          ansible_host: bati-rpi-wan
+          rev_code: a020d3
       vars:
         ansible_user: pi
         main_user: pi
