@@ -5,3 +5,6 @@ install:
 
 play_common:
 	ansible-playbook -v playbooks/common.yaml
+
+play_upgrade:
+	ansible-playbook -v playbooks/upgrades.yaml
