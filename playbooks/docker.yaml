@@ -5,6 +5,7 @@
       package:
         name:
           - docker-ce
+          - docker-ce-cli
         state: absent
       register: has_docker_installed
 
@@ -18,13 +19,6 @@
       shell: >
         usermod -aG docker {{ ansible_user }}
         usermod -aG docker {{ main_user }}
-
-    - name: Upgrade Docker
-      when: has_docker_installed is succeeded
-      apt:
-        name: docker-ce docker-ce-cli
-        state: latest
-        update_cache: yes
 
     - name: Report the Docker version
       shell: docker --version
@@ -41,6 +35,8 @@
       file:
         path: "/home/{{ main_user }}/docker-compose"
         state: directory
+        owner: "{{ main_user }}"
+        group: "{{ main_user }}"
 
     - name: Add script to update all containers in docker-compose config dir
       when: has_docker_compose_installed is succeeded
