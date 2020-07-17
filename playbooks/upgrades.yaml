@@ -1,16 +1,17 @@
 - hosts: all
-  serial: 2 # // TODO: what is this?
+  serial: 2
   tasks:
     - name: Upgrade apt packages
       become: true
       apt:
+        upgrade: yes
         update_cache: true
-        upgrade: dist
-      notify:
-        - Reboot
 
-  handlers:
-    - name: Reboot
-      when: "'physical' not in group_names and not ci_host" # // TODO: what is this?
-      become: true
-      reboot:
+    - stat:
+        path: "/home/{{ main_user }}/docker-compose/update-all-containers.sh"
+      register: docker_compose_upgrade_script
+    - name: Upgrade docker-compose containers
+      when: docker_compose_upgrade_script.stat.exists and docker_compose_upgrade_script.stat.executable
+      shell: "./update-all-containers.sh"
+      args:
+        chdir: "/home/{{ main_user }}/docker-compose"
