@@ -14,6 +14,15 @@
         append: true
         password: "{{ password_hash }}"
 
+    - name: Enable passwordless sudo for main user
+      become: true
+      when: main_user != 'pi'
+      lineinfile:
+        path: "/etc/sudoers.d/ansible_sudoers"
+        mode: 0440
+        validate: "visudo -cf %s"
+        line: "{{ main_user }} ALL=(ALL) NOPASSWD:ALL"
+
     - name: Create .ssh directory
       become: true
       when: main_user != 'pi'
