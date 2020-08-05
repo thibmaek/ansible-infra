@@ -8,6 +8,7 @@
           - curl
           - git
           - htop
+          - lsof
           - magic-wormhole
           - moreutils
           - python3
