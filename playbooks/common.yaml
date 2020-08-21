@@ -20,6 +20,13 @@
         update_cache: yes
         state: latest
 
+    - name: Install syntax highlighting for nano
+      get_url:
+        url: https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh
+        dest: /tmp/nano_syntax_highlight_install.sh
+        mode: 0755
+    - shell: /tmp/nano_syntax_highlight_install.sh
+
     - name: Install dotfiles repository
       git:
         repo: https://github.com/thibmaek/linux-confs
