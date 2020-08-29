@@ -1,0 +1,16 @@
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./brew/vars_apps.yaml
+    - ./brew/vars_packages.yaml
+  roles:
+    - role: geerlingguy.homebrew
+      vars:
+        homebrew_upgrade_all_packages: no
+        homebrew_taps:
+          - homebrew/cask-drivers
+          - homebrew/cask-fonts
+          - homebrew/cask-versions
+          - homebrew/command-not-found
+          - homebrew/core
+          - homebrew/services

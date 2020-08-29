@@ -1,0 +1,27 @@
+homebrew_cask_apps:
+  # region: Apps
+  - 1password
+  - docker
+  - figma
+  - freac
+  - hyper
+  - imageoptim
+  - insomnia
+  - keka
+  - notion
+  - openscad
+  - plex
+  - plexamp
+  - rectangle
+  - spotify
+  - synology-drive
+  - ultimaker-cura
+  - visual-studio-code
+  - vlc
+  # endregion
+  # region: Fonts
+  - font-fira-code
+  - font-fira-mono
+  - font-fira-sans
+  - font-ibm-plex
+  # endregion
