@@ -10,10 +10,6 @@ all:
     rpi:
       hosts:
         # For revision codes see: https://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/
-        rpi_node_tresor:
-          ansible_host: rpi-node-tresor
-          has_csi_camera: true
-          rev_code: a020d3
         rpi_node_fuse:
           ansible_host: rpi-node-fuse
           rev_code: a02082
