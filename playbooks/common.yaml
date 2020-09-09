@@ -32,4 +32,7 @@
     - name: Install dotfiles repository
       git:
         repo: https://github.com/thibmaek/linux-confs
-        dest: "/home/{{ main_user }}/.linux-confs"
+        dest: "{{ ansible_env.HOME }}/.linux-confs"
+
+    - name: Install ZSH + Oh My ZSH + Spaceship
+      include_tasks: ../tasks/zsh.yaml

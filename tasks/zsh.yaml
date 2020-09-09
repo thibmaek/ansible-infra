@@ -1,0 +1,30 @@
+- name: Install ZSH + Oh My ZSH
+  register: zsh_installed
+  include_role:
+    name: vaulttec.zsh
+  vars:
+    zsh_user: "{{ main_user }}"
+    zsh_ohmy_plugins:
+      - git
+
+- name: Install Spaceship Prompt
+  when: zsh_installed is succeeded
+  git:
+    repo: "https://github.com/denysdovhan/spaceship-prompt"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship-prompt"
+- file:
+    src: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+    state: link
+- blockinfile:
+    path: "/home/{{ main_user }}/.zshrc.local"
+    create: true
+    block: |
+      SPACESHIP_HOST_SHOW=false
+      SPACESHIP_EXIT_CODE_SHOW=true
+      COMPOSE_FILE=docker-compose.yaml
+- lineinfile:
+    path: "/home/{{ main_user }}/.zshrc"
+    regexp: "^ZSH_THEME=(.*)$"
+    line: 'ZSH_THEME="spaceship"'
+    backrefs: yes

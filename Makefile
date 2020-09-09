@@ -2,7 +2,7 @@ LOCAL_PLAYBOOK=$(playbook)
 
 install:
 	pip install --upgrade ansible pre-commit yamllint
-	ansible-galaxy install -r requirements.yml
+	ansible-galaxy install -r requirements.yaml
 	pre-commit install
 	ansible all -m ping
 
