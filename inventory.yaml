@@ -24,3 +24,18 @@ all:
         ansible_user: pi
         main_user: pi
         ansible_python_interpreter: /usr/bin/python3
+
+    volumio:
+      hosts:
+        volumio_hifi:
+          ansible_host: volumio-hifi
+        volumio_bedroom:
+          ansible_host: volumio-bedroom
+        volumio_dj_booth:
+          ansible_host: volumio-dj-booth
+        volumio_bureau:
+          ansible_host: volumio-bureau
+      vars:
+        ansible_user: volumio
+        main_user: volumio
+        ansible_python_interpreter: /usr/bin/python
