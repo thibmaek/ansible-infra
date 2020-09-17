@@ -28,3 +28,21 @@
     regexp: "^ZSH_THEME=(.*)$"
     line: 'ZSH_THEME="spaceship"'
     backrefs: yes
+
+- name: Install zsh-autosuggestions
+  register: zsh_autosuggestions
+  when: zsh_installed is succeeded
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+
+- name: Define ZSH plugins
+  when: zsh_installed is succeeded and zsh_autosuggestions is succeeded
+  blockinfile:
+    path: "/home/{{ main_user }}/.zshrc"
+    marker: "{mark}"
+    marker_begin: "plugins=("
+    marker_end: ")"
+    block: |
+        git
+        zsh-autosuggestions
