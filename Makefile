@@ -1,7 +1,11 @@
 LOCAL_PLAYBOOK=$(playbook)
 
-install:
-	pip install --upgrade ansible pre-commit yamllint
+lint:
+	yamllint playbooks/
+	yamllint tasks/
+
+dependencies:
+	pip install --upgrade ansible ansible-lint pre-commit yamllint
 	ansible-galaxy install -r requirements.yaml
 	pre-commit install
 	ansible all -m ping
