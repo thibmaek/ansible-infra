@@ -15,4 +15,4 @@ repos:
         name: Lint YAML
         entry: yamllint
         language: system
-        files: .yaml$
+        files: \.(yaml|yml)$

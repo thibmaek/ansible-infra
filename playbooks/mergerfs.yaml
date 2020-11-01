@@ -1,0 +1,36 @@
+- hosts: all
+  tasks:
+    - name: "Install MergerFS"
+      apt:
+        name:
+          - fuse
+          - mergerfs
+
+    - name: "Create mount point"
+      become: true
+      file:
+        path: "/mnt/mergerfs"
+        state: directory
+        owner: "{{ main_user }}"
+        group: "{{ main_user }}"
+
+    - name: "Backup fstab"
+      become: true
+      shell: cp /etc/fstab /etc/fstab.bak
+
+    - name: "Create fstab entry"
+      blockinfile:
+        block: |
+          /mnt/disk-* /mnt/mergerfs fuse.mergerfs direct_io,defaults,allow_other,minfreespace=30G,fsname=mergerfs 0 0
+
+    - name: "Mount new directory"
+      become: true
+      shell: mount -a
+
+    - name: "Install mergerfs-tools"
+      git:
+        repo: "https://github.com/trapexit/mergerfs-tools"
+        dest: "/opt/mergerfs/mergerfs-ctl"
+    - make:
+        target: install
+        chdir: "/opt/mergerfs/mergerfs-ctl"
