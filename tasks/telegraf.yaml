@@ -14,7 +14,6 @@
 - name: Add Telegraf repository
   become: true
   apt_repository:
-    # yamllint disable-line rule:line-length
     repo: deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
     filename: "telegraf"
     state: present

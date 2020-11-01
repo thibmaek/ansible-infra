@@ -21,7 +21,6 @@
 
 - name: Install systemd unit
   become: true
-  # yamllint disable rule:line-length
   blockinfile:
     create: true
     path: /etc/systemd/system/mjpg-streamer.service
@@ -37,7 +36,6 @@
 
       [Install]
       WantedBy=multi-user.target
-  # yamllint enable line-length
 
 - name: Start mjpg-streamer.service
   become: true

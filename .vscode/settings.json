@@ -2,6 +2,7 @@
   "files.associations": {
     "*.yaml": "ansible",
     ".yamllint": "yaml",
+    ".ansible-lint": "yaml",
     ".pre-commit-config.yaml": "yaml",
     ".github/workflows/ci-pipeline.yaml": "yaml"
   }
