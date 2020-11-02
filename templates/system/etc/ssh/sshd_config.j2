@@ -1,0 +1,16 @@
+# ANSIBLE MANAGED
+
+Port {{ sshd_port }}
+
+PermitRootLogin without-password
+PubkeyAuthentication yes
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes
+
+X11Forwarding yes
+PrintMotd no
+
+AcceptEnv LANG LC_*
+
+Subsystem sftp /usr/lib/openssh/sftp-server

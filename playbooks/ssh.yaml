@@ -1,4 +1,11 @@
 - hosts: all
+  become: true
+
+  vars_prompt:
+    - name: sshd_port
+      prompt: "Port to use for sshd"
+      default: "{{ 9000 | random(start=2000) }}"
+
   tasks:
     - name: Create .ssh directory
       file:
@@ -8,7 +15,6 @@
         group: "{{ main_user }}"
 
     - name: Copy authorised keys
-      become: true
       copy:
         src: ../files/ssh_authorized_keys
         dest: "/home/{{ main_user }}/.ssh/authorized_keys"
@@ -16,13 +22,11 @@
         group: "{{ main_user }}"
 
     - name: Copy sshd config
-      become: true
-      copy:
-        src: ../files/system/etc/ssh/sshd_config
-        dest: "/etc/ssh/sshd_config"
+      template:
+        src: ../templates/system/etc/ssh/sshd_config.j2
+        dest: /etc/ssh/sshd_config
 
     - name: Restart SSH service (sshd)
-      become: true
       systemd:
         name: sshd
         state: restarted
