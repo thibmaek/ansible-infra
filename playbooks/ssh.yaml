@@ -1,0 +1,28 @@
+- hosts: all
+  tasks:
+    - name: Create .ssh directory
+      file:
+        path: "/home/{{ main_user }}/.ssh"
+        state: directory
+        owner: "{{ main_user }}"
+        group: "{{ main_user }}"
+
+    - name: Copy authorised keys
+      become: true
+      copy:
+        src: ../files/ssh_authorized_keys
+        dest: "/home/{{ main_user }}/.ssh/authorized_keys"
+        owner: "{{ main_user }}"
+        group: "{{ main_user }}"
+
+    - name: Copy sshd config
+      become: true
+      copy:
+        src: ../files/system/etc/ssh/sshd_config
+        dest: "/etc/ssh/sshd_config"
+
+    - name: Restart SSH service (sshd)
+      become: true
+      systemd:
+        name: sshd
+        state: restarted
