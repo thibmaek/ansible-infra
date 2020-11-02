@@ -1,8 +1,10 @@
 homebrew_installed_packages:
   # region: Dev packages
+  - asdf
   - bash
   - bash-completion
   - binwalk
+  - curl
   - coreutils
   - diff-so-fancy
   - findutils
