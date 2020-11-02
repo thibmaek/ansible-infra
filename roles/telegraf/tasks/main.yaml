@@ -1,0 +1,60 @@
+- name: Install APT HTTPS transport
+  become: true
+  apt:
+    name: "apt-transport-https"
+    state: present
+
+- name: Download Telegraf apt key
+  become: true
+  apt_key:
+    url: "https://repos.influxdata.com/influxdb.key"
+    id: 2582E0C5
+    state: present
+
+- name: Add Telegraf repository
+  become: true
+  apt_repository:
+    # yamllint disable-line rule:line-length
+    repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+    filename: "telegraf"
+    state: present
+
+- name: Install Telegraf apt package
+  become: true
+  apt:
+    name: telegraf
+    state: latest
+    update_cache: true
+
+- name: Copy config directory
+  become: true
+  synchronize:
+    src: ../files/config_dir/
+    dest: /etc/telegraf
+
+- name: Copy template files to config dir
+  become: true
+  template:
+    src: ../templates/outputs.influxdb.conf.j2
+    dest: /etc/telegraf/telegraf.d/outputs.influxdb.conf
+
+- name: Copy custom plugins to config dir
+  become: true
+  file:
+    path: /etc/telegraf/custom_plugins/net_iface
+    state: directory
+- become: true
+  copy:
+    src: "{{ '../files/custom_plugins/net_iface/net_iface_linux_arm' if main_user == 'pi' else '../files/custom_plugins/net_iface/net_iface_linux_amd64' }}"
+    dest: /etc/telegraf/custom_plugins/net_iface/net_iface
+    mode: 0755
+
+- name: Add telegraf to docker user group
+  become: true
+  command: usermod -aG docker telegraf
+
+- name: Restart telegraf.service
+  become: true
+  systemd:
+    name: telegraf
+    state: restarted

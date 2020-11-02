@@ -1,3 +1,12 @@
 - hosts: all
-  tasks:
-    - include_tasks: ../tasks/telegraf.yaml
+
+  vars_prompt:
+    - name: influxdb_user
+      private: false
+      prompt: "InfluxDB username"
+    - name: influxdb_password
+      private: true
+      prompt: "InfluxDB password"
+
+  roles:
+    - ../roles/telegraf
