@@ -15,6 +15,9 @@ all:
           ansible_host: rpi-node-kompass
           has_csi_camera: true
           rev_code: 9000c1
+        rpi_node_shelter:
+          ansible_host: rpi-node-shelter
+          rev_code: 900032
         rpi_node_bati:
           ansible_host: bati-rpi-wan
           rev_code: a020d3
