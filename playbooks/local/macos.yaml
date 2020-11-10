@@ -1,8 +1,10 @@
 - hosts: localhost
   connection: local
+
   vars_files:
     - ./brew/vars_apps.yaml
     - ./brew/vars_packages.yaml
+
   roles:
     - role: geerlingguy.homebrew
       vars:
@@ -14,3 +16,14 @@
           - homebrew/command-not-found
           - homebrew/core
           - homebrew/services
+
+  tasks:
+    - name: "Use brew bash"
+      become: true
+      lineinfile:
+        path: /etc/shells
+        state: present
+        line: "/usr/local/bin/bash"
+    - name: "Install Xcode devtools"
+      become: true
+      command: xcode-select --install
