@@ -6,7 +6,7 @@ __Make sure SSH configs are set up according to inventory.yaml!__
 
 ```shell
 # Setup this repo:
-$ make install
+$ make dependencies
 
 # Perform a play:
 $ ansible-playbook -v playbooks/init_server.yaml
