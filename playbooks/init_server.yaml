@@ -2,7 +2,13 @@
   tasks:
     - name: Display distro
       debug:
-        msg: "Distro: {{ ansible_distribution }}"
+        msg: |
+          Run this playbook to initialise a new server.
+          Ideally it should only be run once. Use the `common` playbook for reprovisioning
+
+          [Machine details]
+            Distro: {{ ansible_distribution }}
+            Arch: {{ ansible_architecture }}
 
     - name: Create main user
       become: true
