@@ -19,8 +19,8 @@
           - screen
           - tree
           - vim
-        update_cache: yes
-        state: latest
+
+    - include: ./tasks/bat.yaml
 
     - name: Install syntax highlighting for nano
       get_url:

@@ -1,0 +1,28 @@
+- debug:
+    msg: |
+      Package `bat` is unavailable from the main repository.
+      Its relevant .deb package will be downloaded.
+
+      In the future, please migrate to a version of bat in the main apt repository
+
+- name: "Download bat (amd64)"
+  when: "not 'arm' in ansible_architecture"
+  get_url:
+    url: https://github.com/sharkdp/bat/releases/download/v0.16.0/bat_0.16.0_amd64.deb
+    dest: /tmp/bat_0.16.0_amd64.deb
+    mode: 0755
+- name: "Install bat"
+  when: "not 'arm' in ansible_architecture"
+  become: true
+  shell: dpkg -i /tmp/bat_0.16.0_amd64.deb
+
+- name: "Download bat (armhf)"
+  when: "'arm' in ansible_architecture"
+  get_url:
+    url: https://github.com/sharkdp/bat/releases/download/v0.16.0/bat_0.16.0_armhf.deb
+    dest: /tmp/bat_0.16.0_armhf.deb
+    mode: 0755
+- name: "Install bat"
+  when: "'arm' in ansible_architecture"
+  become: true
+  shell: dpkg -i /tmp/bat_0.16.0_armhf.deb
