@@ -4,6 +4,7 @@ homebrew_cask_apps:
   - docker
   - figma
   - freac
+  - home-assistant
   - hyper
   - imageoptim
   - insomnia
@@ -16,6 +17,8 @@ homebrew_cask_apps:
   - spotify
   - synology-drive
   - ultimaker-cura
+  - virtualbox
+  - virtualbox-extension-pack
   - visual-studio-code
   - vlc
   # endregion
