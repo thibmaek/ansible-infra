@@ -1,4 +1,0 @@
-- hosts: volumio
-  tasks:
-    - name: Update Volumio to the latest version
-      shell: volumio updater forceupdate

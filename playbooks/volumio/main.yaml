@@ -1,0 +1,10 @@
+- hosts: volumio
+  tasks:
+    - name: "Update Volumio to the latest version"
+      shell: volumio updater forceupdate --yes
+    - name: "Sync radio favorites"
+      copy:
+        dest: /data/favourites/radio-favourites
+        src: ./files/radio-favourites
+    - name: "Restart Volumio"
+      shell: volumio vrestart

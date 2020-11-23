@@ -1,0 +1,20 @@
+[
+  {
+    "icon":"fa-microphone",
+    "service":"webradio",
+    "title":"VRT Studio Brussel - Brussels",
+    "uri":"http://icecast.vrtcdn.be/stubru-high.mp3"
+  },
+  {
+    "icon":"fa-microphone",
+    "service":"webradio",
+    "title":"NTS Radio",
+    "uri":"http://stream-relay-geo.ntslive.net/stream"
+  },
+  {
+    "icon":"fa-microphone",
+    "service":"webradio",
+    "title":"VRT Radio Klara - Brussels",
+    "uri":"http://icecast.vrtcdn.be/klara-high.mp3"
+  }
+]
