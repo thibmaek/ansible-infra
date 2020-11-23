@@ -10,13 +10,13 @@
       register: has_docker_installed
 
     - name: Install docker from official script
-      shell: >
+      shell: |
         curl -sSL https://get.docker.com | sh
       when: has_docker_installed is failed
 
     - name: Add user to the docker group
       when: has_docker_installed is failed
-      shell: >
+      shell: |
         usermod -aG docker {{ ansible_user }}
         usermod -aG docker {{ main_user }}
 
