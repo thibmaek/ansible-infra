@@ -24,6 +24,7 @@
           - screen
           - tree
           - vim
+          - xclip
 
     - include: ./tasks/bat.yaml
 
