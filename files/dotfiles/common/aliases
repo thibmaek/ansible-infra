@@ -1,0 +1,14 @@
+# Programs
+alias ls="exa"
+alias cat="bat"
+alias rm="trash"
+alias gcc="gcc-9"
+
+# Shortcuts
+alias temp="cd $HOME/Downloads && mkd temp"
+alias mime="file --mime-type"
+alias reload="exec $SHELL -l"
+alias path='echo -e ${PATH//:/\\n}'
+alias octal="gstat -c \"%a %n\""
+alias youtube-mp3="youtube-dl --extract-audio --audio-format mp3 --audio-quality 0"
+alias list_serial_ports="ls /dev/{tty,cu}.*"

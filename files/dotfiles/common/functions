@@ -1,0 +1,9 @@
+# ------------------------------------------------------------------------------
+# Silence function output by redirecting output to /dev/null
+#
+# Usage:
+#   silent echo "ok"
+# ------------------------------------------------------------------------------
+function silent() {
+  "$@" >& /dev/null
+}
