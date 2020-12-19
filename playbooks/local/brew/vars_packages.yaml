@@ -1,6 +1,5 @@
 homebrew_installed_packages:
   # region: Dev packages
-  - asdf
   - bash
   - bash-completion
   - binwalk
@@ -20,14 +19,9 @@ homebrew_installed_packages:
   - nano
   - netcat
   - nmap
-  - node
   - openssl
   - pkg-config
-  - python
   - readline
-  - ruby
-  - ruby-build
-  - ruby-completion
   - shellcheck
   - shfmt
   - trash
@@ -43,6 +37,7 @@ homebrew_installed_packages:
   - htop
   - jq
   - magic-wormhole
+  - mas
   - rsync
   - screen
   - ssh-copy-id
