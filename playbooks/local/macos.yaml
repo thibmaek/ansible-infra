@@ -4,6 +4,7 @@
   vars_files:
     - ./brew/vars_apps.yaml
     - ./brew/vars_packages.yaml
+    - ./mas_apps.yaml
 
   roles:
     - role: geerlingguy.homebrew
@@ -27,3 +28,14 @@
     - name: "Install Xcode devtools"
       become: true
       command: xcode-select --install
+    - name: "Install App Store apps (via mas)"
+      shell: "mas install {{ item }}"
+      loop: "{{ mas_apps }}"
+    - name: "Copy dotfiles (common)"
+      copy:
+        dest: "{{ ansible_env.HOME }}"
+        src: ../../files/dotfiles/common
+    - name: "Copy dotfiles (oh-my-zsh)"
+      copy:
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom"
+        src: ../../files/dotfiles/macos
