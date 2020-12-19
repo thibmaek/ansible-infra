@@ -46,3 +46,20 @@
     block: |
         git
         zsh-autosuggestions
+
+- name: Setup brew zsh-completions
+  when: zsh_installed is succeeded
+  blockinfile:
+    path: "/home/{{ main_user }}/.zshrc"
+    marker: "{mark}"
+    marker_begin: "source $ZSH/oh-my-zsh.sh"
+    marker_end: "source $ZSH/oh-my-zsh.sh"
+    block: |
+      if type brew &>/dev/null; then
+        FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+        autoload -Uz compinit
+        compinit
+      fi
+
+      source $ZSH/oh-my-zsh.sh
