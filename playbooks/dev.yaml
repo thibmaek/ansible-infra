@@ -1,0 +1,14 @@
+- hosts: localhost
+
+  vars:
+    node_version: latest
+    ruby_version: latest
+    python_version: latest
+    go_version: latest
+
+  tasks:
+    - include: ./tasks/asdf.yaml
+    - include: ./tasks/python.yaml
+      when: asdf_python_installed
+    - include: ./tasks/nodejs.yaml
+      when: asdf_nodejs_installed
