@@ -1,0 +1,10 @@
+- hosts: localhost
+  connection: local
+
+  tasks:
+      # TODO: Only run this if rectangle is installed
+    - name: "Copy Rectangle config"
+      copy:
+        src: ../../files/configs/macos/rectangle.plist
+        dest: "{{ ansible_env.HOME }}/Library/Preferences/com.knollsoft.Rectangle.plist"
+        mode: 0600
