@@ -1,0 +1,33 @@
+{% if ansible_os_family == "Darwin" %}
+# Enable aliases to be sudo'd
+alias sudo="sudo "
+
+{% endif %}
+# Programs
+alias ls="exa"
+alias cat="bat"
+alias rm="trash"
+alias gcc="gcc-10"
+{% if ansible_os_family == "Darwin" %}
+alias textedit="open -a TextEdit"
+{% endif %}
+{% if ansible_os_family == "Debian" %}
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+{% endif %}
+
+# Shortcuts
+alias temp="cd $HOME/Downloads && mkd temp"
+alias mime="file --mime-type"
+alias reload="exec $SHELL -l"
+alias path='echo -e ${PATH//:/\\n}'
+alias octal="gstat -c \"%a %n\""
+alias youtube-mp3="youtube-dl --extract-audio --audio-format mp3 --audio-quality 0"
+alias list_serial_ports="ls /dev/{tty,cu}.*"
+alias grep="grep --color=auto"
+{% if ansible_os_family == "Darwin" %}
+alias here="open ."
+alias d="cd $HOME/Desktop"
+alias dl="cd $HOME/Downloads"
+alias bundle_id="mdls -name kMDItemCFBundleIdentifier -r"
+{% endif %}
