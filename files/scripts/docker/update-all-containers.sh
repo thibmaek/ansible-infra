@@ -16,5 +16,3 @@ for cfg in "${composeConfigs[@]}"; do
   docker-compose -f "$cfg" up -d
   docker image prune -a --force
 done
-
-# docker image prune
