@@ -1,0 +1,8 @@
+- name: "Download nano syntax highlighting"
+  get_url:
+    url: "https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh"
+    dest: "{{ ansible_env.HOME }}/nano_syntax_highlight_install.sh"
+    mode: 0755
+
+- name: "Install nano syntax highlighting"
+  shell: "{{ ansible_env.HOME }}/nano_syntax_highlight_install.sh"
