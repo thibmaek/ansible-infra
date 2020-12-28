@@ -1,0 +1,29 @@
+- name: "Install powerline-fonts"
+  when: ansible_os_family == "Debian"
+  become: true
+  apt:
+    name: fonts-powerline
+
+- when: ansible_os_family != "Debian"
+  set_fact:
+    powerline_fonts_dir: "{{ ansible_env.HOME }}/powerline-fonts"
+
+- name: "Download powerline-fonts"
+  when: ansible_os_family != "Debian"
+  register: install_powerline_fonts_git
+  git:
+    dest: "{{ powerline_fonts_dir }}"
+    repo: https://github.com/powerline/fonts.git
+    depth: 1
+
+- name: "Install powerline-fonts"
+  when: install_powerline_fonts_git
+  register: powerline_fonts_installed
+  script: install.sh
+  args:
+    chdir: "{{ powerline_fonts_dir }}"
+
+- when: powerline_fonts_installed
+  file:
+    path: "{{ powerline_fonts_dir }}"
+    state: absent
