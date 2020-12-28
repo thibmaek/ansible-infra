@@ -7,20 +7,24 @@ all:
   children:
     rpi:
       hosts:
-        # For revision codes see: https://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/
+        # For revision codes: grep Revision /proc/cpuinfo
         rpi_node_fuse:
           ansible_host: rpi-node-fuse
+          node_hostname: rpi-node-fuse
           rev_code: a02082
         rpi_node_kompass:
           ansible_host: rpi-node-kompass
           has_csi_camera: true
+          node_hostname: rpi-node-kompass
           rev_code: 9000c1
         rpi_node_shelter:
           ansible_host: rpi-node-shelter
+          node_hostname: rpi-node-shelter
           rev_code: 900032
         rpi_node_bati:
-          ansible_host: bati-rpi-wan
-          rev_code: a020d3
+          ansible_host: rpi-node-bati
+          node_hostname: rpi-node-bati
+          rev_code: b03114
       vars:
         ansible_user: pi
         main_user: pi
