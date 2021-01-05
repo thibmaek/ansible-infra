@@ -12,6 +12,9 @@
   args:
     executable: /usr/local/bin/zsh
 
+- name: "Update existing plugins"
+  shell: asdf plugin update --all
+
 - name: "Add all languages"
   shell: asdf plugin add {{ item }}
   register: asdf_plugin
