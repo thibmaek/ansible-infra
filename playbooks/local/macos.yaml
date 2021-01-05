@@ -28,6 +28,10 @@
     - name: "Install Xcode devtools"
       become: true
       command: xcode-select --install
+      register: xcode_select_installed
+      failed_when:
+        - xcode_select_installed.rc != 0
+        - '"already installed" not in xcode_select_installed.stderr'
     - name: "Install App Store apps (via mas)"
       shell: "mas install {{ item }}"
       loop: "{{ mas_apps }}"
