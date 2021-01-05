@@ -1,6 +1,7 @@
 - hosts: volumio
   tasks:
     - name: "Update Volumio to the latest version"
+      tags: update
       shell: volumio updater forceupdate --yes
     - name: "Sync radio favorites"
       copy:
