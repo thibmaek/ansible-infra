@@ -18,9 +18,8 @@ homebrew_cask_apps:
   - spotify
   - synology-drive
   - ultimaker-cura
-  - virtualbox
-  - virtualbox-extension-pack
   - visual-studio-code
+  - vmware-fusion
   - vlc
   # endregion
   # region: Fonts
