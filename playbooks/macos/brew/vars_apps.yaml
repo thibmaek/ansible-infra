@@ -4,6 +4,7 @@ homebrew_cask_apps:
   - docker
   - figma
   - freac
+  - google-backup-and-sync
   - home-assistant
   - hyper
   - imageoptim

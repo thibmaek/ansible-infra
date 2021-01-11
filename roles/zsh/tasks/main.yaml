@@ -1,0 +1,55 @@
+- name: "Install ZSH + Oh My ZSH"
+  include_role:
+    name: vaulttec.zsh
+  vars:
+    zsh_user: "{{ main_user }}"
+    zsh_ohmy_theme: spaceship
+    zsh_ohmy_disable_auto_update: false
+    zsh_ohmy_plugins:
+      - git
+      - git-flow
+      - zsh-autosuggestions
+    zsh_ohmy_custom_plugins:
+      - name: zsh-autosuggestions
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+    zsh_ohmy_custom_themes:
+      - name: spaceship-prompt
+        repo: https://github.com/denysdovhan/spaceship-prompt
+
+- name: "Create .zshrc.local"
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc.local"
+    create: true
+    block: |
+      SPACESHIP_HOST_SHOW=false
+      SPACESHIP_EXIT_CODE_SHOW=true
+      COMPOSE_FILE=docker-compose.yaml
+
+      if type brew &>/dev/null; then
+        FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+        autoload -Uz compinit
+        compinit
+      fi
+
+- name: "Link Spaceship Prompt"
+  file:
+    src: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship/spaceship.zsh-theme"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+    state: link
+
+- name: "Check if Starship is installed"
+  register: has_starship_installed
+  shell: which starship
+
+- name: "Set Starship prompt as default"
+  when: has_starship_installed.stdout
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc.local"
+    line: 'eval "$(starship init zsh)"'
+
+- name: "Copy dotfiles to oh-my-zsh"
+  template:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/{{ item | basename | regex_replace('.j2','.zsh') }}"
+  with_fileglob: ../templates/dotfiles/*.j2

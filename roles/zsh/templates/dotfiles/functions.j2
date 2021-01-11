@@ -1,0 +1,48 @@
+{% if ansible_os_family == "Darwin" %}
+function cdf() {
+  cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')" || return;
+}
+
+{% endif %}
+# ------------------------------------------------------------------------------
+# Silence function output by redirecting output to /dev/null
+#
+# Arguments:
+#   $@: The command to execute (e.g silent echo "ok")
+# ------------------------------------------------------------------------------
+function silent() {
+  "$@" >& /dev/null
+}
+
+# ------------------------------------------------------------------------------
+# Flatten a directory with nested folders
+#
+# Arguments:
+#   $1: Target directory
+# ------------------------------------------------------------------------------
+function flatten_dir() {
+  find "$1" -mindepth 2 -type f -exec mv -i '{}' "$1" ';'
+}
+
+# ------------------------------------------------------------------------------
+# Show a human friendly file size
+#
+# Arguments:
+#   $@: Target directories (default: current dir)
+# ------------------------------------------------------------------------------
+function fs() {
+  if du -b /dev/null > /dev/null 2>&1; then
+    local arg=-sbh;
+  else
+    local arg=-sh;
+  fi
+  if [[ -n "$@" ]]; then
+    du $arg -- "$@" | gsort -h;
+  else
+    du $arg .[^.]* * | gsort -h;
+  fi;
+}
+
+function mkd() {
+  mkdir -p "$1" && cd "$1" || return;
+}

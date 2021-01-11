@@ -1,0 +1,3 @@
+SPACESHIP_HOST_SHOW=false
+SPACESHIP_EXIT_CODE_SHOW=true
+COMPOSE_FILE=docker-compose.yaml

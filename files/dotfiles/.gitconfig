@@ -66,6 +66,3 @@
 
 [push]
   default = current
-
-[credential]
-  helper = osxkeychain

@@ -7,11 +7,12 @@
         upgrade: yes
         update_cache: true
 
-    - stat:
-        path: "/home/{{ main_user }}/docker-compose/update-all-containers.sh"
-      register: docker_compose_upgrade_script
+    - register: docker_compose_upgrade_script
+      stat:
+        path: "{{ ansible_env.HOME }}/docker-compose/update-all-containers.sh"
+
     - name: Upgrade docker-compose containers
       when: docker_compose_upgrade_script.stat.exists and docker_compose_upgrade_script.stat.executable
       shell: "./update-all-containers.sh"
       args:
-        chdir: "/home/{{ main_user }}/docker-compose"
+        chdir: "{{ ansible_env.HOME }}/docker-compose"

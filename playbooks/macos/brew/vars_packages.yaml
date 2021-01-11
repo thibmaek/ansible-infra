@@ -3,12 +3,13 @@ homebrew_installed_packages:
   - bash
   - bash-completion
   - binwalk
-  - curl
   - coreutils
+  - curl
   - diff-so-fancy
   - findutils
   - gcc
   - git
+  - glow
   - gnupg
   - gnutls
   - go

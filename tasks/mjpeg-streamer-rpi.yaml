@@ -1,9 +1,12 @@
-- name: Clone mjpg-streamer
+- set_fact:
+    mjpg_streamer_dir: "{{ ansible_env.HOME }}/dev/mjpg-streamer"
+
+- name: "Clone mjpg-streamer"
   git:
     repo: "https://github.com/jacksonliam/mjpg-streamer"
-    dest: "/home/{{ main_user }}/mjpg-streamer"
+    dest: "{{ mjpg_streamer_dir }}"
 
-- name: Install dependencies
+- name: "Install dependencies"
   become: true
   apt:
     pkg:
@@ -12,12 +15,15 @@
       - gcc
       - g++
 
-- name: Compile and install
+- name: "Compile mjpg-streamer"
+  make:
+    chdir: "{{ mjpg_streamer_dir }}/mjpg-streamer-experimental"
+
+- name: "Install compiled mjpg-streamer binary"
   become: true
-  shell: >
-    make && make install
-  args:
-    chdir: "/home/{{ main_user }}/mjpg-streamer/mjpg-streamer-experimental"
+  make:
+    chdir: "{{ mjpg_streamer_dir }}/mjpg-streamer-experimental"
+    target: install
 
 - name: Install systemd unit
   become: true
@@ -31,7 +37,7 @@
 
       [Service]
       User=pi
-      Environment=LD_LIBRARY_PATH=/home/{{ main_user }}/mjpg-streamer/mjpg-streamer-experimental
+      Environment=LD_LIBRARY_PATH={{ mjpg_streamer_dir }}/mjpg-streamer-experimental
       ExecStart=/usr/local/bin/mjpg_streamer -o "output_http.so -w ./www" -i "input_raspicam.so -x 1280 -y 720 -fps 30"
 
       [Install]
