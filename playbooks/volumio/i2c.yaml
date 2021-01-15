@@ -1,0 +1,62 @@
+- hosts: volumio
+  become: true
+  tasks:
+    - name: "Install required LCD packages and bindings"
+      apt:
+        update_cache: true
+        name:
+          - i2c-tools
+          - lcdproc
+          - python3
+          - python3-pip
+          - python-smbus
+          - python-mpd
+
+    - name: "Install mpdlcd python package"
+      pip:
+        executable: pip3
+        name: mpdlcd
+
+    - name: "Download mpdlcd.conf"
+      get_url:
+        url: https://raw.githubusercontent.com/rbarrois/mpdlcd/master/mpdlcd.conf
+        dest: /etc/mpdlcd.conf
+
+    - name: "Create drivers folder"
+      file:
+        path: "/home/volumio/drivers"
+        state: directory
+        owner: volumio
+        group: volumio
+
+    - name: "Download LCD drivers"
+      get_url:
+        url: https://github.com/wilberforce/lcdproc/raw/master/hd44780.so
+        dest: "/home/volumio/drivers/hd44780.so"
+        owner: volumio
+        group: volumio
+
+    - name: "Ensure LCDd.conf is recreated"
+      file:
+        path: /etc/LCDd.conf
+        state: absent
+
+    - name: "Create LCDd.conf"
+      copy:
+        src: ./files/LCDd.conf
+        dest: /etc/LCDd.conf
+
+    - name: "Create init file for mpdlcd"
+      copy:
+        src: ./files/mpdlcd.service
+        dest: /etc/systemd/system/mpdlcd.service
+        mode: 0644
+
+    - name: "Reload init files"
+      shell: |
+        update-rc.d LCDd defaults
+        systemctl start mpdlcd
+        systemctl enable mpdlcd
+
+    - name: "Reboot"
+      reboot:

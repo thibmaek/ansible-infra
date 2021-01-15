@@ -42,5 +42,6 @@ all:
           ansible_host: volumio-bureau
       vars:
         ansible_user: volumio
+        ansible_become_pass: volumio
         main_user: volumio
         ansible_python_interpreter: /usr/bin/python

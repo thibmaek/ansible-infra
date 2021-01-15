@@ -1,0 +1,10 @@
+[Unit]
+Description=mpdlcd
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/mpdlcd --no-syslog
+ExecStop=/usr/bin/killall mpdlcd
+
+[Install]
+WantedBy=mutli-user.target
