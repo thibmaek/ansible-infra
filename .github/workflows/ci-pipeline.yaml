@@ -25,3 +25,4 @@ jobs:
           VALIDATE_MARKDOWN: true
           VALIDATE_YAML: true
           YAML_CONFIG_FILE: .yamllint
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
