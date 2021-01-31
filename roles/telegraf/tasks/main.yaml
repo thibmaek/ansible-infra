@@ -1,11 +1,13 @@
 - name: Install APT HTTPS transport
   become: true
+  tags: apt
   apt:
     name: "apt-transport-https"
     state: present
 
 - name: Download Telegraf apt key
   become: true
+  tags: apt
   apt_key:
     url: "https://repos.influxdata.com/influxdb.key"
     id: 2582E0C5
@@ -13,6 +15,7 @@
 
 - name: Add Telegraf repository
   become: true
+  tags: apt
   apt_repository:
     # yamllint disable-line rule:line-length
     repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
@@ -21,6 +24,7 @@
 
 - name: Install Telegraf apt package
   become: true
+  tags: apt
   apt:
     name: telegraf
     state: latest
@@ -28,18 +32,23 @@
 
 - name: Copy config directory
   become: true
+  tags: config
   synchronize:
     src: ../files/config_dir/
     dest: /etc/telegraf
 
 - name: Copy template files to config dir
   become: true
+  tags: config
   template:
     src: ../templates/outputs.influxdb.conf.j2
     dest: /etc/telegraf/telegraf.d/outputs.influxdb.conf
 
 - name: Copy custom plugins to config dir
   become: true
+  tags:
+    - config
+    - custom_config
   file:
     path: /etc/telegraf/custom_plugins/net_iface
     state: directory
@@ -51,6 +60,7 @@
 
 - name: Add telegraf to docker user group
   become: true
+  tags: docker
   command: usermod -aG docker telegraf
 
 - name: Restart telegraf.service
