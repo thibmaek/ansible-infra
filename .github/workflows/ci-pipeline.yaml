@@ -10,5 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+
       - name: Lint Code Base
-        uses: docker://github/super-linter:v2.1.0
+        uses: github/super-linter
+        env:
+          ANSIBLE_DIRECTORY: .
+          VALIDATE_BASH: true
+          VALIDATE_BASH_EXEC: true
+          VALIDATE_ANSIBLE: true
+          VALIDATE_DOCKERFILE: true
+          VALIDATE_ENV: true
+          VALIDATE_GO: true
+          VALIDATE_JSON: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_YAML: true
+          YAML_CONFIG_FILE: .yamllint
