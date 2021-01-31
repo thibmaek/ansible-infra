@@ -30,6 +30,12 @@ all:
         main_user: pi
         ansible_python_interpreter: /usr/bin/python3
 
+    osmc:
+      hosts:
+        osmc:
+          ansible_host: osmc
+          ansible_user: osmc
+
     volumio:
       hosts:
         volumio_hifi:
