@@ -7,12 +7,20 @@
           Ideally it should only be run once. Use the `common` playbook for reprovisioning
 
           [Machine details]
-            Distro: {{ ansible_distribution }}
-            Arch: {{ ansible_architecture }}
+            Ansible User: {{ ansible_user }}
+            User:         {{ main_user }}
+            Host:         {{ ansible_host }}
+            Distro:       {{ ansible_distribution }}
+            Arch:         {{ ansible_architecture }}
+    - pause:
+        prompt: "Continue ?"
+
+    - set_fact:
+        is_rpi_host: "{{ main_user == 'pi' }}"
 
     - name: Create main user
       become: true
-      when: main_user != 'pi'
+      when: not is_rpi_host
       user:
         name: "{{ main_user }}"
         comment: Create main user
@@ -22,24 +30,28 @@
 
     - name: Enable passwordless sudo for main user
       become: true
-      when: main_user != 'pi'
+      when: not is_rpi_host
       lineinfile:
         path: "/etc/sudoers.d/ansible_sudoers"
         mode: 0440
         validate: "visudo -cf %s"
         line: "{{ main_user }} ALL=(ALL) NOPASSWD:ALL"
+
     - name: Make home subdirectories
       file:
-        path: "/home/{{ main_user }}/{{ item }}"
+        path: "{{ ansible_env.HOME }}/{{ item }}"
         state: directory
       loop:
         - data
         - dev
         - downloads
 
-    - name: Run common playbook
-      include: ./common.yaml
+    - name: "Set timezone"
+      become: true
+      timezone:
+        name: Europe/Brussels
 
-    - name: Run Raspberry Pi playbook
-      when: main_user == 'pi'
-      include: ./rpi.yaml
+- import_playbook: ./common.yaml
+
+- when: is_rpi_host
+  import_playbook: ./rpi.yaml
