@@ -1,0 +1,24 @@
+- name: "Install prereqs"
+  when: ansible_os_family == "Debian"
+  apt:
+    name: coreutils
+
+- name: "Get latest nodejs version"
+  shell: asdf latest golang
+  register: golang_latest
+
+- name: "Install go@{{ golang_latest.stdout }}"
+  register: asdf_golang_installed
+  changed_when: '"already added" not in asdf_golang_installed.stdout'
+  failed_when:
+    - asdf_golang_installed.rc != 0
+    - '"already added" not in asdf_golang_installed.stderr'
+  shell: "asdf install golang {{ golang_latest.stdout }}"
+
+- name: "Set global to go@{{ golang_latest.stdout }}"
+  shell: "asdf global golang {{ golang_latest.stdout }}"
+
+- name: "Install additional golang version"
+  when: golang_versions is defined and (golang_versions | length > 0)
+  shell: "asdf install golang {{ item }}"
+  loop: golang_versions

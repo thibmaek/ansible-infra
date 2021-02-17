@@ -1,0 +1,72 @@
+- name: "Install asdf prereqs (via brew)"
+  when: ansible_os_family == "Darwin"
+  homebrew:
+    name:
+      - coreutils
+      - curl
+      - git
+
+- name: "Install asdf prereqs"
+  when: ansible_os_family != "Darwin"
+  apt:
+    name:
+      - curl
+      - git
+
+- name: "Install asdf (via brew)"
+  when: ansible_os_family == "Darwin"
+  homebrew:
+    name: asdf
+
+- name: "Install asdf (via git)"
+  when: ansible_os_family != "Darwin"
+  git:
+    repo: https://github.com/asdf-vm/asdf.git
+    dest: "{{ ansible_env.HOME }}/.asdf"
+
+- register: oh_my_zsh_dir
+  stat:
+    path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom"
+
+- name: "Source asdf (oh-my-zsh)"
+  when: oh_my_zsh_dir.stat.exists
+  lineinfile:
+    create: true
+    path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/exports.zsh"
+    line: source $(brew --prefix asdf)/asdf.sh
+
+- name: "Source asdf (zsh)"
+  when:
+    - not oh_my_zsh_dir.stat.exists
+    - '"zsh" in ansible_env.SHELL'
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    line: source $(brew --prefix asdf)/asdf.sh
+
+- name: "Source asdf (bash)"
+  when: '"bash" in ansible_env.SHELL'
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: source $(brew --prefix asdf)/asdf.sh
+
+- name: "Reload shell (zsh)"
+  when: '"zsh" in ansible_env.SHELL'
+  shell: rehash
+  args:
+    executable: /usr/local/bin/zsh
+
+- name: "Reload shell (bash)"
+  when: '"bash" in ansible_env.SHELL'
+  shell: "exec $SHELL -l"
+
+- name: "Update existing plugins"
+  tags: update
+  shell: asdf plugin update --all
+
+- name: "Add all runtimes"
+  shell: "asdf plugin add {{ item }}"
+  register: asdf_plugin
+  failed_when:
+    - asdf_plugin.stderr != ''
+    - '"already added" not in asdf_plugin.stderr'
+  loop: "{{ asdf_runtimes }}"

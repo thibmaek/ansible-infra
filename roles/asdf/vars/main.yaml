@@ -1,0 +1,13 @@
+asdf_runtimes:
+  - nodejs
+  - golang
+  - ruby
+  - python
+
+nodejs_versions:
+
+golang_versions:
+
+ruby_versions:
+
+python_versions:

@@ -1,14 +1,18 @@
-- hosts: localhost
+- hosts: all
 
-  vars:
-    node_version: latest
-    ruby_version: latest
-    python_version: latest
-    go_version: latest
+  roles:
+    - role: ../roles/asdf
+      tags: asdf
 
   tasks:
-    - include: ./tasks/asdf.yaml
-    - include: ./tasks/python.yaml
+    - include: ../tasks/dev/python.yaml
+      tags: python
       when: asdf_python_installed
-    - include: ./tasks/nodejs.yaml
+
+    - include: ./tasks/dev/nodejs.yaml
+      tags: nodejs
       when: asdf_nodejs_installed
+
+    - include: ./tasks/dev/ruby.yaml
+      tags: ruby
+      when: asdf_ruby_installed
