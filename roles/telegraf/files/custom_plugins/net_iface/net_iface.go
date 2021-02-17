@@ -9,7 +9,12 @@ import (
 func main() {
 	var currentIP, currentNetworkHardwareName string
 
-	interfaces, _ := net.Interfaces()
+	interfaces, err := net.Interfaces()
+
+	if err != nil {
+		fmt.Errorf("error getting list of interfaces: %s", err)
+	}
+
 	for _, iface := range interfaces {
 		if addrs, err := iface.Addrs(); err == nil {
 			for _, addr := range addrs {
