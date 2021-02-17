@@ -8,6 +8,7 @@
 
   roles:
     - role: geerlingguy.homebrew
+      tags: brew
       vars:
         homebrew_upgrade_all_packages: no
         homebrew_taps:
@@ -17,9 +18,12 @@
           - homebrew/command-not-found
           - homebrew/core
           - homebrew/services
+    - role: ../../roles/zsh
+      tags: zsh
 
   tasks:
     - name: "Use brew bash"
+      tags: bash
       become: true
       lineinfile:
         path: /etc/shells
@@ -27,23 +31,32 @@
         line: "/usr/local/bin/bash"
 
     - name: "Install Xcode devtools"
+      tags: dev
       become: true
       command: xcode-select --install
-      register: xcode_select_installed
+      register: xcode_devtools_installed
+      changed_when: '"command line tools are already installed" not in xcode_devtools_installed.stderr'
       failed_when:
-        - xcode_select_installed.rc != 0
-        - '"already installed" not in xcode_select_installed.stderr'
+        - xcode_devtools_installed.rc != 0
+        - '"command line tools are already installed" not in xcode_devtools_installed.stderr'
 
     - name: "Install App Store apps (via mas)"
       shell: "mas install {{ item }}"
       loop: "{{ mas_apps }}"
+      register: mas_app_installed
+      changed_when: '"is already installed" not in mas_app_installed.stdout'
 
     - name: "Copy dotfiles (common)"
-      copy:
-        dest: "{{ ansible_env.HOME }}"
-        src: ../../files/dotfiles/common
+      tags: dotfiles
+      synchronize:
+        src: ../../files/dotfiles/
+        dest: "{{ ansible_env.HOME }}/"
 
-    - name: "Copy dotfiles (oh-my-zsh)"
-      copy:
-        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom"
-        src: ../../files/dotfiles/macos
+    - name: "Powerline Fonts"
+      include_tasks: ../../tasks/powerline-fonts.yaml
+
+    - name: "Set Git configuration"
+      tags:
+        - git
+        - dev
+      shell: git config --global credential.helper osxkeychain
