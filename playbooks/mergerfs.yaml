@@ -20,6 +20,7 @@
 
     - name: "Create fstab entry"
       blockinfile:
+        path: "/etc/fstab"
         block: |
           /mnt/disk-* /mnt/mergerfs fuse.mergerfs direct_io,defaults,allow_other,minfreespace=30G,fsname=mergerfs 0 0
 
