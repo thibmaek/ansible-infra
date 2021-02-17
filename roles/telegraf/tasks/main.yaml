@@ -40,6 +40,7 @@
 - name: "Copy config directory (rpi)"
   become: true
   when: "ansible_user == 'pi'"
+  tags: config
   blockinfile:
     path: "/etc/telegraf/telegraf.d/inputs.exec.conf"
     create: true
@@ -52,6 +53,7 @@
 
 - name: "Copy template files to config dir"
   become: true
+  tags: config
   template:
     src: "{{ item }}"
     dest: "/etc/telegraf/telegraf.d/{{ item | basename | regex_replace('.j2','') }}"
