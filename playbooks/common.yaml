@@ -1,9 +1,16 @@
 - hosts: all
   tasks:
+    - name: Update apt packages
+      become: true
+      tags: apt
+      apt:
+        upgrade: dist
+        update_cache: true
+
     - name: Install apt packages
       become: true
+      tags: apt
       apt:
-        update_cache: yes
         state: latest
         name:
           - build-essential
@@ -26,19 +33,10 @@
           - vim
           - xclip
 
-    - include: ./tasks/bat.yaml
+    - include: ../tasks/dev/bat.yaml
+    - include: ../tasks/dev/nano.yaml
 
-    - name: Install syntax highlighting for nano
-      get_url:
-        url: https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh
-        dest: /tmp/nano_syntax_highlight_install.sh
-        mode: 0755
-    - shell: /tmp/nano_syntax_highlight_install.sh
-
-    - name: Install dotfiles repository
+    - name: "Install dotfiles repository"
       git:
         repo: https://github.com/thibmaek/linux-confs
         dest: "{{ ansible_env.HOME }}/.linux-confs"
-
-    - name: Install ZSH + Oh My ZSH + Spaceship
-      include_tasks: ../tasks/zsh.yaml
