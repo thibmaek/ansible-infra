@@ -1,11 +1,11 @@
-- name: Install APT HTTPS transport
+- name: "Install APT HTTPS transport"
   become: true
   tags: apt
   apt:
     name: "apt-transport-https"
     state: present
 
-- name: Download Telegraf apt key
+- name: "Download Telegraf apt key"
   become: true
   tags: apt
   apt_key:
@@ -13,7 +13,7 @@
     id: 2582E0C5
     state: present
 
-- name: Add Telegraf repository
+- name: "Add Telegraf repository"
   become: true
   tags: apt
   apt_repository:
@@ -22,7 +22,7 @@
     filename: "telegraf"
     state: present
 
-- name: Install Telegraf apt package
+- name: "Install Telegraf apt package"
   become: true
   tags: apt
   apt:
@@ -30,21 +30,34 @@
     state: latest
     update_cache: true
 
-- name: Copy config directory
+- name: "Copy config directory"
   become: true
   tags: config
   synchronize:
     src: ../files/config_dir/
     dest: /etc/telegraf
 
-- name: Copy template files to config dir
+- name: "Copy config directory (rpi)"
   become: true
-  tags: config
-  template:
-    src: ../templates/outputs.influxdb.conf.j2
-    dest: /etc/telegraf/telegraf.d/outputs.influxdb.conf
+  when: "ansible_user == 'pi'"
+  blockinfile:
+    path: "/etc/telegraf/telegraf.d/inputs.exec.conf"
+    create: true
+    block: |
+      [[inputs.exec]]
+        commands = [ "/opt/vc/bin/vcgencmd measure_temp" ]
+        name_override = "gpu_temperature"
+        data_format = "grok"
+        grok_patterns = ["%{NUMBER:value:float}"]
 
-- name: Copy custom plugins to config dir
+- name: "Copy template files to config dir"
+  become: true
+  template:
+    src: "{{ item }}"
+    dest: "/etc/telegraf/telegraf.d/{{ item | basename | regex_replace('.j2','') }}"
+  with_fileglob: ../templates/*.j2
+
+- name: "Copy custom plugins to config dir"
   become: true
   tags:
     - config
@@ -58,12 +71,12 @@
     dest: /etc/telegraf/custom_plugins/net_iface/net_iface
     mode: 0755
 
-- name: Add telegraf to docker user group
+- name: "Add telegraf to docker user group"
   become: true
   tags: docker
   command: usermod -aG docker telegraf
 
-- name: Restart telegraf.service
+- name: "Restart telegraf.service"
   become: true
   systemd:
     name: telegraf
