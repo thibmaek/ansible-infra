@@ -1,46 +1,53 @@
 - hosts: all
-  become: true
   tasks:
-    - name: Check if docker is installed already
-      package:
-        name:
-          - docker-ce
-          - docker-ce-cli
-        state: absent
-      register: has_docker_installed
+    - name: Gather the package facts
+      become: true
+      package_facts:
+        manager: apt
 
-    - name: Install docker from official script
+    - name: "Check if docker is installed already"
+      set_fact:
+        has_docker_installed: "{{ 'docker-ce' in ansible_facts.packages }}"
+        has_docker_cli_installed: "{{ 'docker-ce-cli' in ansible_facts.packages }}"
+
+    - name: "Install docker from official script"
+      become: true
+      when: not has_docker_installed
       shell: |
         curl -sSL https://get.docker.com | sh
-      when: has_docker_installed is failed
 
     - name: Add user to the docker group
-      when: has_docker_installed is failed
+      become: true
+      when: not has_docker_installed
       shell: |
         usermod -aG docker {{ ansible_user }}
         usermod -aG docker {{ main_user }}
 
     - name: Report the Docker version
-      shell: docker --version
+      command: docker --version
 
     - name: Install docker-compose
+      become: true
+      tags: docker-compose
+      register: has_docker_compose_installed
       pip:
         executable: pip3
         name: docker-compose
-        extra_args: --upgrade
-      register: has_docker_compose_installed
+        state: latest
 
     - name: Create config dir for docker-compose files
       when: has_docker_compose_installed is succeeded
+      tags: docker-compose
       file:
-        path: "/home/{{ main_user }}/docker-compose"
+        path: "{{ ansible_env.HOME }}/docker-compose"
         state: directory
         owner: "{{ main_user }}"
         group: "{{ main_user }}"
 
     - name: Add script to update all containers in docker-compose config dir
       when: has_docker_compose_installed is succeeded
+      tags: docker-compose
       copy:
-        src: ../files/scripts/docker/update-all-container.sh
-        dest: "/home/{{ main_user }}/docker-compose/update-all-containers.sh"
+        src: ../files/scripts/docker/update-all-containers.sh
+        dest: "{{ ansible_env.HOME }}/docker-compose/update-all-containers.sh"
         mode: 0755
