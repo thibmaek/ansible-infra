@@ -17,10 +17,6 @@ all:
           has_csi_camera: true
           node_hostname: rpi-node-kompass
           rev_code: 9000c1
-        rpi_node_shelter:
-          ansible_host: rpi-node-shelter
-          node_hostname: rpi-node-shelter
-          rev_code: 900032
         rpi_node_bati:
           ansible_host: rpi-node-bati
           node_hostname: rpi-node-bati
@@ -29,12 +25,6 @@ all:
         ansible_user: pi
         main_user: pi
         ansible_python_interpreter: /usr/bin/python3
-
-    osmc:
-      hosts:
-        osmc:
-          ansible_host: osmc
-          ansible_user: osmc
 
     volumio:
       hosts:
