@@ -16,5 +16,8 @@ play_common:
 play_upgrade:
 	ansible-playbook -v playbooks/upgrades.yaml
 
+play_volumio:
+	ansible-playbook --skip-tags=update playbooks/volumio/main.yaml
+
 play_local:
 	ansible-playbook -v $(LOCAL_PLAYBOOK) --connection=local --ask-become-pass
