@@ -16,5 +16,11 @@
     "service":"webradio",
     "title":"VRT Radio Klara - Brussels",
     "uri":"http://icecast.vrtcdn.be/klara-high.mp3"
+  },
+  {
+    "icon": "fa-microphone",
+    "service": "webradio",
+    "title": "Worldwide FM",
+    "uri": "http://opml.radiotime.com/Tune.ashx?id=s264430"
   }
 ]
