@@ -1,3 +1,7 @@
+- name: "Check if Raspberry Pi"
+  set_fact:
+    is_rpi_host: "{{ main_user == 'pi' }}"
+
 - name: "Install APT HTTPS transport"
   become: true
   tags: apt
