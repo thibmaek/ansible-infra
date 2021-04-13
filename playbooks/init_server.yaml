@@ -45,6 +45,7 @@
         - data
         - dev
         - downloads
+        - drivers
 
     - name: "Set timezone"
       become: true

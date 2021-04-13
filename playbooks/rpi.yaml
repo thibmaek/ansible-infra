@@ -1,5 +1,23 @@
 - hosts: rpi
   tasks:
-    - name: Install mjpeg-streamer
+    - name: "Install mjpeg-streamer"
       when: has_csi_camera is defined
       include_tasks: ../tasks/mjpeg-streamer-rpi.yaml
+
+    - name: 'Download drivers for generic 7" HDMI LCD'
+      when: has_generic_lcd is defined
+      tags:
+        - lcd
+      git:
+        repo: https://github.com/goodtft/LCD-show
+        dest: "{{ ansible_env.HOME }}/drivers/LCD-show"
+
+    - name: 'Build & install for generic 7" HDMI LCD'
+      when: has_generic_lcd is defined
+      tags:
+        - lcd
+      become: true
+      shell: |
+        chmod -R 755 {{ ansible_env.HOME }}/drivers/LCD-show
+        cd {{ ansible_env.HOME }}/drivers/LCD-show
+        ./LCD7C-show
