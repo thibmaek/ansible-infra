@@ -1,23 +1,13 @@
 - hosts: rpi
   tasks:
+    - name: "Install support for a power button"
+      when: has_power_button is defined
+      include_tasks: ../tasks/rpi/power-button.yaml
+
     - name: "Install mjpeg-streamer"
       when: has_csi_camera is defined
-      include_tasks: ../tasks/mjpeg-streamer-rpi.yaml
+      include_tasks: ../tasks/rpi/mjpeg-streamer.yaml
 
-    - name: 'Download drivers for generic 7" HDMI LCD'
+    - name: 'Install drivers for generic 7" display'
       when: has_generic_lcd is defined
-      tags:
-        - lcd
-      git:
-        repo: https://github.com/goodtft/LCD-show
-        dest: "{{ ansible_env.HOME }}/drivers/LCD-show"
-
-    - name: 'Build & install for generic 7" HDMI LCD'
-      when: has_generic_lcd is defined
-      tags:
-        - lcd
-      become: true
-      shell: |
-        chmod -R 755 {{ ansible_env.HOME }}/drivers/LCD-show
-        cd {{ ansible_env.HOME }}/drivers/LCD-show
-        ./LCD7C-show
+      include_tasks: ../tasks/rpi/7-inch-display.yaml

@@ -1,78 +1,77 @@
 # Ref: https://blog.r0b.io/post/minimal-rpi-kiosk/
 # This playbook is meant to be ran against a Lite install (headless/no desktop GUI)
 ---
-hosts: rpi
+- hosts: rpi
+  tasks:
+    - name: "Upgrade apt packages"
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: true
 
-tasks:
-  - name: "Upgrade apt packages"
-    become: true
-    apt:
-      upgrade: yes
-      update_cache: true
+    - name: "Install required packages"
+      apt:
+        name:
+          - xserver-xorg-video-all
+          - xserver-xorg-input-all
+          - xserver-xorg-core
+          - xinit
+          - x11-xserver-utils
+          - chromium-browser
+          - unclutter
 
-  - name: "Install required packages"
-    apt:
-      name:
-        - xserver-xorg-video-all
-        - xserver-xorg-input-all
-        - xserver-xorg-core
-        - xinit
-        - x11-xserver-utils
-        - chromium-browser
-        - unclutter
+    - name: "Auto-boot to console (logged in)"
+      become: true
+      shell: |
+        systemctl set-default multi-user.target
+        ln -fs /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
+        cat > /etc/systemd/system/getty@tty1.service.d/autologin.conf << EOF
+        [Service]
+        ExecStart=
+        ExecStart=-/sbin/agetty --autologin {{ main_user }} --noclear %I \$TERM
+        EOF
 
-  - name: "Auto-boot to console (logged in)"
-    become: true
-    shell: |
-      systemctl set-default multi-user.target
-      ln -fs /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
-      cat > /etc/systemd/system/getty@tty1.service.d/autologin.conf << EOF
-      [Service]
-      ExecStart=
-      ExecStart=-/sbin/agetty --autologin {{ main_user }} --noclear %I \$TERM
-      EOF
+    - name: "Auto-start X Server"
+      create: true
+      path: "{{ ansible_env.HOME }}/.bash_profile"
+      blockinfile:
+        if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
+          startx
+        fi
 
-  - name: "Auto-start X Server"
-    create: true
-    path: "{{ ansible_env.HOME }}/.bash_profile"
-    blockinfile:
-      if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
-        startx
-      fi
+    - name: "Check if Ansible var 'kiosk_url' is set"
+      when: kiosk_url is undefined
+      meta: end_host
 
-  - name: "Check if Ansible var 'kiosk_url' is set"
-    when: kiosk_url is undefined
-    meta: end_host
+    - name: "Auto-start Chromium when starting X Server"
+      create: true
+      path: "{{ ansible_env.HOME }}/.xinitrc"
+      blockinfile: |
+        #!/usr/bin/env sh
+        xset -dpms
+        xset s off
+        xset s noblank
 
-  - name: "Auto-start Chromium when starting X Server"
-    create: true
-    path: "{{ ansible_env.HOME }}/.xinitrc"
-    blockinfile: |
-      #!/usr/bin/env sh
-      xset -dpms
-      xset s off
-      xset s noblank
+        unclutter &
+        chromium-browser {{ kiosk_url }} \
+          --start-fullscreen \
+          --kiosk \
+          --noerrdialogs \
+          --disable-translate \
+          --no-first-run \
+          --fast \
+          --fast-start \
+          --disable-infobars \
+          --disable-features=TranslateUI \
+          --disk-cache-dir=/dev/null \
+          --overscroll-history-navigation=0 \
+          --disable-pinch
 
-      unclutter &
-      chromium-browser {{ kiosk_url }} \
-        --start-fullscreen \
-        --kiosk \
-        --noerrdialogs \
-        --disable-translate \
-        --no-first-run \
-        --fast \
-        --fast-start \
-        --disable-infobars \
-        --disable-features=TranslateUI \
-        --disk-cache-dir=/dev/null \
-        --overscroll-history-navigation=0 \
-        --disable-pinch
-
-  - name: "Reboot"
-    reboot:
-      msg: "Reboot initiated by Ansible"
-      connect_timeout: 5
-      reboot_timeout: 600
-      pre_reboot_delay: 0
-      post_reboot_delay: 30
-      test_command: whoami
+    - name: "Reboot"
+      reboot:
+        msg: "Reboot initiated by Ansible"
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: whoami
