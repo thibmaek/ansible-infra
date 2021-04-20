@@ -2,17 +2,21 @@
 
   roles:
     - role: ../roles/asdf
-      tags: asdf
+      tags:
+        - asdf
 
   tasks:
     - include: ../tasks/dev/python.yaml
-      tags: python
+      tags:
+        - python
       when: asdf_python_installed
 
     - include: ./tasks/dev/nodejs.yaml
-      tags: nodejs
+      tags:
+        - nodejs
       when: asdf_nodejs_installed
 
     - include: ./tasks/dev/ruby.yaml
-      tags: ruby
+      tags:
+        - ruby
       when: asdf_ruby_installed

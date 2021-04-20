@@ -1,6 +1,6 @@
 - hosts: all
   tasks:
-    - name: Gather the package facts
+    - name: "Gather the package facts"
       become: true
       package_facts:
         manager: apt
@@ -16,37 +16,40 @@
       shell: |
         curl -sSL https://get.docker.com | sh
 
-    - name: Add user to the docker group
+    - name: "Add user to the docker group"
       become: true
       when: not has_docker_installed
       shell: |
         usermod -aG docker {{ ansible_user }}
         usermod -aG docker {{ main_user }}
 
-    - name: Report the Docker version
+    - name: "Report the Docker version"
       command: docker --version
 
-    - name: Install docker-compose
+    - name: "Install docker-compose"
       become: true
-      tags: docker-compose
+      tags:
+        - docker-compose
       register: has_docker_compose_installed
       pip:
         executable: pip3
         name: docker-compose
         state: latest
 
-    - name: Create config dir for docker-compose files
+    - name: "Create config dir for docker-compose files"
       when: has_docker_compose_installed is succeeded
-      tags: docker-compose
+      tags:
+        - docker-compose
       file:
         path: "{{ ansible_env.HOME }}/docker-compose"
         state: directory
         owner: "{{ main_user }}"
         group: "{{ main_user }}"
 
-    - name: Add script to update all containers in docker-compose config dir
+    - name: "Add script to update all containers in docker-compose config dir"
       when: has_docker_compose_installed is succeeded
-      tags: docker-compose
+      tags:
+        - docker-compose
       copy:
         src: ../files/scripts/docker/update-all-containers.sh
         dest: "{{ ansible_env.HOME }}/docker-compose/update-all-containers.sh"

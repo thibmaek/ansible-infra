@@ -1,6 +1,6 @@
 - hosts: all
   tasks:
-    - name: Display distro
+    - name: "Display distro"
       debug:
         msg: |
           Run this playbook to initialise a new server.
@@ -18,9 +18,9 @@
     - set_fact:
         is_rpi_host: "{{ main_user == 'pi' }}"
 
-    - name: Create main user
-      become: true
+    - name: "Create main user"
       when: not is_rpi_host
+      become: true
       user:
         name: "{{ main_user }}"
         comment: Create main user
@@ -28,16 +28,16 @@
         append: true
         password: "{{ password_hash }}"
 
-    - name: Enable passwordless sudo for main user
-      become: true
+    - name: "Enable passwordless sudo for main user"
       when: not is_rpi_host
+      become: true
       lineinfile:
         path: "/etc/sudoers.d/ansible_sudoers"
         mode: 0440
         validate: "visudo -cf %s"
         line: "{{ main_user }} ALL=(ALL) NOPASSWD:ALL"
 
-    - name: Make home subdirectories
+    - name: "Make home subdirectories"
       file:
         path: "{{ ansible_env.HOME }}/{{ item }}"
         state: directory

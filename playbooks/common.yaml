@@ -1,15 +1,17 @@
 - hosts: all
   tasks:
-    - name: Update apt packages
+    - name: "Update apt packages"
       become: true
-      tags: apt
+      tags:
+        - apt
       apt:
         upgrade: dist
         update_cache: true
 
-    - name: Install apt packages
+    - name: "Install apt packages"
       become: true
-      tags: apt
+      tags:
+        - apt
       apt:
         state: latest
         name:
