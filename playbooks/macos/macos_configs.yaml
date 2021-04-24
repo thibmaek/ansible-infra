@@ -8,3 +8,8 @@
         src: ../../files/configs/macos/rectangle.plist
         dest: "{{ ansible_env.HOME }}/Library/Preferences/com.knollsoft.Rectangle.plist"
         mode: 0600
+
+    - name: "Copy iTerm profile"
+      copy:
+        src: ../../files/configs/macos/iterm2_profile.json
+        dest: "{{ ansible_env.HOME }}/Library/Application Support/iTerm2/DynamicProfiles/ansible_imported_profile.json"
