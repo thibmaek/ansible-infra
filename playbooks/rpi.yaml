@@ -5,8 +5,16 @@
       include_tasks: ../tasks/rpi/power-button.yaml
 
     - name: "Install mjpeg-streamer"
-      when: has_csi_camera is defined
+      when:
+        - has_csi_camera is defined
+        - mjpeg_streamer is defined
       include_tasks: ../tasks/rpi/mjpeg-streamer.yaml
+
+    - name: "Install v4l2rtspserver"
+      when:
+        - has_csi_camera is defined
+        - v4l2_rtsp is defined
+      include_tasks: ../tasks/rpi/v4l2-rtsp.yaml
 
     - name: 'Install drivers for generic 7" display'
       when: has_generic_lcd is defined

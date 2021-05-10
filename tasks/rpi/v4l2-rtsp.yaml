@@ -1,0 +1,54 @@
+# Ref: https://siytek.com/raspberry-pi-rtsp-to-home-assistant/
+---
+- name: "Set facts for v4l2rtspserver"
+  set_fact:
+    v4l2rtspserver_dir: "{{ ansible_env.HOME }}/dev/mjpg-streamer"
+    v4l2rtspserver_resolution:
+      width: 1280
+      height: 720
+      fps: 15
+
+- name: "Clone v4l2rtspserver"
+  git:
+    repo: https://github.com/mpromonet/v4l2rtspserver
+    dest: "{{ v4l2rtspserver_dir }}"
+
+- name: "Install dependencies"
+  become: true
+  apt:
+    name:
+      - cmake
+      - liblog4cpp5-dev
+      - libv4l-dev
+    upgrade: yes
+    update_cache: true
+
+- name: "Prepare install"
+  command: cmake
+  args:
+    chdir: "{{ v4l2rtspserver_dir }}"
+
+- name: "Compile v4l2rtspserver"
+  make:
+    chdir: "{{ v4l2rtspserver_dir }}"
+
+- name: "Install v4l2rtspserver"
+  become: true
+  make:
+    target: install
+    chdir: "{{ v4l2rtspserver_dir }}"
+
+- name: "Modify systemd service"
+  become: true
+  lineinfile:
+    path: /lib/systemd/system/v4l2rtspserver.service
+    regexp: "^(.*)ExecStart=(.*)$"
+    line: "ExecStart=/usr/local/bin/v4l2rtspserver -W {{ v4l2rtspserver_resolution.width }} -H {{ v4l2rtspserver_resolution.width }} -F {{ v4l2rtspserver_resolution.fps }} -P 8554 /dev/video0"
+    backrefs: true
+
+- name: "Restart RTSP service (v4l2rtspserver)"
+  become: true
+  systemd:
+    name: v4l2rtspserver
+    enabled: true
+    state: restarted
