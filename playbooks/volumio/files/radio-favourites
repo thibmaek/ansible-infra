@@ -1,26 +1,38 @@
 [
   {
-    "icon":"fa-microphone",
-    "service":"webradio",
-    "title":"VRT Studio Brussel - Brussels",
-    "uri":"http://icecast.vrtcdn.be/stubru-high.mp3"
+    "icon": "fa-microphone",
+    "service": "webradio",
+    "title": "VRT Studio Brussel - Brussels",
+    "uri": "http://icecast.vrtcdn.be/stubru-high.mp3"
   },
   {
-    "icon":"fa-microphone",
-    "service":"webradio",
-    "title":"NTS Radio",
-    "uri":"http://stream-relay-geo.ntslive.net/stream"
+    "icon": "fa-microphone",
+    "service": "webradio",
+    "title": "NTS Radio",
+    "uri": "http://stream-relay-geo.ntslive.net/stream"
   },
   {
-    "icon":"fa-microphone",
-    "service":"webradio",
-    "title":"VRT Radio Klara - Brussels",
-    "uri":"http://icecast.vrtcdn.be/klara-high.mp3"
+    "icon": "fa-microphone",
+    "service": "webradio",
+    "title": "VRT Radio Klara - Brussels",
+    "uri": "http://icecast.vrtcdn.be/klara-high.mp3"
+  },
+  {
+    "icon": "fa-microphone",
+    "service": "webradio",
+    "title": "VRT Klara Continuo",
+    "uri": "http://icecast.vrtcdn.be/klaracontinuo-high.mp3"
   },
   {
     "icon": "fa-microphone",
     "service": "webradio",
     "title": "Worldwide FM",
     "uri": "http://opml.radiotime.com/Tune.ashx?id=s264430"
+  },
+  {
+    "icon": "fa-microphone",
+    "service": "webradio",
+    "title": "BBC Radio 1",
+    "uri": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p"
   }
 ]
