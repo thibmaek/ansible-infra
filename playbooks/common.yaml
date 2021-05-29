@@ -42,3 +42,9 @@
       git:
         repo: https://github.com/thibmaek/linux-confs
         dest: "{{ ansible_env.HOME }}/.linux-confs"
+
+    - name: "Copy scripts folder"
+      copy:
+        src: ../files/scripts
+        dest: "{{ ansible_env.HOME }}/scripts"
+        mode: 0755
