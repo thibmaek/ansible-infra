@@ -1,0 +1,65 @@
+---
+- name: "Set facts for fbcp-ili9341"
+  set_fact:
+    fbcp_ili9341_dir: "{{ ansible_env.HOME }}/drivers/fbcp-ili9341"
+    fbcp_ili9341_build_dir: "{{ ansible_env.HOME }}/drivers/fbcp-ili9341/build"
+    fbcp_ili9341_systemd_unit: "/etc/systemd/system/fbcp-ili9341.service"
+
+- name: "Clone fbcp-ili9341"
+  git:
+    repo: https://github.com/juj/fbcp-ili9341
+    dest: "{{ fbcp_ili9341_dir }}"
+
+- name: "Install dependencies"
+  become: true
+  apt:
+    name: cmake
+    upgrade: yes
+    update_cache: true
+
+- name: "Make build directory"
+  file:
+    path: "{{ fbcp_ili9341_build_dir }}"
+    state: directory
+    owner: "{{ main_user }}"
+    group: "{{ main_user }}"
+
+- name: "Prepare install"
+  command: "cmake .."
+  args:
+    chdir: "{{ fbcp_ili9341_build_dir }}"
+
+- name: "Compile fbcp-ili9341"
+  command: "make -j"
+  args:
+    chdir: "{{ fbcp_ili9341_build_dir }}"
+
+- name: "Install fbcp-ili9341"
+  become: true
+  script: fbcp-ili9341
+  args:
+    chdir: "{{ fbcp_ili9341_build_dir }}"
+
+- name: "Create systemd unit"
+  become: true
+  blockinfile:
+    create: true
+    path: "{{ fbcp_ili9341_systemd_unit }}"
+    block: |
+      [Unit]
+      Description=fbcp-ili9341 driver
+      After=syslog.target network.target
+
+      [Service]
+      Type=simple
+      User={{ main_user }}
+      ExecStart={{ fbcp_ili9341_build_dir }}/fbcp-ili9341
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: "Enable systemd unit"
+  become: true
+  shell: |
+    systemctl daemon-reload
+    systemctl enable fbcp-ili9341.service
