@@ -59,7 +59,7 @@
         systemctl daemon-reload
         systemctl enable vncserver@1.service
 
-    - name: "Restart telegraf.service"
+    - name: "Restart vncserver.service"
       become: true
       systemd:
         name: vncserver@1
