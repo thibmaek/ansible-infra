@@ -30,4 +30,6 @@ alias here="open ."
 alias d="cd $HOME/Desktop"
 alias dl="cd $HOME/Downloads"
 alias bundle_id="mdls -name kMDItemCFBundleIdentifier -r"
+alias swap_usage="sudo fsusage | grep swapfile"
+alias cpu_temp="sudo powermetrics --samplers smc | grep -i \"CPU die temperature\""
 {% endif %}
