@@ -1,11 +1,41 @@
 - hosts: volumio
   tasks:
     - name: "Update Volumio to the latest version"
-      tags: update
-      shell: volumio updater forceupdate --yes
+      tags:
+        - update
+      register: volumio_update
+      changed_when: '"No update available" not in volumio_update.stdout'
+      command: volumio updater forceupdate --yes
+
     - name: "Sync radio favorites"
       copy:
         dest: /data/favourites/radio-favourites
         src: ./files/radio-favourites
+        mode: 0644
+
     - name: "Update music database"
-      shell: mpc update NAS
+      command: mpc update NAS
+      register: mpc_update
+      changed_when: '"Updating DB" in mpc_update.stdout'
+
+    - name: "Create custom plugin dir"
+      file:
+        path: "{{ ansible_env.HOME }}/custom_plugins"
+        state: directory
+        mode: 0755
+
+    - name: "Download Soundcloud plugin"
+      tags:
+        - plugin
+      git:
+        repo: https://github.com/patrickkfkan/volumio-soundcloud.git
+        dest: "{{ ansible_env.HOME }}/custom_plugins/volumio-soundcloud"
+
+    - name: "Install Soundcloud plugin" # noqa no-changed-when
+      command: volumio plugin install
+      tags:
+        - plugin
+      args:
+        chdir: "{{ ansible_env.HOME }}/custom_plugins/volumio-soundcloud"
+      vars:
+        ansible_command_timeout: 60
