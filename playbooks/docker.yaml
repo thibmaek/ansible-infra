@@ -10,20 +10,29 @@
         has_docker_installed: "{{ 'docker-ce' in ansible_facts.packages }}"
         has_docker_cli_installed: "{{ 'docker-ce-cli' in ansible_facts.packages }}"
 
-    - name: "Install docker from official script"
+    - name: "Download Docker install script"
       become: true
       when: not has_docker_installed
-      shell: |
-        curl -sSL https://get.docker.com | sh
+      register: docker_install_script_downloaded
+      get_url:
+        url: https://get.docker.com
+        dest: /tmp/docker_install_script.sh
 
-    - name: "Add user to the docker group"
+    - name: "Run Docker install script"
       become: true
-      when: not has_docker_installed
-      shell: |
+      when: docker_install_script_downloaded is succeeded
+      script: /tmp/docker_install_script.sh
+
+    - name: "Add main user to the docker group"
+      become: true
+      when:
+        - not has_docker_installed
+        - "'docker' not in group_names"
+      command: |
         usermod -aG docker {{ ansible_user }}
         usermod -aG docker {{ main_user }}
 
-    - name: "Report the Docker version"
+    - name: "Report the Docker version" # noqa no-changed-when
       command: docker --version
 
     - name: "Install docker-compose"
@@ -45,12 +54,13 @@
         state: directory
         owner: "{{ main_user }}"
         group: "{{ main_user }}"
+        mode: 0755
 
     - name: "Add script to update all containers in docker-compose config dir"
       when: has_docker_compose_installed is succeeded
       tags:
         - docker-compose
       copy:
-        src: ../files/scripts/docker/update-all-containers.sh
+        src: files/scripts/docker/update-all-containers.sh
         dest: "{{ ansible_env.HOME }}/docker-compose/update-all-containers.sh"
         mode: 0755

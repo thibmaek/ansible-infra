@@ -5,3 +5,4 @@ verbosity: 1
 skip_list:
   - 301
   - git-latest
+  - package-latest
