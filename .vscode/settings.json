@@ -5,6 +5,7 @@
     ".pre-commit-config.yaml": "yaml",
     ".github/workflows/ci-pipeline.yaml": "yaml",
     "**/files/dotfiles/linux/**": "shellscript",
-    "**/files/dotfiles/mac/**": "shellscript"
+    "**/files/dotfiles/mac/**": "shellscript",
+    "**/radio-favourites": "json"
   }
 }

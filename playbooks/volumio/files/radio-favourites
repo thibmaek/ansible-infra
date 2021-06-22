@@ -8,8 +8,8 @@
   {
     "icon": "fa-microphone",
     "service": "webradio",
-    "title": "NTS Radio",
-    "uri": "http://stream-relay-geo.ntslive.net/stream"
+    "title": "VRT Studio Brussel - UNTZ",
+    "uri": "http://icecast.vrtcdn.be/stubru_untz-high.mp3 "
   },
   {
     "icon": "fa-microphone",
@@ -26,6 +26,12 @@
   {
     "icon": "fa-microphone",
     "service": "webradio",
+    "title": "NTS Radio",
+    "uri": "http://stream-relay-geo.ntslive.net/stream"
+  },
+  {
+    "icon": "fa-microphone",
+    "service": "webradio",
     "title": "Worldwide FM",
     "uri": "http://opml.radiotime.com/Tune.ashx?id=s264430"
   },
@@ -34,5 +40,11 @@
     "service": "webradio",
     "title": "BBC Radio 1",
     "uri": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p"
+  },
+  {
+    "service": "webradio",
+    "uri": "http://opml.radiotime.com/Tune.ashx?id=s99619",
+    "title": "Intergalactic FM - Disco Fetish",
+    "icon": "fa-microphone"
   }
 ]
