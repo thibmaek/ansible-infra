@@ -1,8 +1,12 @@
 LOCAL_PLAYBOOK=$(playbook)
 
 lint:
-	yamllint playbooks/
-	yamllint tasks/
+	yamllint playbooks/ && \
+		yamllint roles/ && \
+		yamllint tasks/
+	ansible-lint -p playbooks/ && \
+		ansible-lint -p roles/ && \
+		ansible-lint -p tasks/
 
 dependencies:
 	pip install --upgrade ansible ansible-lint pre-commit yamllint
