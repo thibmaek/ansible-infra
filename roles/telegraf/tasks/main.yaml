@@ -4,14 +4,16 @@
 
 - name: "Install APT HTTPS transport"
   become: true
-  tags: apt
+  tags:
+    - apt
   apt:
     name: "apt-transport-https"
     state: present
 
 - name: "Download Telegraf apt key"
   become: true
-  tags: apt
+  tags:
+    - apt
   apt_key:
     url: "https://repos.influxdata.com/influxdb.key"
     id: 2582E0C5
@@ -19,7 +21,8 @@
 
 - name: "Add Telegraf repository"
   become: true
-  tags: apt
+  tags:
+    - apt
   apt_repository:
     # yamllint disable-line rule:line-length
     repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
@@ -28,7 +31,8 @@
 
 - name: "Install Telegraf apt package"
   become: true
-  tags: apt
+  tags:
+    - apt
   apt:
     name: telegraf
     state: latest
@@ -36,15 +40,17 @@
 
 - name: "Copy config directory"
   become: true
-  tags: config
+  tags:
+    - config
   synchronize:
     src: ../files/config_dir/
     dest: /etc/telegraf
 
 - name: "Copy config directory (rpi)"
   become: true
-  when: "ansible_user == 'pi'"
-  tags: config
+  when: is_rpi_host
+  tags:
+    - config
   blockinfile:
     path: "/etc/telegraf/telegraf.d/inputs.exec.conf"
     create: true
@@ -54,6 +60,13 @@
         name_override = "gpu_temperature"
         data_format = "grok"
         grok_patterns = ["%{NUMBER:value:float}"]
+
+- name: "Add telegraf user to the video group (for GPU temp)"
+  become: true
+  when: is_rpi_host
+  tags:
+    - config
+  command: usermod -aG video telegraf
 
 - name: "Copy template files to config dir"
   become: true
@@ -73,13 +86,14 @@
     state: directory
 - become: true
   copy:
-    src: "{{ '../files/custom_plugins/net_iface/net_iface_linux_arm' if main_user == 'pi' else '../files/custom_plugins/net_iface/net_iface_linux_amd64' }}"
+    src: "{{ '../files/custom_plugins/net_iface/net_iface_linux_arm' if is_rpi_host else '../files/custom_plugins/net_iface/net_iface_linux_amd64' }}"
     dest: /etc/telegraf/custom_plugins/net_iface/net_iface
     mode: 0755
 
 - name: "Add telegraf to docker user group"
   become: true
-  tags: docker
+  tags:
+    - docker
   command: usermod -aG docker telegraf
 
 - name: "Restart telegraf.service"
