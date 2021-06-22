@@ -1,12 +1,9 @@
 - hosts: all
 
   vars_prompt:
-    - name: influxdb_user
-      private: false
-      prompt: "InfluxDB username"
-    - name: influxdb_password
+    - name: influxdb_token
+      prompt: "InfluxDB Token (v2)"
       private: true
-      prompt: "InfluxDB password"
 
   roles:
     - ../roles/telegraf
