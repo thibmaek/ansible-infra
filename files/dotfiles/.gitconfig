@@ -7,16 +7,10 @@
   unstage = reset HEAD
   uncommit = reset --soft HEAD^
   uncommit-hard = reset --hard HEAD^ # also undo's changes to unstaged files
-  co = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f" # checkout or create if non-existent
   ch = checkout
-  lucky = !sh -c 'git checkout $(git which $1 -m1)' -
   get-current-branch = rev-parse --abbrev-ref HEAD
   update = push origin HEAD
   publish = !git push -u origin $(git get-current-branch)
-  ft = "!f() { git checkout -b feature/\"$1\" 2> /dev/null || git checkout feature/\"$1\"; }; f"
-  hf = "!f() { git checkout -b hotfix/\"$1\" 2> /dev/null || git checkout hotfix/\"$1\"; }; f"
-  rel = "!f() { git checkout -b release/\"$1\" 2> /dev/null || git checkout release/\"$1\"; }; f"
-  dep = "!f() { git checkout -b dependencies/\"$1\" 2> /dev/null || git checkout dependencies/\"$1\"; }; f"
   d = diff
   filemerge = difftool -t opendiff -y
   l = log
@@ -24,6 +18,10 @@
   tags = tag -l
   branches = branch -a
   remotes = remote -v
+  github = "!f() { git clone https://github.com/\"$1\"; }; f"
+  lucky = !sh -c 'git checkout $(git which $1 -m1)' -
+  co = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f" # checkout or create if non-existent
+  ft = "!f() { git checkout -b feature/\"$1\" 2> /dev/null || git checkout feature/\"$1\"; }; f"
 
 [apply]
   whitespace = fix
