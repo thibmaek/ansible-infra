@@ -11,6 +11,9 @@ alias gcc="gcc-10"
 {% if ansible_os_family == "Darwin" %}
 alias textedit="open -a TextEdit"
 {% endif %}
+{% if main_user == "pi" %}
+alias apt="sudo apt"
+{% endif %}
 {% if ansible_os_family == "Debian" %}
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
