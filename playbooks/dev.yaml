@@ -11,12 +11,12 @@
         - python
       when: asdf_python_installed
 
-    - include: ./tasks/dev/nodejs.yaml
+    - include: ../tasks/dev/nodejs.yaml
       tags:
         - nodejs
       when: asdf_nodejs_installed
 
-    - include: ./tasks/dev/ruby.yaml
+    - include: ../tasks/dev/ruby.yaml
       tags:
         - ruby
       when: asdf_ruby_installed

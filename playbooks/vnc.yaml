@@ -53,14 +53,10 @@
           [Install]
           WantedBy=multi-user.target
 
-    - name: "Enable systemd unit"
-      become: true
-      shell: |
-        systemctl daemon-reload
-        systemctl enable vncserver@1.service
-
-    - name: "Restart vncserver.service"
+    - name: "Enable & restart vncserver service"
       become: true
       systemd:
         name: vncserver@1
+        daemon_reload: true
+        enabled: true
         state: restarted

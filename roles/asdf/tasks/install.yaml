@@ -60,13 +60,14 @@
   shell: "exec $SHELL -l"
 
 - name: "Update existing plugins"
-  tags: update
+  tags:
+    - update
   shell: asdf plugin update --all
 
 - name: "Add all runtimes"
   shell: "asdf plugin add {{ item }}"
   register: asdf_plugin
   failed_when:
-    - asdf_plugin.stderr != ''
+    - asdf_plugin.stderr|length > 0
     - '"already added" not in asdf_plugin.stderr'
   loop: "{{ asdf_runtimes }}"
