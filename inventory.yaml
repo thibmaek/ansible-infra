@@ -17,10 +17,16 @@ all:
           has_csi_camera: true
           node_hostname: rpi-node-kompass
           rev_code: 9000c1
+          v4l2_rtsp: true
         rpi_node_bati:
           ansible_host: rpi-node-bati
           node_hostname: rpi-node-bati
           rev_code: b03114
+        rpi_node_dashboard:
+          ansible_host: rpi-node-dashboard
+          node_hostname: rpi-node-dashboard
+          rev_code: a020d3
+          has_csi_camera: true
       vars:
         ansible_user: pi
         main_user: pi
