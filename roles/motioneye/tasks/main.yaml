@@ -1,0 +1,59 @@
+- name: "Install dependencies"
+  become: true
+  apt:
+    name:
+      - ffmpeg
+      - libmariadb3
+      - libpq5
+      - libmicrohttpd12
+
+- name: "Install motion dependencies"
+  become: true
+  apt:
+    name:
+      - python-pip
+      - python-dev
+      - libssl-dev
+      - libcurl4-openssl-dev
+      - libjpeg-dev
+      - libz-dev
+
+- name: "Install motioneye"
+  become: true
+  pip:
+    name: motioneye
+    state: latest
+
+- name: "Create motioneye config dir"
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ main_user }}"
+    group: "{{ main_user }}"
+    mode: 0755
+  with_items:
+    - "{{ motioneye_config_dir }}"
+    - "{{ motioneye_media_dir }}"
+
+- name: "Copy motioneye config"
+  become: true
+  template:
+    mode: 0755
+    src: motioneye.conf.j2
+    dest: "{{ motioneye_config_dir }}/motioneye.conf"
+
+- name: "Copy systemd service"
+  become: true
+  template:
+    mode: 0600
+    src: motioneye.service.j2
+    dest: "/etc/systemd/system/motioneye.service"
+
+- name: "Enable & restart motioneye service"
+  become: true
+  systemd:
+    name: motioneye
+    enabled: true
+    daemon_reload: true
+    state: restarted

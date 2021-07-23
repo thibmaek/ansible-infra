@@ -1,0 +1,4 @@
+motion_version: 4.2.2
+
+motioneye_config_dir: "/etc/motioneye"
+motioneye_media_dir: "/var/lib/motioneye"
