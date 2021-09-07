@@ -1,0 +1,17 @@
+SPACESHIP_HOST_SHOW=false
+SPACESHIP_EXIT_CODE_SHOW=true
+COMPOSE_FILE=docker-compose.yaml
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+
+# autojump ZSH completions
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+{% if has_starship_installed.stdout %}
+eval "$(starship init zsh)"
+{% endif %}

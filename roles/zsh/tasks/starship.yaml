@@ -1,0 +1,15 @@
+- name: "Download Starship"
+  become: true
+  get_url:
+    url: https://starship.rs/install.sh
+    dest: /tmp/ansible_starship_install.sh
+
+- name: "Install Starship"
+  become: true
+  shell: /tmp/ansible_starship_install.sh -y
+
+- name: "Remove Starship install script"
+  become: true
+  file:
+    path: /tmp/ansible_starship_install.sh
+    state: absent

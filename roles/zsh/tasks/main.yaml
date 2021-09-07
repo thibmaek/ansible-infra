@@ -16,37 +16,23 @@
       - name: spaceship-prompt
         repo: https://github.com/denysdovhan/spaceship-prompt
 
+- name: "Install autojump"
+  homebrew:
+    name: autojump
+
+- name: "Install Starship"
+  include_tasks: ./starship.yaml
+
 - name: "Create .zshrc.local"
-  blockinfile:
-    path: "{{ ansible_env.HOME }}/.zshrc.local"
-    create: true
-    block: |
-      SPACESHIP_HOST_SHOW=false
-      SPACESHIP_EXIT_CODE_SHOW=true
-      COMPOSE_FILE=docker-compose.yaml
-
-      if type brew &>/dev/null; then
-        FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-
-        autoload -Uz compinit
-        compinit
-      fi
+  template:
+    src: ../templates/zshrc.local.j2
+    dest: "{{ ansible_env.HOME }}/.zshrc.local"
 
 - name: "Link Spaceship Prompt"
   file:
     src: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship/spaceship.zsh-theme"
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
     state: link
-
-- name: "Check if Starship is installed"
-  register: has_starship_installed
-  shell: which starship
-
-- name: "Set Starship prompt as default"
-  when: has_starship_installed.stdout
-  lineinfile:
-    path: "{{ ansible_env.HOME }}/.zshrc.local"
-    line: 'eval "$(starship init zsh)"'
 
 - name: "Copy dotfiles to oh-my-zsh"
   template:
