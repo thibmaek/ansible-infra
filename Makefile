@@ -8,7 +8,7 @@ lint:
 		ansible-lint -p roles/ && \
 		ansible-lint -p tasks/
 
-install:
+dependencies:
 	pip install --upgrade ansible ansible-lint pre-commit yamllint
 	ansible-galaxy install -r requirements.yaml
 	pre-commit install
