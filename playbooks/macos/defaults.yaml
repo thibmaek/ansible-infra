@@ -59,10 +59,6 @@
         defaults write com.apple.finder ShowStatusBar -bool true
         defaults write com.apple.finder ShowPathbar -bool true
 
-    - name: "Finder: Show full POSIX file path in window title"
-      tags: finder
-      command: defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
-
     - name: "Finder: Search current folder by default"
       tags: finder
       command: defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
@@ -87,6 +83,13 @@
     - name: "Finder: Disable the 'Are you sure you want to open' for apps"
       tags: finder
       command: defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+    - name: "Finder: Update keyboard shortcuts"
+      tags:
+        - finder
+      shell: |
+        defaults write com.apple.finder NSUserKeyEquivalents -dict-add "Show Next Tab" -string "@]"
+        defaults write com.apple.finder NSUserKeyEquivalents -dict-add "Show Previous Tab" -string "@["
 
     - name: "Dock: Set dock icons to 60pt"
       tags: dock
