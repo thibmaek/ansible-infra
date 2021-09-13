@@ -1,5 +1,11 @@
 - hosts: rpi
   tasks:
+    - name: "Install support for USB boot"
+      tags:
+        - usb_boot
+      become: true
+      command: echo program_usb_boot_mode=1 | sudo tee -a /boot/config.txt
+
     - name: "Install support for a power button"
       when: has_power_button is defined
       include_tasks: ../tasks/rpi/power-button.yaml
