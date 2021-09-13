@@ -1,0 +1,15 @@
+- name: 'Download drivers for MHS 3.5" GPIO LCD'
+  tags:
+    - lcd
+  git:
+    repo: https://github.com/goodtft/LCD-show
+    dest: "{{ ansible_env.HOME }}/drivers/LCD-show"
+
+- name: 'Build & install for MHS 3.5" GPIO LCD'
+  tags:
+    - lcd
+  become: true
+  shell: |
+    chmod -R 755 {{ ansible_env.HOME }}/drivers/LCD-show
+    cd {{ ansible_env.HOME }}/drivers/LCD-show
+    ./MHS35-show

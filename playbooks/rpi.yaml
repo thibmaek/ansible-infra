@@ -16,6 +16,8 @@
         - v4l2_rtsp is defined
       include_tasks: ../tasks/rpi/v4l2-rtsp.yaml
 
-    - name: 'Install drivers for generic 7" display'
+    - name: 'Install drivers for generic LCD display'
       when: has_generic_lcd is defined
-      include_tasks: ../tasks/rpi/7-inch-display.yaml
+      include_tasks:
+        - ../tasks/rpi/7-inch-display.yaml
+        - ../tasks/rpi/mhs-3.5-inch-display.yaml
