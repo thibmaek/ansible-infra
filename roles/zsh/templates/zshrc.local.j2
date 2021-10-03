@@ -12,6 +12,9 @@ fi
 # autojump ZSH completions
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
+# iTerm integration
+. "$HOME/.iterm2_shell_integration.zsh"
+
 {% if has_starship_installed.stdout %}
 eval "$(starship init zsh)"
 {% endif %}
