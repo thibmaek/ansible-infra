@@ -4,7 +4,9 @@
       tags:
         - usb_boot
       become: true
-      command: echo program_usb_boot_mode=1 | sudo tee -a /boot/config.txt
+      lineinfile:
+        path: /boot/config.txt
+        line: "program_usb_boot_mode=1"
 
     - name: "Install support for a power button"
       when: has_power_button is defined
@@ -22,8 +24,9 @@
         - v4l2_rtsp is defined
       include_tasks: ../tasks/rpi/v4l2-rtsp.yaml
 
-    - name: 'Install drivers for generic LCD display'
+    - name: "Install drivers for generic LCD display"
       when: has_generic_lcd is defined
-      include_tasks:
+      include_tasks: "{{ item }}"
+      loop:
         - ../tasks/rpi/7-inch-display.yaml
         - ../tasks/rpi/mhs-3.5-inch-display.yaml

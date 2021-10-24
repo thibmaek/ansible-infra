@@ -33,4 +33,4 @@
 - name: "Install bat"
   when: "'arm' in ansible_architecture"
   become: true
-  shell: dpkg -i /tmp/bat_{{ bat_version }}.deb
+  command: dpkg -i /tmp/bat_{{ bat_version }}.deb

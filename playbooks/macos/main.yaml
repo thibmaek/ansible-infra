@@ -4,20 +4,25 @@
   vars_files:
     - ./brew/vars_apps.yaml
     - ./brew/vars_packages.yaml
-    - ./mas_apps.yaml
+    - ./vars/mas_apps.yaml
+  vars:
+    homebrew_upgrade_all_packages: no
+    homebrew_taps:
+      - homebrew/cask-drivers
+      - homebrew/cask-fonts
+      - homebrew/cask-versions
+      - homebrew/command-not-found
+      - homebrew/core
+      - homebrew/services
 
   roles:
-    - role: geerlingguy.homebrew
-      tags: brew
-      vars:
-        homebrew_upgrade_all_packages: no
-        homebrew_taps:
-          - homebrew/cask-drivers
-          - homebrew/cask-fonts
-          - homebrew/cask-versions
-          - homebrew/command-not-found
-          - homebrew/core
-          - homebrew/services
+    - role: geerlingguy.mac.dock
+    - role: geerlingguy.mac.homebrew
+      tags:
+        - brew
+    - role: geerlingguy.mac.mas
+      tags:
+        - mas
     - role: ../../roles/zsh
       tags: zsh
 
@@ -40,12 +45,6 @@
         - xcode_devtools_installed.rc != 0
         - '"command line tools are already installed" not in xcode_devtools_installed.stderr'
 
-    - name: "Install App Store apps (via mas)"
-      shell: "mas install {{ item }}"
-      loop: "{{ mas_apps }}"
-      register: mas_app_installed
-      changed_when: '"is already installed" not in mas_app_installed.stdout'
-
     - name: "Copy dotfiles (common)"
       tags: dotfiles
       synchronize:
@@ -59,4 +58,4 @@
       tags:
         - git
         - dev
-      shell: git config --global credential.helper osxkeychain
+      command: git config --global credential.helper osxkeychain
