@@ -1,2 +1,5 @@
-- src: geerlingguy.homebrew
-- src: vaulttec.zsh
+roles:
+  - src: vaulttec.zsh
+
+collections:
+  - name: geerlingguy.mac

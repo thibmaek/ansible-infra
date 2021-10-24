@@ -17,6 +17,12 @@
         repo: https://github.com/denysdovhan/spaceship-prompt
 
 - name: "Install autojump"
+  when: ansible_os_family == "Debian"
+  apt:
+    name: autojump
+
+- name: "Install autojump"
+  when: ansible_os_family == "Darwin"
   homebrew:
     name: autojump
 
@@ -25,7 +31,8 @@
 
 - name: "Create .zshrc.local"
   template:
-    src: ../templates/zshrc.local.j2
+    mode: 0755
+    src: templates/zshrc.local.j2
     dest: "{{ ansible_env.HOME }}/.zshrc.local"
 
 - name: "Link Spaceship Prompt"
@@ -36,6 +43,7 @@
 
 - name: "Copy dotfiles to oh-my-zsh"
   template:
+    mode: 0755
     src: "{{ item }}"
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/{{ item | basename | regex_replace('.j2','.zsh') }}"
   with_fileglob: ../templates/dotfiles/*.j2

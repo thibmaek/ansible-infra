@@ -6,7 +6,7 @@
 
 - name: "Install Starship"
   become: true
-  shell: /tmp/ansible_starship_install.sh -y
+  script: /tmp/ansible_starship_install.sh -y
 
 - name: "Remove Starship install script"
   become: true
