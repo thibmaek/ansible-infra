@@ -1,5 +1,6 @@
 roles:
   - src: vaulttec.zsh
+  - src: woodendoors.ansible_adguard_home
 
 collections:
   - name: geerlingguy.mac
