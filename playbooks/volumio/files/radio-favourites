@@ -12,6 +12,12 @@
     "uri": "http://icecast.vrtcdn.be/stubru_untz-high.mp3 "
   },
   {
+    "service": "webradio",
+    "uri": "http://opml.radiotime.com/Tune.ashx?id=s309529",
+    "title": "VRT Studio Brussel UNTZ",
+    "icon": "fa-microphone"
+  },
+  {
     "icon": "fa-microphone",
     "service": "webradio",
     "title": "VRT Radio Klara - Brussels",
@@ -45,6 +51,24 @@
     "service": "webradio",
     "uri": "http://opml.radiotime.com/Tune.ashx?id=s99619",
     "title": "Intergalactic FM - Disco Fetish",
+    "icon": "fa-microphone"
+  },
+  {
+    "service": "webradio",
+    "uri": "http://opml.radiotime.com/Tune.ashx?id=s308313",
+    "title": "Sublime Jazz",
+    "icon": "fa-microphone"
+  },
+  {
+    "service": "webradio",
+    "uri": "http://opml.radiotime.com/Tune.ashx?id=s308309",
+    "title": "Sublime Smooth",
+    "icon": "fa-microphone"
+  },
+  {
+    "service": "webradio",
+    "uri": "http://opml.radiotime.com/Tune.ashx?id=s308316",
+    "title": "Sublime Soul",
     "icon": "fa-microphone"
   }
 ]
