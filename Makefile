@@ -9,7 +9,7 @@ lint:
 		ansible-lint -p tasks/
 
 dependencies:
-	pip install --upgrade ansible ansible-lint pre-commit yamllint
+	pip install --upgrade -r requirements.txt
 	ansible-galaxy install -r requirements.yaml
 	pre-commit install
 	ansible all -m ping

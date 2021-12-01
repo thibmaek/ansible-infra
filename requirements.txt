@@ -1,0 +1,5 @@
+ansible
+ansible-lint
+pre-commit
+yamllint
+jmespath
