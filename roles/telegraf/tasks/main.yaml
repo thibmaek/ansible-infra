@@ -4,16 +4,14 @@
 
 - name: "Install APT HTTPS transport"
   become: true
-  tags:
-    - apt
+  tags: [apt]
   apt:
     name: "apt-transport-https"
     state: present
 
 - name: "Download Telegraf apt key"
   become: true
-  tags:
-    - apt
+  tags: [apt]
   apt_key:
     url: "https://repos.influxdata.com/influxdb.key"
     id: 2582E0C5
@@ -21,8 +19,7 @@
 
 - name: "Add Telegraf repository"
   become: true
-  tags:
-    - apt
+  tags: [apt]
   apt_repository:
     # yamllint disable-line rule:line-length
     repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
@@ -31,8 +28,7 @@
 
 - name: "Install Telegraf apt package"
   become: true
-  tags:
-    - apt
+  tags: [apt]
   apt:
     name: telegraf
     state: latest
@@ -40,8 +36,7 @@
 
 - name: "Copy config directory"
   become: true
-  tags:
-    - config
+  tags: [config]
   synchronize:
     src: ../files/config_dir/
     dest: /etc/telegraf
@@ -49,8 +44,7 @@
 - name: "Copy config directory (rpi)"
   become: true
   when: is_rpi_host
-  tags:
-    - config
+  tags: [config]
   blockinfile:
     path: "/etc/telegraf/telegraf.d/inputs.exec.conf"
     create: true
@@ -64,13 +58,12 @@
 - name: "Add telegraf user to the video group (for GPU temp)"
   become: true
   when: is_rpi_host
-  tags:
-    - config
+  tags: [config]
   command: usermod -aG video telegraf
 
 - name: "Copy template files to config dir"
   become: true
-  tags: config
+  tags: [config]
   template:
     src: "{{ item }}"
     dest: "/etc/telegraf/telegraf.d/{{ item | basename | regex_replace('.j2','') }}"
@@ -78,13 +71,12 @@
 
 - name: "Copy custom plugins to config dir"
   become: true
-  tags:
-    - config
-    - custom_config
+  tags: [config, custom_config]
   file:
     path: /etc/telegraf/custom_plugins/net_iface
     state: directory
 - become: true
+  tags: [config, custom_config]
   copy:
     src: "{{ '../files/custom_plugins/net_iface/net_iface_linux_arm' if is_rpi_host else '../files/custom_plugins/net_iface/net_iface_linux_amd64' }}"
     dest: /etc/telegraf/custom_plugins/net_iface/net_iface
@@ -92,8 +84,7 @@
 
 - name: "Add telegraf to docker user group"
   become: true
-  tags:
-    - docker
+  tags: [docker]
   command: usermod -aG docker telegraf
 
 - name: "Restart telegraf.service"
