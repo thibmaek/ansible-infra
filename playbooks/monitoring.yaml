@@ -4,6 +4,29 @@
     - name: influxdb_token
       prompt: "InfluxDB Token (v2)"
       private: true
+    - name: loki_host
+      prompt: "Loki host (IP + port)"
 
   roles:
     - ../roles/telegraf
+    - role: patrickjahns.promtail
+      vars:
+        promtail_version: latest
+        promtail_loki_server_url: "{{ loki_host }}"
+        promtail_config_dir: /opt/promtail
+        promtail_positions_directory: /tmp
+        promtail_config_server:
+          http_listen_port: 9080
+          grpc_listen_port: 9081
+        promtail_config_clients:
+          - url: "http://{{ promtail_loki_server_url }}/loki/api/v1/push"
+            external_labels:
+              host: "{{ ansible_hostname }}"
+        promtail_config_scrape_configs:
+          - job_name: system
+            static_configs:
+              - targets:
+                  - localhost
+                labels:
+                  job: varlogs
+                  __path__: /var/log/*log
