@@ -5,6 +5,14 @@ all:
     main_user: thibmaek
 
   children:
+    vms:
+      hosts:
+        vm_ubuntu:
+          ansible_host: vm-ubuntu
+          ansible_user: thibmaek
+          main_user: thibmaek
+          ansible_become_pass: root
+
     rpi:
       hosts:
         # For revision codes: grep Revision /proc/cpuinfo
@@ -12,24 +20,14 @@ all:
           ansible_host: rpi-node-fuse
           node_hostname: rpi-node-fuse
           rev_code: a02082
-        rpi_node_kompass:
-          ansible_host: rpi-node-kompass
-          has_csi_camera: true
-          node_hostname: rpi-node-kompass
-          rev_code: 9000c1
-          v4l2_rtsp: true
         rpi_node_bati:
           ansible_host: rpi-node-bati
           node_hostname: rpi-node-bati
           rev_code: b03114
-        rpi_node_dashboard:
-          ansible_host: rpi-node-dashboard
-          node_hostname: rpi-node-dashboard
-          rev_code: a020d3
-          has_csi_camera: true
         rpi_node_adguard:
           ansible_host: rpi-node-adguard
           node_hostname: rpi-node-adguard
+          rev_code: a02082
       vars:
         ansible_user: pi
         main_user: pi
