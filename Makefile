@@ -10,7 +10,7 @@ lint:
 
 dependencies:
 	pip install --upgrade -r requirements.txt
-	ansible-galaxy install -r requirements.yaml
+	ansible-galaxy install --force -r requirements.yaml
 	pre-commit install
 	ansible all -m ping
 

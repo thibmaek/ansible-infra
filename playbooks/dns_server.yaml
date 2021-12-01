@@ -9,6 +9,7 @@
 
   tasks:
     - name: "Execute AdGuard Home role"
+      become: true
       tags:
         - adguard
       import_role:

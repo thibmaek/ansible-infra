@@ -27,6 +27,9 @@ all:
           node_hostname: rpi-node-dashboard
           rev_code: a020d3
           has_csi_camera: true
+        rpi_node_adguard:
+          ansible_host: rpi-node-adguard
+          node_hostname: rpi-node-adguard
       vars:
         ansible_user: pi
         main_user: pi
@@ -36,10 +39,6 @@ all:
       hosts:
         volumio_hifi:
           ansible_host: volumio-hifi
-        volumio_bedroom:
-          ansible_host: volumio-bedroom
-        volumio_dj_booth:
-          ansible_host: volumio-dj-booth
         volumio_bureau:
           ansible_host: volumio-bureau
       vars:
