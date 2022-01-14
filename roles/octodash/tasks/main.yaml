@@ -1,0 +1,64 @@
+- name: 'Install Octodash dependencies'
+  become: true
+  apt:
+    name: '{{ octodash_deps }}'
+
+- name: 'Install optimized driver (xf86-video-fbturbo)'
+  block:
+    - name: 'Download git repo'
+      git:
+        dest: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+        repo: 'https://github.com/ssvb/xf86-video-fbturbo'
+
+    - name: 'autoreconf'
+      command: 'autoreconf -vi'
+      args:
+        chdir: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+
+    - name: 'Configure'
+      command: './configure --prefix=/usr'
+      args:
+        chdir: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+
+    - name: 'Compile'
+      make:
+        chdir: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+
+    - name: 'Install'
+      become: true
+      make:
+        target: install
+        chdir: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+
+    - name: 'Ensure X11 dir exists'
+      become: true
+      file:
+        group: '{{ ansible_user }}'
+        owner: '{{ ansible_user }}'
+        path: '/etc/x11'
+        recurse: true
+        state: directory
+
+    - name: 'Copy X11 config'
+      copy:
+        dest: '/etc/x11/xorg.conf'
+        group: '{{ ansible_user }}'
+        mode: 0644
+        owner: '{{ ansible_user }}'
+        remote_src: true
+        src: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo/xorg.conf'
+
+- name: 'Reboot'
+  reboot:
+
+- name: 'Download OctoDash'
+  get_url:
+    dest: '{{ ansible_env.HOME }}/octodash_install.sh'
+    url: 'https://github.com/UnchartedBull/OctoDash/raw/main/scripts/install.sh'
+    mode: 0775
+
+- name: 'Display message'
+  debug:
+    msg: |
+      OctoDash setup is interactive.
+      Run it from '{{ ansible_env.HOME }}/octodash_install.sh' on the host to continue setup

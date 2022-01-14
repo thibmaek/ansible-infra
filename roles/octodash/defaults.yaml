@@ -1,0 +1,8 @@
+octodash_deps:
+  - automake
+  - libdrm-dev
+  - libltdl-dev
+  - libtool
+  - x11proto-dri2-dev
+  - xorg-dev
+  - xutils-dev
