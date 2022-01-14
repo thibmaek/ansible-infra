@@ -1,59 +1,46 @@
+---
 - hosts: all
   tasks:
-    - name: "Display distro"
-      debug:
-        msg: |
-          Run this playbook to initialise a new server.
-          Ideally it should only be run once. Use the `common` playbook for reprovisioning
-
-          [Machine details]
-            Ansible User: {{ ansible_user }}
-            User:         {{ main_user }}
-            Host:         {{ ansible_host }}
-            Distro:       {{ ansible_distribution }}
-            Arch:         {{ ansible_architecture }}
-    - pause:
-        prompt: "Continue ?"
-
-    - set_fact:
+    - name: 'Check if host is a Raspberry Pi'
+      set_fact:
         is_rpi_host: "{{ main_user == 'pi' }}"
 
     - name: "Create main user"
       when: not is_rpi_host
       become: true
       user:
-        name: "{{ main_user }}"
+        append: true
         comment: Create main user
         groups: sudo
-        append: true
-        password: "{{ password_hash }}"
+        name: '{{ main_user }}'
+        password: '{{ password_hash }}'
 
-    - name: "Enable passwordless sudo for main user"
+    - name: 'Enable passwordless sudo for main user'
       when: not is_rpi_host
       become: true
       lineinfile:
-        path: "/etc/sudoers.d/ansible_sudoers"
+        line: '{{ main_user }} ALL=(ALL) NOPASSWD:ALL'
         mode: 0440
-        validate: "visudo -cf %s"
-        line: "{{ main_user }} ALL=(ALL) NOPASSWD:ALL"
+        path: '/etc/sudoers.d/ansible_sudoers'
+        validate: 'visudo -cf %s'
 
-    - name: "Make home subdirectories"
+    - name: 'Make home subdirectories'
       file:
-        path: "{{ ansible_env.HOME }}/{{ item }}"
-        state: directory
         mode: 0755
+        path: '{{ ansible_env.HOME }}/{{ item }}'
+        state: directory
       loop:
         - data
         - dev
         - downloads
         - drivers
 
-    - name: "Set timezone"
+    - name: 'Set timezone'
       become: true
       timezone:
         name: Europe/Brussels
 
-- import_playbook: ./common.yaml
+- import_playbook: './common.yaml'
 
-- when: is_rpi_host
-  import_playbook: ./rpi.yaml
+- import_playbook: './rpi.yaml'
+  when: is_rpi_host
