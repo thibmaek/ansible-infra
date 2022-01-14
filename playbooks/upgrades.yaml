@@ -1,18 +1,24 @@
 - hosts: all
   serial: 2
   tasks:
-    - name: "Upgrade apt packages"
+    - name: 'Upgrade apt packages'
       become: true
       apt:
-        upgrade: yes
         update_cache: true
+        upgrade: true
 
-    - register: docker_compose_upgrade_script
-      stat:
-        path: "{{ ansible_env.HOME }}/docker-compose/update-all-containers.sh"
+    - name: 'Upgrade docker-compose configs'
+      tags: [docker]
+      block:
+        - name: 'Check if upgrade script exists'
+          register: docker_compose_upgrade_script
+          stat:
+            path: '{{ docker_compose_dir }}/update-all-containers.sh'
 
-    - name: "Upgrade docker-compose containers"
-      when: docker_compose_upgrade_script.stat.exists and docker_compose_upgrade_script.stat.executable
-      shell: "./update-all-containers.sh"
-      args:
-        chdir: "{{ ansible_env.HOME }}/docker-compose"
+        - name: "Upgrade docker-compose containers"
+          when:
+            - docker_compose_upgrade_script.stat.exists
+            - docker_compose_upgrade_script.stat.executable
+          script: './update-all-containers.sh'
+          args:
+            chdir: '{{ docker_compose_dir }}'
