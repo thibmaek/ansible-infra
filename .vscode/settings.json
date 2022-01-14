@@ -1,14 +1,20 @@
 {
   "files.associations": {
-    // Language
-    ".github/workflows/*.yaml": "yaml",
-    // Config
-    ".yamllint": "yaml",
+    // Ansible
+    "**/*.yaml": "ansible",
+    "roles/docker/tasks/compose.yaml": "ansible",
+
+    // YAML
     ".ansible-lint": "yaml",
+    ".github/workflows/*.yaml": "yaml",
     ".pre-commit-config.yaml": "yaml",
-    // Resources
+    ".yamllint": "yaml",
+
+    // Bash
     "**/files/dotfiles/linux/**": "shellscript",
     "**/files/dotfiles/mac/**": "shellscript",
+
+    // JSON
     "**/radio-favourites": "json"
   }
 }
