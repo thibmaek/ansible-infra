@@ -18,6 +18,13 @@ $ ansible-playbook -v playbooks/common.yaml -l rpi_node_tresor
 $ make play_local playbook=playbooks/local/macos.yaml
 ```
 
+## Styleguide
+
+This follows:
+
+- [Ansible Best Practices](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html)
+- [Whitecloud Ansible Styleguide](https://github.com/whitecloud/ansible-styleguide)
+
 ## Performing common plays
 
 Common plays (like common.yaml and upgrades.yaml) are available with make:
