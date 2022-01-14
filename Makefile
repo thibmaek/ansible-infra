@@ -1,5 +1,3 @@
-LOCAL_PLAYBOOK=$(playbook)
-
 lint:
 	yamllint playbooks/ && \
 		yamllint roles/ && \
@@ -12,15 +10,3 @@ dependencies:
 	pip install --upgrade -r requirements.txt
 	ansible-galaxy install --force -r requirements.yaml
 	pre-commit install
-
-play_common:
-	ansible-playbook -v playbooks/common.yaml
-
-play_upgrade:
-	ansible-playbook -v playbooks/upgrades.yaml
-
-play_volumio:
-	ansible-playbook --skip-tags=update playbooks/volumio/main.yaml
-
-play_local:
-	ansible-playbook -v $(LOCAL_PLAYBOOK) --connection=local --ask-become-pass
