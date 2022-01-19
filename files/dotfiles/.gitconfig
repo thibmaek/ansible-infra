@@ -1,27 +1,33 @@
 [alias]
   a = add
   aa = add .
+  aliases = config --get-regexp alias
   amend = commit --amend --no-edit
+  branches = branch -a
+  ch = checkout
+  clean-branches = fetch origin --prune
+  co = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f" # checkout or create if non-existent
+  d = diff
   discard = checkout --
   discard-all = checkout -- *
-  unstage = reset HEAD
+  f = fetch origin
+  filemerge = difftool -t opendiff -y
+  ft = "!f() { git checkout -b feature/\"$1\" 2> /dev/null || git checkout feature/\"$1\"; }; f"
+  get-current-branch = rev-parse --abbrev-ref HEAD
+  ghc = "!f() { git clone https://github.com/\"$1\"; }; f"
+  github = "!f() { git clone https://github.com/\"$1\"; }; f"
+  l = log
+  lucky = !sh -c 'git checkout $(git which $1 -m1)' -
+  open = "!f() { open $(git remote get-url origin); }; f"
+  publish = !git push -u origin $(git get-current-branch)
+  remotes = remote -v
+  s = status
+  shortlog = log --pretty=oneline --abbrev-commit --graph --decorate
+  tags = tag -l
   uncommit = reset --soft HEAD^
   uncommit-hard = reset --hard HEAD^ # also undo's changes to unstaged files
-  ch = checkout
-  get-current-branch = rev-parse --abbrev-ref HEAD
+  unstage = reset HEAD
   update = push origin HEAD
-  publish = !git push -u origin $(git get-current-branch)
-  d = diff
-  filemerge = difftool -t opendiff -y
-  l = log
-  s = status
-  tags = tag -l
-  branches = branch -a
-  remotes = remote -v
-  github = "!f() { git clone https://github.com/\"$1\"; }; f"
-  lucky = !sh -c 'git checkout $(git which $1 -m1)' -
-  co = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f" # checkout or create if non-existent
-  ft = "!f() { git checkout -b feature/\"$1\" 2> /dev/null || git checkout feature/\"$1\"; }; f"
 
 [apply]
   whitespace = fix
@@ -64,3 +70,6 @@
 
 [push]
   default = current
+
+[init]
+  defaultBranch = main
