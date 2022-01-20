@@ -2,6 +2,7 @@ homebrew_cask_apps:
   # region: Apps
   - 1password
   - docker
+  - dozer
   - figma
   - freac
   - google-backup-and-sync
