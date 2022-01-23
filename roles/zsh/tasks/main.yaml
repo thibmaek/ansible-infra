@@ -1,8 +1,8 @@
-- name: "Install ZSH + Oh My ZSH"
+- name: 'Install ZSH + Oh My ZSH'
   include_role:
     name: vaulttec.zsh
   vars:
-    zsh_user: "{{ main_user }}"
+    zsh_user: '{{ main_user }}'
     zsh_ohmy_theme: spaceship
     zsh_ohmy_disable_auto_update: false
     zsh_ohmy_plugins:
@@ -11,39 +11,29 @@
       - zsh-autosuggestions
     zsh_ohmy_custom_plugins:
       - name: zsh-autosuggestions
-        repo: https://github.com/zsh-users/zsh-autosuggestions
+        repo: 'https://github.com/zsh-users/zsh-autosuggestions'
     zsh_ohmy_custom_themes:
       - name: spaceship-prompt
-        repo: https://github.com/denysdovhan/spaceship-prompt
+        repo: 'https://github.com/denysdovhan/spaceship-prompt'
 
-- name: "Install autojump"
-  when: ansible_os_family == "Debian"
-  apt:
-    name: autojump
+- name: 'Install Starship'
+  include_tasks: './starship.yaml'
 
-- name: "Install autojump"
-  when: ansible_os_family == "Darwin"
-  homebrew:
-    name: autojump
-
-- name: "Install Starship"
-  include_tasks: ./starship.yaml
-
-- name: "Create .zshrc.local"
+- name: 'Create .zshrc.local'
   template:
     mode: 0755
     src: templates/zshrc.local.j2
     dest: "{{ ansible_env.HOME }}/.zshrc.local"
 
-- name: "Link Spaceship Prompt"
+- name: 'Link Spaceship Prompt'
   file:
-    src: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship/spaceship.zsh-theme"
-    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+    src: '{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship/spaceship.zsh-theme'
+    dest: '{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship.zsh-theme'
     state: link
 
-- name: "Copy dotfiles to oh-my-zsh"
+- name: 'Copy dotfiles to oh-my-zsh'
   template:
     mode: 0755
-    src: "{{ item }}"
+    src: '{{ item }}'
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/{{ item | basename | regex_replace('.j2','.zsh') }}"
   with_fileglob: ../templates/dotfiles/*.j2

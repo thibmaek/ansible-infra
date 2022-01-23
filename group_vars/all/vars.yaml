@@ -10,6 +10,7 @@ timezone: 'Europe/Brussels'
 
 # Packages to install on all systems regardless of CPU architecture, package manager or OS.
 install_packages:
+  - autojump
   - bash
   - bash-completion
   - bat
