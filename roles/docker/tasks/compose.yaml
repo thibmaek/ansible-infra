@@ -1,0 +1,71 @@
+# Tasks for docker-compose
+---
+- name: 'Ensure that docker cli plugin dir exists'
+  block:
+    - name: 'Check if cli dir exists'
+      stat:
+        path: '{{ docker_cli_plugin_dir }}'
+      register: cli_plugin_dir
+
+    - name: 'Create the persistent data folder on the remote machine' # noqa risky-file-permissions
+      become: true
+      when: not cli_plugin_dir.stat.exists
+      file:
+        group: '{{ username }}'
+        owner: '{{ username }}'
+        path: '{{ docker_cli_plugin_dir }}'
+        state: directory
+
+- name: 'Get latest release from docker/compose Github'
+  github_release:
+    action: latest_release
+    repo: compose
+    user: docker
+  register: latest_release
+
+- name: 'Grab docker-compose binary (aarch64)'
+  when: ansible_architecture == 'amd64'
+  get_url:
+    dest: '{{ docker_cli_plugin_dir }}/docker-compose'
+    url: "https://github.com/docker/compose/releases/download/{{ latest_release['tag'] }}/docker-compose-linux-aarch64"
+
+- name: 'Grab docker-compose binary (arm)'
+  when: ansible_architecture == 'arm'
+  get_url:
+    dest: '{{ docker_cli_plugin_dir }}/docker-compose'
+    url: "https://github.com/docker/compose/releases/download/{{ latest_release['tag'] }}/docker-compose-linux-armv7"
+
+- name: 'Ensure docker-compose binary is executable'
+  file:
+    dest: '{{ docker_cli_plugin_dir }}/docker-compose'
+    mode: '0755'
+
+- name: 'Ensure the docker-compose folder exists'
+  block:
+    - name: 'Check if folder exists'
+      register: compose_folder
+      stat:
+        path: "{{ docker_compose_dir }}"
+
+    - name: 'Create the docker-compose folder'
+      when: not compose_folder.stat.exists
+      file:
+        path: '{{ docker_compose_dir }}'
+        group: '{{ username }}'
+        owner: '{{ username }}'
+        recurse: yes
+        state: directory
+
+    - name: 'Add the script to update all docker-compose configs'
+      copy:
+        dest: '{{ docker_compose_dir }}/update-all-containers.sh'
+        src: 'files/scripts/docker/update-all-containers.sh'
+        mode: '0755'
+
+    - name: 'Set permissions for docker-compose folder'
+      file:
+        dest: '{{ docker_compose_dir }}'
+        group: '{{ username }}'
+        owner: '{{ username }}'
+        recurse: yes
+        state: directory

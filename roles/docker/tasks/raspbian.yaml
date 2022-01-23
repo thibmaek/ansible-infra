@@ -1,0 +1,43 @@
+- name: 'Install Docker (Raspbian)'
+  when: ansible_distribution == 'Debian'
+  block:
+  - name: 'Add Docker GPG apt Key'
+    apt_key:
+      state: present
+      url: 'https://download.docker.com/linux/raspbian/gpg'
+
+  - name: 'Add Docker Repository'
+    apt_repository:
+      repo: 'deb https://download.docker.com/linux/raspbian buster stable'
+      state: present
+
+  - name: 'Add buster-backports GPG key (for libseccomp2)'
+    apt_key:
+      id: '{{ item }}'
+      keyserver: 'keyserver.ubuntu.com'
+    loop:
+      - '04EE7237B7D453EC'
+      - '648ACFD622F3D138'
+
+  - name: 'Add buster-backports repository'
+    apt_repository:
+      repo: 'deb http://deb.debian.org/debian buster-backports main contrib non-free'
+
+  - name: 'Update to the latest version of libseccomp2'
+    apt:
+      default_release: buster-backports
+      name: libseccomp2
+      state: latest
+      update_cache: yes
+
+  - name: 'Switch to pip3'
+    alternatives:
+      name: pip
+      link: '/usr/bin/pip'
+      path: '/usr/bin/pip3'
+
+  - name: 'Switch to python3'
+    alternatives:
+      name: python
+      link: '/usr/bin/python'
+      path: '/usr/bin/python3'

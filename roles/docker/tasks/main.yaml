@@ -1,0 +1,52 @@
+---
+- name: 'Include OS-specific variables'
+  include_vars: '{{ ansible_os_family | lower }}.yaml'
+
+- name: 'Install docker dependencies'
+  package:
+    name: '{{ docker_deps }}'
+    state: latest
+
+- when: main_user == 'pi'
+  include_tasks: 'raspbian.yaml'
+
+- name: 'Update apt and install docker-ce'
+  when: ansible_os_family == 'Debian'
+  apt:
+    name: '{{ docker_pkgs }}'
+    state: latest
+    update_cache: yes
+
+- name: 'Ensure group docker exists'
+  group:
+    name: docker
+    state: present
+
+- name: 'Add user "{{ main_user }}" to group docker'
+  user:
+    append: yes
+    groups:
+      - docker
+    name: '{{ main_user }}'
+
+- name: 'Make sure Docker is running and enabled'
+  systemd:
+    enabled: yes
+    name: docker
+    state: started
+
+- include_tasks: 'compose.yaml'
+  tags: ['docker-compose']
+
+- name: 'Get a list of containers'
+  delegate_to: localhost
+  become: false
+  find:
+    file_type: directory
+    paths:
+      - 'roles/containers/services'
+    recurse: no
+  register: containers
+
+- name: 'Report the Docker version' # noqa no-changed-when
+  command: docker --version
