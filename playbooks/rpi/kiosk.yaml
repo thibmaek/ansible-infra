@@ -3,73 +3,86 @@
 ---
 - hosts: rpi
   tasks:
-    - name: "Upgrade apt packages"
+    - name: 'Upgrade apt packages'
       become: true
       apt:
         upgrade: yes
         update_cache: true
 
-    - name: "Install required packages"
+    - name: 'Install required packages'
+      become: true
       apt:
         name:
-          - xserver-xorg-video-all
-          - xserver-xorg-input-all
-          - xserver-xorg-core
-          - xinit
-          - x11-xserver-utils
           - chromium-browser
           - unclutter
+          - x11-xserver-utils
+          - xdotool
+          - xinit
+          - xserver-xorg-core
+          - xserver-xorg-input-all
+          - xserver-xorg-video-all
 
-    - name: "Auto-boot to console (logged in)"
-      become: true
-      shell: |
-        systemctl set-default multi-user.target
-        ln -fs /lib/systemd/system/getty@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
-        cat > /etc/systemd/system/getty@tty1.service.d/autologin.conf << EOF
-        [Service]
-        ExecStart=
-        ExecStart=-/sbin/agetty --autologin {{ main_user }} --noclear %I \$TERM
-        EOF
+    - name: 'Auto-boot to console (logged in)'
+      block:
+        - name: 'Set default target to multi-user'
+          become: true
+          command: 'systemctl set-default multi-user.target'
+        - name: 'Symlink default getty service to drop-in'
+          become: true
+          file:
+            src: '/lib/systemd/system/getty@.service'
+            dest: '/etc/systemd/system/getty.target.wants/getty@tty1.service'
+            state: link
+        - name: 'Ensure autologin in drop-in service'
+          blockinfile:
+            path: '/etc/systemd/system/getty@tty1.service.d/autologin.conf'
+            block: |
+              [Service]
+              ExecStart=
+              ExecStart=-/sbin/agetty --autologin {{ main_user }} --noclear %I \$TERM
+              EOF
 
-    - name: "Auto-start X Server"
-      create: true
-      path: "{{ ansible_env.HOME }}/.bash_profile"
+    - name: 'Auto-start X Server'
       blockinfile:
-        if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
-          startx
-        fi
+        create: true
+        path: '{{ ansible_env.HOME }}/.bash_profile'
+        block: |
+          if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
+            startx
+          fi
 
     - name: "Check if Ansible var 'kiosk_url' is set"
       when: kiosk_url is undefined
       meta: end_host
 
-    - name: "Auto-start Chromium when starting X Server"
-      create: true
-      path: "{{ ansible_env.HOME }}/.xinitrc"
-      blockinfile: |
-        #!/usr/bin/env sh
-        xset -dpms
-        xset s off
-        xset s noblank
+    - name: 'Auto-start Chromium when starting X Server'
+      blockinfile:
+        create: true
+        path: "{{ ansible_env.HOME }}/.xinitrc"
+        block: |
+          #!/usr/bin/env sh
+          xset -dpms
+          xset s off
+          xset s noblank
 
-        unclutter &
-        chromium-browser {{ kiosk_url }} \
-          --start-fullscreen \
-          --kiosk \
-          --noerrdialogs \
-          --disable-translate \
-          --no-first-run \
-          --fast \
-          --fast-start \
-          --disable-infobars \
-          --disable-features=TranslateUI \
-          --disk-cache-dir=/dev/null \
-          --overscroll-history-navigation=0 \
-          --disable-pinch
+          unclutter &
+          chromium-browser {{ kiosk_url }} \
+            --start-fullscreen \
+            --kiosk \
+            --noerrdialogs \
+            --disable-translate \
+            --no-first-run \
+            --fast \
+            --fast-start \
+            --disable-infobars \
+            --disable-features=TranslateUI \
+            --disk-cache-dir=/dev/null \
+            --overscroll-history-navigation=0 \
+            --disable-pinch
 
-    - name: "Reboot"
+    - name: 'Reboot'
       reboot:
-        msg: "Reboot initiated by Ansible"
+        msg: 'Reboot initiated by Ansible'
         connect_timeout: 5
         reboot_timeout: 600
         pre_reboot_delay: 0
