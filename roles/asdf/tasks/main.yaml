@@ -1,0 +1,37 @@
+# Installs asdf on the system
+---
+- when: ansible_os_family == 'Debian'
+  include_tasks: './git/install_git.yaml'
+
+- name: 'Install asdf'
+  when: ansible_os_family == 'Darwin'
+  register: asdf_via_homebrew
+  homebrew:
+    name: asdf
+    state: latest
+
+- when:
+    - ansible_os_family == 'Darwin'
+    - asdf_via_homebrew.succeeded
+  set_fact:
+    ansible_via_homebrew: true
+
+- name: 'Source asdf in shell (bash)'
+  when: '"bash" in ansible_user_shell'
+  include_tasks: './install_bash.yaml'
+
+- name: 'Source asdf in shell (zsh)'
+  when: '"zsh" in ansible_user_shell'
+  include_tasks: './install_zsh.yaml'
+
+- name: 'Update existing plugins'
+  tags: [update]
+  shell: 'asdf plugin update --all'
+
+- name: 'Add all runtimes'
+  tags: [runtimes]
+  include_tasks:
+    - './golang.yaml'
+    - './nodejs.yaml'
+    - './python.yaml'
+    - './ruby.yaml'

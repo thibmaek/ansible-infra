@@ -1,3 +1,10 @@
+- name: 'Add ruby plugin'
+  register: asdf_add_ruby
+  failed_when:
+    - asdf_add_ruby.rc != 0
+    - '"already added" not in asdf_add_ruby.stderr'
+  command: 'asdf plugin add ruby'
+
 - name: 'Install latest ruby 2'
   register: asdf_ruby_install
   changed_when: '"already added" not in asdf_ruby_install.stdout'

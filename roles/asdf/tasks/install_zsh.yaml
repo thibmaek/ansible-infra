@@ -1,0 +1,49 @@
+- name: 'Check if .zshrc.local exists'
+  register: zshrc_local
+  stat:
+    path: '{{ ansible_env.HOME }}/.zshrc.local'
+
+- name: 'Source asdf.sh (zsh, custom profile)'
+  when:
+    - ansible_via_git
+    - zshrc_local.stat.exists
+  blockinfile:
+    path: '{{ ansible_env.HOME }}/.zshrc.local'
+    block: |
+      # append completions to fpath
+      fpath=(${ASDF_DIR}/completions $fpath)
+      # initialise completions with ZSH's compinit
+      autoload -Uz compinit && compinit
+
+- name: 'Source asdf.sh (zsh, custom profile)'
+  when:
+    - ansible_via_homebrew
+    - zshrc_local.stat.exists
+  lineinfile:
+    path: '{{ ansible_env.HOME }}/.zshrc.local'
+    line: '. $(brew --prefix asdf)/libexec/asdf.sh'
+
+- name: 'Source asdf (zsh)'
+  when:
+    - ansible_via_git
+    - not zshrc_local.exists
+  blockinfile:
+    path: '{{ ansible_env.HOME }}/.zshrc'
+    block: |
+      # append completions to fpath
+      fpath=(${ASDF_DIR}/completions $fpath)
+      # initialise completions with ZSH's compinit
+      autoload -Uz compinit && compinit
+
+- name: 'Source asdf (zsh)'
+  when:
+    - ansible_via_homebrew
+    - not zshrc_local.stat.exists
+  lineinfile:
+    path: '{{ ansible_env.HOME }}/.zshrc.local'
+    line: '. $(brew --prefix asdf)/libexec/asdf.sh'
+
+- name: 'Rehash shell'
+  shell: 'rehash'
+  args:
+    executable: '/usr/local/bin/zsh'

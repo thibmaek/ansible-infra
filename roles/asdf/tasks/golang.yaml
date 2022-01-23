@@ -1,3 +1,10 @@
+- name: 'Add golang plugin'
+  register: asdf_add_golang
+  failed_when:
+    - asdf_add_golang.rc != 0
+    - '"already added" not in asdf_add_golang.stderr'
+  command: 'asdf plugin add golang'
+
 - name: 'Install prereqs'
   when: ansible_os_family == 'Debian'
   apt:

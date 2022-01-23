@@ -1,0 +1,15 @@
+- name: 'Install prereqs'
+  become: true
+  apt:
+    name:
+      - curl
+      - git
+    state: latest
+
+- name: 'Clone asdf repo'
+  git:
+    repo: 'https://github.com/asdf-vm/asdf.git'
+    dest: '{{ asdf_git_dir }}'
+
+- set_fact:
+    asdf_via_git: true

@@ -1,3 +1,10 @@
+- name: 'Add python plugin'
+  register: asdf_add_python
+  failed_when:
+    - asdf_add_python.rc != 0
+    - '"already added" not in asdf_add_python.stderr'
+  command: 'asdf plugin add python'
+
 - name: 'Install prereqs'
   when: ansible_os_family == 'Darwin'
   homebrew:
