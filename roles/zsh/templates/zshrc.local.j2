@@ -15,6 +15,9 @@ fi
 # iTerm integration
 . "$HOME/.iterm2_shell_integration.zsh"
 
+# fzf integration
+[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
+
 {% if has_starship_installed.stdout %}
 eval "$(starship init zsh)"
 {% endif %}

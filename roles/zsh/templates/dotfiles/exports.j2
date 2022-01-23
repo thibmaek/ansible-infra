@@ -21,6 +21,11 @@ export CPPFLAGS="-I/usr/local/opt/curl/include"
 export PKG_CONFIG_PATH="/usr/local/opt/curl/lib/pkgconfig"
 
 {% endif %}
-export EDITOR=vim
+# Set default editor to neovim
+export EDITOR=nvim
 
+# Add ~/bin to the path for local CLI/binaries/scripts
 export PATH="$HOME/bin:$PATH";
+
+# fzf
+export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
