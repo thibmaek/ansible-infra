@@ -1,22 +1,19 @@
+---
 - hosts: all
 
   roles:
-    - role: ../roles/asdf
-      tags:
-        - asdf
+    - role: roles/asdf
+      tags: [asdf]
 
   tasks:
-    - include: ../tasks/dev/python.yaml
-      tags:
-        - python
+    - include: tasks/dev/python.yaml
+      tags: [python]
       when: asdf_python_installed
 
-    - include: ../tasks/dev/nodejs.yaml
-      tags:
-        - nodejs
+    - include: tasks/dev/nodejs.yaml
+      tags: [nodejs]
       when: asdf_nodejs_installed
 
-    - include: ../tasks/dev/ruby.yaml
-      tags:
-        - ruby
+    - include: tasks/dev/ruby.yaml
+      tags: [ruby]
       when: asdf_ruby_installed
