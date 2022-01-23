@@ -4,6 +4,11 @@ asdf_runtimes:
   - ruby
   - python
 
+asdf_lts_versions:
+  nodejs: lts-gallium
+  python: 3
+  ruby: 2
+
 nodejs_versions:
 
 golang_versions:

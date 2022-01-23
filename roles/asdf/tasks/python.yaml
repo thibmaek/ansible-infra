@@ -1,5 +1,5 @@
-- name: "Install prereqs"
-  when: ansible_os_family == "Darwin"
+- name: 'Install prereqs'
+  when: ansible_os_family == 'Darwin'
   homebrew:
     name:
       - openssl
@@ -8,44 +8,40 @@
       - xz
       - zlib
 
-- name: "Install prereqs"
-  when: ansible_os_family == "Debian"
+- name: 'Install prereqs'
+  when: ansible_os_family == 'Debian'
   apt:
     name:
-      - make
       - build-essential
-      - libssl-dev
-      - zlib1g-dev
-      - libbz2-dev
-      - libreadline-dev
-      - libsqlite3-dev
-      - wget
       - curl
-      - llvm
-      - libncurses5-dev
-      - xz-utils
-      - tk-dev
-      - libxml2-dev
-      - libxmlsec1-dev
+      - libbz2-dev
       - libffi-dev
       - liblzma-dev
+      - libncurses5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - libxml2-dev
+      - libxmlsec1-dev
+      - llvm
+      - make
+      - tk-dev
+      - wget
+      - xz-utils
+      - zlib1g-dev
 
-- name: "Get latest python version"
-  shell: asdf latest python
-  register: python_latest
-
-- name: "Install python@{{ python_latest.stdout }}"
-  register: asdf_python_installed
-  changed_when: '"already added" not in asdf_python_installed.stdout'
+- name: 'Install latest python 3'
+  register: asdf_python_install
+  changed_when: '"already added" not in asdf_python_install.stdout'
   failed_when:
-    - asdf_python_installed.rc != 0
-    - '"already added" not in asdf_python_installed.stderr'
-  shell: "asdf install python {{ python_latest.stdout }}"
+    - asdf_python_install.rc != 0
+    - '"already added" not in asdf_python_install.stderr'
+  command: 'asdf install python latest:{{ asdf_lts_versions.python }}'
 
-- name: "Set global to python@{{ python_latest.stdout }}"
-  shell: "asdf global python {{ python_latest.stdout }}"
+- name: 'Set global to python@{{ python_latest.stdout }}' # noqa no-changed-when
+  command: "asdf global python latest:{{ asdf_lts_versions.python }}"
 
-- name: "Install additional python version"
+- name: 'Install additional python version'
   when: python_versions is defined and (python_versions | length > 0)
-  shell: "asdf install python {{ item }}"
+  command: 'asdf install python {{ item }}'
   loop: python_versions

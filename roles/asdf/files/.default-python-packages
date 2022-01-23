@@ -1,0 +1,7 @@
+esphome
+esptool
+pip
+pre-commit
+setuptools
+wheel
+yamllint

@@ -1,23 +1,16 @@
-- name: "Install Node.js PGP keys"
-  shell: |
-    bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
-
-- name: "Get latest nodejs version"
-  shell: asdf latest nodejs
-  register: node_latest
-
-- name: "Install node@{{ node_latest.stdout }}"
-  register: asdf_nodejs_installed
-  changed_when: '"already added" not in asdf_nodejs_installed.stdout'
+---
+- name: 'Install latest node LTS'
+  register: asdf_install_node
+  changed_when: '"already added" not in asdf_install_node.stdout'
   failed_when:
-    - asdf_nodejs_installed.rc != 0
-    - '"already added" not in asdf_nodejs_installed.stderr'
-  shell: "asdf install nodejs {{ node_latest.stdout }}"
+    - asdf_install_node.rc != 0
+    - '"is already installed" not in asdf_install_node.stderr'
+  command: 'asdf install nodejs {{ asdf_lts_versions.nodejs }}'
 
-- name: "Set global to node@{{ node_latest.stdout }}"
-  shell: "asdf global nodejs {{ node_latest.stdout }}"
+- name: 'Set global to node LTS' # noqa no-changed-when
+  command: 'asdf global nodejs {{ asdf_lts_versions.nodejs }}'
 
-- name: "Install additional nodejs version"
+- name: 'Install additional nodejs version'
   when: nodejs_versions is defined and (nodejs_versions | length > 0)
-  shell: "asdf install nodejs {{ item }}"
+  command: 'asdf install nodejs {{ item }}'
   loop: nodejs_versions
