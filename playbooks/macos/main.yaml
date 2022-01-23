@@ -1,10 +1,13 @@
+# macOS playbook to run on a local maching
+---
 - hosts: localhost
   connection: local
 
   vars_files:
-    - ./brew/vars_apps.yaml
-    - ./brew/vars_packages.yaml
-    - ./vars/mas_apps.yaml
+    - './brew/vars_apps.yaml'
+    - './brew/vars_packages.yaml'
+    - './vars/mas_apps.yaml'
+
   vars:
     homebrew_upgrade_all_packages: no
     homebrew_taps:
@@ -18,44 +21,46 @@
   roles:
     - role: geerlingguy.mac.dock
     - role: geerlingguy.mac.homebrew
-      tags:
-        - brew
+      tags: [brew]
     - role: geerlingguy.mac.mas
-      tags:
-        - mas
-    - role: ../../roles/zsh
+      tags: [mas]
+    - role: '../../roles/zsh'
       tags: zsh
 
   tasks:
-    - name: "Use brew bash"
-      tags: bash
+    - name: 'Install general packages'
+      homebrew:
+        state: latest
+        name: '{{ item }}'
+      with_items: '{{ install_packages }}'
+
+    - name: 'Use brew bash'
+      tags: [bash]
       become: true
       lineinfile:
-        path: /etc/shells
+        path: '/etc/shells'
         state: present
-        line: "/usr/local/bin/bash"
+        line: '/usr/local/bin/bash'
 
-    - name: "Install Xcode devtools"
-      tags: dev
+    - name: 'Install Xcode devtools'
+      tags: [dev]
       become: true
-      command: xcode-select --install
       register: xcode_devtools_installed
       changed_when: '"command line tools are already installed" not in xcode_devtools_installed.stderr'
       failed_when:
         - xcode_devtools_installed.rc != 0
         - '"command line tools are already installed" not in xcode_devtools_installed.stderr'
+      command: 'xcode-select --install'
 
-    - name: "Copy dotfiles (common)"
-      tags: dotfiles
+    - name: 'Copy dotfiles (common)'
+      tags: [dotfiles]
       synchronize:
-        src: ../../files/dotfiles/
-        dest: "{{ ansible_env.HOME }}/"
+        src: '../../files/dotfiles/'
+        dest: '{{ ansible_env.HOME }}/'
 
-    - name: "Powerline Fonts"
-      include_tasks: ../../tasks/powerline-fonts.yaml
+    - name: 'Powerline Fonts'
+      include_tasks: '../../tasks/powerline-fonts.yaml'
 
-    - name: "Set Git configuration"
-      tags:
-        - git
-        - dev
-      command: git config --global credential.helper osxkeychain
+    - name: 'Set Git configuration' # noqa command-instead-of-module no-changed-when
+      tags: [git, dev]
+      command: 'git config --global credential.helper osxkeychain'

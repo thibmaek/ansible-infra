@@ -1,51 +1,15 @@
+---
 homebrew_installed_packages:
-  # region: Dev packages
-  - bash
-  - bash-completion
-  - binwalk
-  - coreutils
-  - curl
   - diff-so-fancy
-  - findutils
-  - fzf
-  - gcc
-  - git
-  - glow
-  - gnupg
-  - gnutls
-  - go
-  - grep
-  - gzip
-  - less
-  - make
-  - nano
-  - neovim
-  - netcat
-  - nmap
-  - openssl
-  - pkg-config
-  - readline
-  - shellcheck
-  - shfmt
-  - trash
-  - tree
-  - unzip
-  - vim
-  - wget
-  # endregion
-  # region: Utils
-  - bat
-  - exa
   - ffmpeg
-  - htop
-  - jq
-  - magic-wormhole
+  - glow
+  - gnutls
+  - gzip
   - mas
-  - rsync
-  - screen
-  - ssh-copy-id
+  - pkg-config
+  - shfmt
   - starship
+  - trash
   - youtube-dl
   - zsh
   - zsh-completions
-  # endregion
