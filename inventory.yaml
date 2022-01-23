@@ -1,17 +1,12 @@
 all:
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-    ansible_user: root
-    main_user: thibmaek
-
   children:
     vms:
       hosts:
         vm_ubuntu:
+          ansible_become_pass: root
           ansible_host: vm-ubuntu
           ansible_user: thibmaek
           main_user: thibmaek
-          ansible_become_pass: root
 
     rpi:
       hosts:
@@ -28,19 +23,8 @@ all:
           ansible_host: rpi-node-adguard
           node_hostname: rpi-node-adguard
           rev_code: a02082
-      vars:
-        ansible_user: pi
-        main_user: pi
-        ansible_python_interpreter: /usr/bin/python3
 
     volumio:
       hosts:
         volumio_hifi:
           ansible_host: volumio-hifi
-        volumio_bureau:
-          ansible_host: volumio-bureau
-      vars:
-        ansible_user: volumio
-        ansible_become_pass: volumio
-        main_user: volumio
-        ansible_python_interpreter: /usr/bin/python

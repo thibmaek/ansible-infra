@@ -1,0 +1,7 @@
+ansible_become_pass: volumio
+
+ansible_python_interpreter: /usr/bin/python
+
+ansible_user: volumio
+
+main_user: volumio

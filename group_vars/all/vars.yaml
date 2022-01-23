@@ -1,0 +1,47 @@
+ansible_user: root
+
+docker_compose_dir: '{{ ansible_env.HOME }}/docker-compose'
+
+guid: '1000'
+
+main_user: 'thibmaek'
+
+timezone: 'Europe/Brussels'
+
+# Packages to install on all systems regardless of CPU architecture, package manager or OS.
+install_packages:
+  - bash
+  - bash-completion
+  - bat
+  - binwalk
+  - coreutils
+  - curl
+  - exa
+  - findutils
+  - fzf
+  - gcc
+  - git
+  - gnupg
+  - grep
+  - htop
+  - jq
+  - less
+  - lsof
+  - magic-wormhole
+  - make
+  - moreutils
+  - nano
+  - ncdu
+  - neovim
+  - netcat
+  - nmap
+  - openssl
+  - readline
+  - rsync
+  - screen
+  - shellcheck
+  - ssh-copy-id
+  - tree
+  - unzip
+  - vim
+  - wget
