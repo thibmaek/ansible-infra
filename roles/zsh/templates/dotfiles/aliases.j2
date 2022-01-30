@@ -5,7 +5,9 @@ alias sudo="sudo "
 {% endif %}
 # Programs
 alias ls="exa"
-alias cat="bat"
+alias lsa="ls -AF"
+alias lf="lsa | fzf"
+alias lsd="ls -lF | grep '^d'"
 alias rm="trash"
 alias gcc="gcc-10"
 {% if ansible_os_family == "Darwin" %}
