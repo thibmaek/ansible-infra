@@ -1,0 +1,24 @@
+---
+- name: 'Install glances'
+  become: true
+  pip:
+    executable: pip3
+    name:
+      - glances
+      - bottle
+    state: latest
+
+- name: 'Copy systemd service'
+  become: true
+  copy:
+    src: ./files/glances.service
+    dest: /etc/systemd/system/glances.service
+    mode: 0644
+
+- name: 'Start & enable glances service'
+  become: true
+  systemd:
+    name: glances
+    daemon_reload: true
+    state: restarted
+    enabled: true

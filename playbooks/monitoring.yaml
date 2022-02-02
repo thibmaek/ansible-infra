@@ -9,6 +9,7 @@
 
   roles:
     - ../roles/telegraf
+    - ../roles/glances
     - role: patrickjahns.promtail
       vars:
         promtail_version: latest
