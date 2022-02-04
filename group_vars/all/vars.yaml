@@ -42,6 +42,7 @@ install_packages:
   - screen
   - shellcheck
   - ssh-copy-id
+  - tmux
   - tree
   - unzip
   - vim
