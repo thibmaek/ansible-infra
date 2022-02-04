@@ -9,11 +9,13 @@
       when: not is_rpi_host
       become: true
       user:
-        append: true
-        comment: Create main user
-        groups: sudo
         name: '{{ main_user }}'
         password: '{{ password_hash }}'
+        append: true
+        comment: 'Create main user'
+        groups:
+          - sudo
+          - systemd-journal
 
     - name: 'Enable passwordless sudo for main user'
       when: not is_rpi_host
