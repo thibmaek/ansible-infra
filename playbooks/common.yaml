@@ -31,6 +31,8 @@
               - python3-pip
               - python3-setuptools
               - python3-venv
+              - smartmontools
+              - util-linux
               - xclip
 
     - include_tasks: 'tasks/dev/nano.yaml'
