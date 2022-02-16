@@ -13,8 +13,17 @@
     // Bash
     "**/files/dotfiles/linux/**": "shellscript",
     "**/files/dotfiles/mac/**": "shellscript",
+    "**/*.sh.j2": "shellscript",
 
     // JSON
-    "**/radio-favourites": "json"
+    "**/radio-favourites": "json",
+
+    // SystemD
+    "**/*.timer.j2": "systemd-conf",
+    "**/*.service.j2": "systemd-conf",
+
+    // Toml
+    "**/telegraf/files/**/*.conf": "toml",
+    "**/telegraf/templates/*.conf.j2": "toml",
   }
 }
