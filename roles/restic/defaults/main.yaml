@@ -1,0 +1,3 @@
+restic_auto_dir: /opt/restic-auto
+restic_auto_script: '{{ restic_auto_dir }}/restic-auto.sh'
+restic_auto_interval: daily

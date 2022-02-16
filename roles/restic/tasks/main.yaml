@@ -1,0 +1,39 @@
+---
+- name: 'Install Restic'
+  become: true
+  apt:
+    name: restic
+    state: latest
+
+- name: 'Setup Restic environment'
+  become: true
+  copy:
+    src: ./files/restic-env
+    dest: '{{ restic_auto_dir }}/restic-env'
+    mode: 0755
+
+- name: 'Setup script for automatic backup '
+  become: true
+  template:
+    src: ./templates/restic-auto.sh.j2
+    dest: '{{ restic_auto_script }}'
+    mode: 0755
+
+- name: 'Setup service'
+  become: true
+  template:
+    src: ./templates/restic-auto.service.j2
+    dest: '/etc/systemd/system/restic-auto.service'
+
+- name: 'Setup timer'
+  become: true
+  template:
+    src: ./templates/restic-auto.timer.j2
+    dest: '/etc/systemd/system/restic-auto.timer'
+
+- name: 'Enable & start service'
+  become: true
+  systemd:
+    name: restic-auto.timer
+    enabled: true
+    state: started

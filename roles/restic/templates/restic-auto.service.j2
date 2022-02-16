@@ -1,0 +1,10 @@
+[Unit]
+Description=Automatically backup via Restic
+Wants=restic-auto.timer
+
+[Service]
+Type=oneshot
+Nice=10
+ExecStart={{ restic_auto_script }}
+# HOME must be set for restic to find /root/.cache/restic/
+Environment="HOME=/root"

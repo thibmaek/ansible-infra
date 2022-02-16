@@ -1,0 +1,11 @@
+[Unit]
+Description=Automatically backup via Restic
+Requires=restic-auto.service
+
+[Timer]
+OnCalendar={{ restic_auto_interval }}
+Unit=restic-auto.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

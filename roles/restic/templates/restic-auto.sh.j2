@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# Set this to any location you like
+
+BACKUP_TAG="restic-auto"
+
+# How many backups to keep.
+RETENTION_DAYS=14
+RETENTION_WEEKS=16
+RETENTION_MONTHS=18
+RETENTION_YEARS=3
+
+# shellcheck disable=SC1091
+source {{ restic_auto_dir }}/restic-env
+
+# Remove locks in case other stale processes kept them in
+restic unlock &
+wait $!
+
+# Do the backup
+for backupDir in "${RESTIC_BACKUP_DIRS[@]}"; do
+  restic backup --verbose --one-file-system --tag "$BACKUP_TAG" "$backupDir" &
+  wait $!
+done
+
+
+
+# Remove old Backups
+restic forget \
+  --verbose \
+  --tag "$BACKUP_TAG" \
+  --prune \
+  --keep-daily "$RETENTION_DAYS" \
+  --keep-weekly "$RETENTION_WEEKS" \
+  --keep-monthly "$RETENTION_MONTHS" \
+  --keep-yearly "$RETENTION_YEARS" &
+wait $!
+
+# Check if everything is fine
+restic check &
+wait $!
+
+echo "Backup done!"
