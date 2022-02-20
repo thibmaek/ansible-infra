@@ -56,11 +56,12 @@
         recurse: yes
         state: directory
 
-    - name: 'Add the script to update all docker-compose configs'
+    - name: 'Copy docker scripts'
       copy:
-        dest: '{{ docker_compose_dir }}/update-all-containers.sh'
-        src: 'files/scripts/docker/update-all-containers.sh'
+        dest: '{{ docker_compose_dir }}/'
+        src: '{{ item }}'
         mode: '0755'
+      with_fileglob: '../files/*.sh'
 
     - name: 'Set permissions for docker-compose folder'
       file:
