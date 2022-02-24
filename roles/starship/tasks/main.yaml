@@ -1,0 +1,22 @@
+---
+- name: 'Download Starship install script'
+  become: true
+  get_url:
+    url: 'https://starship.rs/install.sh'
+    dest: '/tmp/ansible_starship_install.sh'
+
+- name: 'Install Starship'
+  become: true
+  script: '/tmp/ansible_starship_install.sh -y'
+
+- name: 'Remove Starship install script'
+  become: true
+  file:
+    path: '/tmp/ansible_starship_install.sh'
+    state: absent
+
+- name: 'Copy Starship TOML config'
+  copy:
+    src: files/starship.toml
+    dest: '{{ ansible_env.HOME }}/.config/starship.toml'
+    mode: 0644

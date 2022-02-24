@@ -16,9 +16,6 @@
       - name: spaceship-prompt
         repo: 'https://github.com/denysdovhan/spaceship-prompt'
 
-- name: 'Install Starship'
-  include_tasks: './starship.yaml'
-
 - name: 'Create .zshrc.local'
   template:
     mode: 0755

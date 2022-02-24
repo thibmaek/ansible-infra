@@ -1,0 +1,25 @@
+command_timeout = 300
+
+[character]
+success_symbol = "➜"
+error_symbol = "✗"
+
+[cmd_duration]
+min_time = 2000
+
+# Cloud
+[gcloud]
+disabled = true
+
+[kubernetes]
+disabled = false
+
+# Custom
+[custom.asdf]
+description = "Shows symbol if the project is using asdf"
+command = "echo ⌬"
+files = [".tool-versions"]
+
+[custom.file_number]
+command = "ls | wc -l"
+when = "exit 0"
