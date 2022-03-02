@@ -5,3 +5,4 @@ verbosity: 1
 skip_list:
   - git-latest
   - package-latest
+  - no-relative-paths
