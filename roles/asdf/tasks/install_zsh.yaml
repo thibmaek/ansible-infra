@@ -40,10 +40,5 @@
     - ansible_via_homebrew
     - not zshrc_local.stat.exists
   lineinfile:
-    path: '{{ ansible_env.HOME }}/.zshrc.local'
+    path: '{{ ansible_env.HOME }}/.zshrc'
     line: '. $(brew --prefix asdf)/libexec/asdf.sh'
-
-- name: 'Rehash shell'
-  shell: 'rehash'
-  args:
-    executable: '/usr/local/bin/zsh'
