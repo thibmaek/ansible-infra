@@ -1,30 +1,34 @@
-all:
-  children:
-    vms:
-      hosts:
-        vm_ubuntu:
-          ansible_become_pass: root
-          ansible_host: vm-ubuntu
-          ansible_user: thibmaek
-          main_user: thibmaek
+vms:
+  hosts:
+    vm-ubuntu:
+      ansible_become_pass: root
+      ansible_host: vm-ubuntu
+      ansible_user: thibmaek
+      main_user: thibmaek
 
-    rpi:
-      hosts:
-        # For revision codes: grep Revision /proc/cpuinfo
-        rpi_node_fuse:
-          ansible_host: rpi-node-fuse
-          node_hostname: rpi-node-fuse
-          rev_code: a02082
-        rpi_node_bati:
-          ansible_host: rpi-node-bati
-          node_hostname: rpi-node-bati
-          rev_code: b03114
-        rpi_node_adguard:
-          ansible_host: rpi-node-adguard
-          node_hostname: rpi-node-adguard
-          rev_code: a02082
+rpi:
+  hosts:
+    # For revision codes: grep Revision /proc/cpuinfo
+    rpi-node-fuse:
+      ansible_host: rpi-node-fuse
+      node_hostname: rpi-node-fuse
+      rev_code: a02082
+    rpi-node-bati:
+      ansible_host: rpi-node-bati
+      node_hostname: rpi-node-bati
+      rev_code: b03114
+    rpi-node-kompass:
+      ansible_host: rpi-node-kompass
+      node_hostname: rpi-node-kompass
+      rev_code: a02082
+    rpi-node-kiosk:
+      ansible_host: rpi-node-kiosk
+      node_hostname: rpi-node-kiosk
+    rpi-node-raspbian:
+      ansible_host: rpi-node-raspbian
+      node_hostname: rpi-node-raspbian
 
-    volumio:
-      hosts:
-        volumio_hifi:
-          ansible_host: volumio-hifi
+volumio:
+  hosts:
+    volumio-hifi:
+      ansible_host: volumio-hifi
