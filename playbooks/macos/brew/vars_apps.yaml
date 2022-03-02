@@ -21,8 +21,8 @@ homebrew_cask_apps:
   - synology-drive
   - ultimaker-cura
   - visual-studio-code
-  - vmware-fusion
   - vlc
+  - vmware-fusion
   # endregion
   # region: Fonts
   - font-fira-code

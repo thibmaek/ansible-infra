@@ -7,7 +7,9 @@ homebrew_installed_packages:
   - gzip
   - mas
   - pkg-config
+  - readline
   - shfmt
+  - ssh-copy-id
   - starship
   - trash
   - youtube-dl
