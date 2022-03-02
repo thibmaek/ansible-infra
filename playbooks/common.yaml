@@ -47,3 +47,8 @@
         src: 'files/scripts'
         dest: '{{ ansible_env.HOME }}/scripts'
         mode: 0755
+
+    - name: 'Set timezone'
+      become: true
+      timezone:
+        name: Europe/Brussels

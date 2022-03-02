@@ -37,11 +37,6 @@
         - downloads
         - drivers
 
-    - name: 'Set timezone'
-      become: true
-      timezone:
-        name: Europe/Brussels
-
 - import_playbook: './common.yaml'
 
 - import_playbook: './rpi.yaml'
