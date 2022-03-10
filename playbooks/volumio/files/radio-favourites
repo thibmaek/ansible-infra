@@ -70,5 +70,11 @@
     "uri": "http://opml.radiotime.com/Tune.ashx?id=s308316",
     "title": "Sublime Soul",
     "icon": "fa-microphone"
-  }
+  },
+	{
+		"service": "webradio",
+		"uri": "http://combell.wearevarious.com:8000/live.mp3",
+		"title": "We Are Various (WAV)",
+		"icon": "fa-microphone"
+	}
 ]
