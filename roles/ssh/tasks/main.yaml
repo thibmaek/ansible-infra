@@ -1,0 +1,33 @@
+- name: 'Ensure .ssh dir exists'
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    owner: "{{ main_user }}"
+    group: "{{ main_user }}"
+    mode: 0700
+
+- name: 'Add SSH keys'
+  tags: [ssh_keys]
+  authorized_key:
+    user: '{{ main_user }}'
+    key: "{{ lookup('file', item) }}"
+  with_fileglob: '../files/keys/ssh/*'
+
+- name: 'Set new sshd port to use'
+  set_fact:
+    sshd_port: '{{ sshd_configure_port }}'
+
+- name: 'Copy sshd config'
+  become: true
+  tags: [ssh_config]
+  template:
+    src: '../templates/sshd_config.j2'
+    dest: '/etc/ssh/sshd_config'
+    mode: 0644
+
+- name: 'Output SSH port'
+  tags: [ssh_config]
+  notify: ['restart_sshd']
+  changed_when: true
+  debug:
+    msg: 'SSH now using port {{ sshd_port }}'
