@@ -1,0 +1,17 @@
+docker_deps:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+  - python3-pip
+  - python3-setuptools
+  - software-properties-common
+  - virtualenv
+
+docker_pkgs:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+
+docker_cli_plugin_dir: '{{ ansible_env.HOME }}/.docker/cli-plugins'

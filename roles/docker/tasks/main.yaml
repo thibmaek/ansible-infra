@@ -1,52 +1,75 @@
 ---
 - name: 'Include OS-specific variables'
-  include_vars: '{{ ansible_os_family | lower }}.yaml'
+  ansible.builtin.include_vars: '{{ ansible_os_family | lower }}.yaml'
 
-- name: 'Install docker dependencies'
-  package:
+- name: 'Get dpkg architecture'
+  register: dpkg_arch
+  changed_when: false
+  ansible.builtin.command: 'dpkg --print-architecture'
+
+- name: 'Include Raspbian variables'
+  when: main_user == 'pi'
+  ansible.builtin.include_vars: 'raspbian.yaml'
+
+- name: 'Install Docker dependencies'
+  tags: [apt]
+  become: true
+  ansible.builtin.apt:
     name: '{{ docker_deps }}'
     state: latest
+    update_cache: yes
 
-- when: main_user == 'pi'
-  include_tasks: 'raspbian.yaml'
+- name: "Add Docker's GPG key"
+  become: true
+  tags: [apt]
+  ansible.builtin.apt_key:
+    url: '{{ docker_repo_url }}/gpg'
+    state: present
 
-- name: 'Update apt and install docker-ce'
+- name: 'Add Docker apt repository'
+  become: true
+  tags: [apt]
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ dpkg_arch.stdout }}] {{ docker_repo_url }} {{ ansible_distribution_release }} stable"
+    filename: docker
+    state: present
+
+- name: 'Include RPi specific tasks'
+  when: main_user == 'pi'
+  ansible.builtin.include_tasks: 'raspbian.yaml'
+
+- name: 'Install Docker Engine'
   when: ansible_os_family == 'Debian'
-  apt:
+  become: true
+  ansible.builtin.apt:
     name: '{{ docker_pkgs }}'
     state: latest
     update_cache: yes
 
 - name: 'Ensure group docker exists'
-  group:
+  ansible.builtin.group:
     name: docker
     state: present
 
 - name: 'Add user "{{ main_user }}" to group docker'
-  user:
+  become: true
+  ansible.builtin.user:
     append: yes
     groups:
       - docker
     name: '{{ main_user }}'
 
 - name: 'Make sure Docker is running and enabled'
-  systemd:
+  become: true
+  ansible.builtin.systemd:
     enabled: yes
     name: docker
     state: started
 
-- include_tasks: 'compose.yaml'
-  tags: ['docker-compose']
+- name: 'Include Docker Compose tasks'
+  tags: [compose]
+  ansible.builtin.include_tasks: 'compose.yaml'
 
-- name: 'Get a list of containers'
-  delegate_to: localhost
-  become: false
-  find:
-    file_type: directory
-    paths:
-      - 'roles/containers/services'
-    recurse: no
-  register: containers
-
-- name: 'Report the Docker version' # noqa no-changed-when
-  command: docker --version
+- name: 'Report the Docker version'
+  changed_when: false
+  ansible.builtin.command: docker --version

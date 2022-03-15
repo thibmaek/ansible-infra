@@ -1,72 +1,63 @@
 # Tasks for docker-compose
 ---
-- name: 'Ensure that docker cli plugin dir exists'
+- name: 'Ensure that Docker CLI plugin dir exists'
   block:
-    - name: 'Check if cli dir exists'
-      stat:
-        path: '{{ docker_cli_plugin_dir }}'
+    - name: 'Check if Docker CLI plugin dir dir exists'
       register: cli_plugin_dir
+      ansible.builtin.stat:
+        path: '{{ docker_cli_plugin_dir }}'
 
-    - name: 'Create the persistent data folder on the remote machine' # noqa risky-file-permissions
-      become: true
+    - name: 'Create the Docker CLI plugin dir'
       when: not cli_plugin_dir.stat.exists
-      file:
-        group: '{{ username }}'
-        owner: '{{ username }}'
+      ansible.builtin.file:
+        group: '{{ main_user }}'
+        owner: '{{ main_user }}'
         path: '{{ docker_cli_plugin_dir }}'
         state: directory
+        recurse: true
 
-- name: 'Get latest release from docker/compose Github'
-  github_release:
-    action: latest_release
-    repo: compose
-    user: docker
-  register: latest_release
+- name: 'Grab latest docker/compose binary'
+  block:
+    - name: 'Get latest release from docker/compose Github'
+      register: docker_compose_latest_release
+      github_release:
+        action: latest_release
+        user: docker
+        repo: compose
 
-- name: 'Grab docker-compose binary (aarch64)'
-  when: ansible_architecture == 'amd64'
-  get_url:
-    dest: '{{ docker_cli_plugin_dir }}/docker-compose'
-    url: "https://github.com/docker/compose/releases/download/{{ latest_release['tag'] }}/docker-compose-linux-aarch64"
+    - name: 'Grab docker-compose binary (x86_64)'
+      when: ansible_architecture == 'x86_64'
+      ansible.builtin.get_url:
+        dest: '{{ docker_cli_plugin_dir }}/docker-compose'
+        url: "https://github.com/docker/compose/releases/download/{{ docker_compose_latest_release['tag'] }}/docker-compose-linux-x86_64"
+        mode: 0755
 
-- name: 'Grab docker-compose binary (arm)'
-  when: ansible_architecture == 'arm'
-  get_url:
-    dest: '{{ docker_cli_plugin_dir }}/docker-compose'
-    url: "https://github.com/docker/compose/releases/download/{{ latest_release['tag'] }}/docker-compose-linux-armv7"
-
-- name: 'Ensure docker-compose binary is executable'
-  file:
-    dest: '{{ docker_cli_plugin_dir }}/docker-compose'
-    mode: '0755'
+    - name: 'Grab docker-compose binary (arm)'
+      when: ansible_architecture == 'arm'
+      ansible.builtin.get_url:
+        dest: '{{ docker_cli_plugin_dir }}/docker-compose'
+        url: "https://github.com/docker/compose/releases/download/{{ docker_compose_latest_release['tag'] }}/docker-compose-linux-armv7"
+        mode: 0755
 
 - name: 'Ensure the docker-compose folder exists'
   block:
     - name: 'Check if folder exists'
       register: compose_folder
-      stat:
+      ansible.builtin.stat:
         path: "{{ docker_compose_dir }}"
 
     - name: 'Create the docker-compose folder'
       when: not compose_folder.stat.exists
-      file:
+      ansible.builtin.file:
         path: '{{ docker_compose_dir }}'
-        group: '{{ username }}'
-        owner: '{{ username }}'
-        recurse: yes
+        group: '{{ main_user }}'
+        owner: '{{ main_user }}'
+        recurse: true
         state: directory
 
-    - name: 'Copy docker scripts'
-      copy:
-        dest: '{{ docker_compose_dir }}/'
-        src: '{{ item }}'
-        mode: '0755'
-      with_fileglob: '../files/*.sh'
-
-    - name: 'Set permissions for docker-compose folder'
-      file:
-        dest: '{{ docker_compose_dir }}'
-        group: '{{ username }}'
-        owner: '{{ username }}'
-        recurse: yes
-        state: directory
+- name: 'Copy docker scripts'
+  ansible.builtin.copy:
+    dest: '{{ docker_compose_dir }}/'
+    src: '{{ item }}'
+    mode: 0755
+  with_fileglob: '../files/*.sh'
