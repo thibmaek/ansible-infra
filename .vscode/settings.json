@@ -9,6 +9,8 @@
     ".github/workflows/*.yaml": "yaml",
     ".pre-commit-config.yaml": "yaml",
     ".yamllint": "yaml",
+    "inventory.yaml": "yaml",
+    "requirements.yaml": "yaml",
 
     // Bash
     "**/files/dotfiles/linux/**": "shellscript",
