@@ -2,15 +2,11 @@
 ---
 - hosts: all
 
-  vars:
-    adguard_home_version: '0.91'
-    adguard_home_base_path: /opt/adguard_home
-    adguard_home_user: root
-
-  tasks:
-    - name: "Execute AdGuard Home role"
+  roles:
+    - name: woodendoors.ansible_adguard_home
+      tags: [adguard]
       become: true
-      tags:
-        - adguard
-      import_role:
-        name: woodendoors.ansible_adguard_home
+      vars:
+        adguard_home_version: '0.91'
+        adguard_home_base_path: /opt/adguard_home
+        adguard_home_user: root
