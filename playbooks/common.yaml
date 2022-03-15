@@ -1,6 +1,7 @@
 # Common playbook to recurringly run on existing hosts
 ---
 - hosts:
+    - proxmox
     - vms
     - rpi
 
@@ -18,6 +19,15 @@
     - name: 'Install packages'
       tags: [apt]
       block:
+        - name: 'Install important system packages'
+          become: true
+          apt:
+            name:
+              - apt-transport-https
+              - build-essential
+              - ca-certificates
+              - curl
+              - software-properties-common
         - name: 'Install general packages'
           become: true
           apt:
@@ -29,7 +39,6 @@
           apt:
             state: latest
             name:
-              - build-essential
               - cockpit
               - gdisk
               - openssh-client
