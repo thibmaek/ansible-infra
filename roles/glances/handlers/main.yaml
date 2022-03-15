@@ -1,0 +1,7 @@
+- name: restart_glances
+  become: true
+  systemd:
+    name: glances
+    daemon_reload: true
+    state: restarted
+    enabled: true
