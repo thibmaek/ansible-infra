@@ -1,5 +1,15 @@
+# You should run this playbook with your root user since it will create the new main
+# user to interact and perform plays with.
+#
+#   e.g $ ansible-playbook playbooks/init.yaml -u root
+#
+# The `temp_pass` var will need to exist in order for the play to execute
 ---
 - hosts: all
+
+  roles:
+    - 'roles/motd'
+
   tasks:
     - name: 'Check if host is a Raspberry Pi'
       set_fact:
@@ -10,12 +20,23 @@
       become: true
       user:
         name: '{{ main_user }}'
-        password: '{{ password_hash }}'
+        create_home: true
+        password: '{{ temp_pass | password_hash }}'
         append: true
-        comment: 'Create main user'
+        comment: 'Main User by Ansible'
+        shell: /bin/bash
+        generate_ssh_key: true
         groups:
           - sudo
+          - users
           - systemd-journal
+
+    - name: 'Install sudo'
+      when: not is_rpi_host
+      become: true
+      apt:
+        name: sudo
+        state: latest
 
     - name: 'Enable passwordless sudo for main user'
       when: not is_rpi_host
@@ -23,8 +44,19 @@
       lineinfile:
         line: '{{ main_user }} ALL=(ALL) NOPASSWD:ALL'
         mode: 0440
+        create: true
         path: '/etc/sudoers.d/ansible_sudoers'
         validate: 'visudo -cf %s'
+
+    - name: 'Switch users for playbook'
+      when: not is_rpi_host
+      set_fact:
+        ansible_become_user: '{{ ansible_user }}'
+        ansible_user: '{{ main_user }}'
+
+    - name: 'Reload facts'
+      when: not is_rpi_host
+      setup:
 
     - name: 'Make home subdirectories'
       file:
@@ -37,7 +69,6 @@
         - downloads
         - drivers
 
-- import_playbook: './common.yaml'
-
-- import_playbook: './rpi.yaml'
-  when: is_rpi_host
+    - name: 'Include SSH role'
+      include_role:
+        name: 'roles/ssh'

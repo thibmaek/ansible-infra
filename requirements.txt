@@ -3,3 +3,4 @@ ansible-lint
 pre-commit
 yamllint
 jmespath
+passlib
