@@ -1,10 +1,15 @@
+proxmox:
+  hosts:
+    saule-lxc:
+      ansible_host: saule
+      ansible_user: thibmaek
+
 vms:
   hosts:
     vm-ubuntu:
       ansible_become_pass: root
       ansible_host: vm-ubuntu
       ansible_user: thibmaek
-      main_user: thibmaek
 
 rpi:
   hosts:
