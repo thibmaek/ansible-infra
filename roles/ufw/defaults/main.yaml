@@ -1,0 +1,4 @@
+ufw_allowed:
+  - OpenSSH
+
+ufw_denied:

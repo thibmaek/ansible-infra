@@ -1,0 +1,25 @@
+---
+- name: 'Install ufw'
+  become: true
+  apt:
+    name: ufw
+    state: latest
+
+- name: 'Allow items'
+  when: ufw_allowed | length > 0
+  ufw:
+    rule: allow
+    name: '{{ item }}'
+  with_items: '{{ ufw_allowed }}'
+
+- name: 'Deny items'
+  when: ufw_denied | length > 0
+  ufw:
+    rule: deny
+    name: '{{ item }}'
+  with_items: '{{ ufw_denied }}'
+
+- name: 'Enable & deny ufw by default'
+  ufw:
+    state: enabled
+    default: deny
