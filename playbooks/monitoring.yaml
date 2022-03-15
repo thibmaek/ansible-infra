@@ -8,9 +8,12 @@
       prompt: "Loki host (IP + port)"
 
   roles:
-    - ../roles/telegraf
-    - ../roles/glances
-    - role: patrickjahns.promtail
+    - name: '../roles/telegraf'
+      tags: [telegraf]
+    - name: '../roles/glances'
+      tags: [glances]
+    - name: patrickjahns.promtail
+      tags: [promtail]
       vars:
         promtail_version: latest
         promtail_loki_server_url: "{{ loki_host }}"
