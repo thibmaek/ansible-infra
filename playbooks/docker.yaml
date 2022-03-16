@@ -3,3 +3,23 @@
 
   roles:
     - 'roles/docker'
+
+  tasks:
+    - name: 'Remove Docker'
+      when: false
+      become: true
+      block:
+        - name: 'Remove docker pkgs'
+          ansible.builtin.apt:
+            name:
+              - docker-ce
+              - docker-ce-cli
+              - containerd.io
+            state: absent
+        - name: 'Remove images, containers etc.'
+          ansible.builtin.file:
+            path: '{{ item }}'
+            state: absent
+          loop:
+            - '/var/lib/docker'
+            - '/var/lib/containerd'
