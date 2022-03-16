@@ -9,3 +9,7 @@ rules:
   quoted-strings: disable
   truthy: disable
   line-length: disable
+  braces:
+    max-spaces-inside: 1
+    min-spaces-inside: 1
+
