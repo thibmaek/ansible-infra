@@ -12,3 +12,5 @@
         nfs_mounts:
           - src: '{{ synology_nas_host }}:/volume1/media'
             path: 'media'
+          - src: '{{ synology_nas_host }}:/volume1/data'
+            path: 'data'
