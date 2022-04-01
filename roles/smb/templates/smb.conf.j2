@@ -1,0 +1,36 @@
+[global]
+  workgroup = WORKGROUP
+  dns proxy = no
+  log file = /var/log/samba/log.%m
+  max log size = 1000
+  syslog = 0
+  panic action = /usr/share/samba/panic-action %d
+  server role = standalone server
+  passdb backend = tdbsam
+  obey pam restrictions = yes
+  unix password sync = yes
+  passwd program = /usr/bin/passwd %u
+  passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+  pam password change = yes
+  map to guest = bad user
+  usershare allow guests = yes
+
+[Home]
+  path = /home/{{ main_user }}
+  browseable = yes
+  read only = no
+  guest ok = no
+
+{% if smb_dirs is defined and smb_dirs|length > 0 %}
+{% for block in smb_dirs %}
+[{{ block.name }}]
+  path = {{ block.path }}
+  browseable = yes
+  read only = {{ block.read_only }}
+  guest ok = {{ block.allow_guest }}
+  only guest = no
+  public = yes
+
+{% endfor %}
+{% endif %}
+

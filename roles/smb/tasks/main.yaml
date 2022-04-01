@@ -1,4 +1,26 @@
 - name: 'Install Samba (SMB)'
+  tags: [apt]
   become: true
   ansible.builtin.apt:
     name: samba
+
+- name: 'Check if previous smb conf exists'
+  register: smb_conf
+  ansible.builtin.stat:
+    path: '{{ smb_conf_path }}'
+
+- name: 'Backup previous smb conf'
+  when: smb_conf.stat.exists
+  ansible.builtin.copy:
+    remote_src: true
+    src: '{{ smb_conf_path }}'
+    dest: '{{ smb_conf_path }}.bak'
+    mode: 0644
+
+- name: 'Copy smb.conf'
+  become: true
+  notify: restart_smbd
+  ansible.builtin.template:
+    src: './templates/smb.conf.j2'
+    dest: '{{ smb_conf_path }}'
+    mode: 0644

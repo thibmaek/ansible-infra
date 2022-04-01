@@ -1,0 +1,6 @@
+- name: restart_smbd
+  become: true
+  ansible.builtin.systemd:
+    name: smbd
+    state: restarted
+    enabled: true

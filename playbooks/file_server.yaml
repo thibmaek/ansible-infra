@@ -5,6 +5,12 @@
   roles:
     - name: 'roles/smb'
       tags: [smb]
+      vars:
+        smb_dirs:
+          # - name:
+          #   path:
+          #   read_only: false
+          #   allow_guest: true
 
     - name: 'roles/nfs'
       tags: [nfs]
