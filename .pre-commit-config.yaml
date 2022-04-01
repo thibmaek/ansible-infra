@@ -12,6 +12,12 @@ repos:
       - id: disallow-yml
       - id: shellcheck
 
+  - repo: https://github.com/IamTheFij/docker-pre-commit
+    rev: master
+    hooks:
+      - id: docker-compose-check
+        files: docker-compose.yaml$
+
   - repo: local
     hooks:
       - id: yamllint
