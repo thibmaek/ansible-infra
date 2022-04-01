@@ -1,0 +1,29 @@
+/var/mail/{{ main_user }} {
+  su {{ main_user }} mail
+
+  # Rotate if the size is >=10MB:
+  size 10M
+
+  # Keep 5 rotated logs:
+  rotate 5
+
+  # Do not rotate if empty:
+  notifempty
+
+  # Compresses rotated logs, default:
+  compress
+}
+
+/var/mail/root {
+  # Rotate if the size is >=10MB:
+  size 10M
+
+  # Keep 5 rotated logs:
+  rotate 5
+
+  # Do not rotate if empty:
+  notifempty
+
+  # Compresses rotated logs, default:
+  compress
+}

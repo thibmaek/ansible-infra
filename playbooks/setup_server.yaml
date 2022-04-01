@@ -3,7 +3,9 @@
 - hosts: all
 
   roles:
-    - 'roles/motd'
+    - name: 'roles/motd'
+    - name: 'roles/logrotate'
+      tags: [logs]
 
   tasks:
     - name: 'Make home subdirectories'

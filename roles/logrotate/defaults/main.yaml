@@ -1,0 +1,2 @@
+logrotate_conf: '/etc/logrotate.conf'
+logrotate_conf_dir: '/etc/logrotate.d'
