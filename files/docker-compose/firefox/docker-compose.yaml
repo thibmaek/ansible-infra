@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  diun:
+    image: jlesage/firefox
+    container_name: firefox
+    env_file: firefox.env
+    ports:
+      - 5698:5800
+      - 5900:5900
+    volumes:
+      - ./data:/config
+    shm_size: 2g
+    restart: unless-stopped

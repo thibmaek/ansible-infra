@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  tautulli:
+    image: lscr.io/linuxserver/tautulli
+    container_name: tautulli
+    env_file: tautulli.env
+    ports:
+      - 8181:8181
+    volumes:
+      - ./config:/config
+      - /plex/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
+    restart: unless-stopped

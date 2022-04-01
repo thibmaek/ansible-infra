@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    env_file: sonarr.env
+    ports:
+      - 8989:8989
+    volumes:
+      - ./config:/config
+      - /tv:/tv
+      - /downloads:/downloads
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped

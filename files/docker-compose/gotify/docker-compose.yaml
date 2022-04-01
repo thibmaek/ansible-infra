@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  gotify:
+    image: gotify/server
+    container_name: gotify
+    env_file: gotify.env
+    ports:
+      - 8080:80
+    volumes:
+      - ./config.yaml:/etc/gotify/config.yml
+      - ./data:/app/data
+    restart: always

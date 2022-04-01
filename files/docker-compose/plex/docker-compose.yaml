@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  plex:
+    image: lscr.io/linuxserver/heimdall
+    container_name: plex
+    env_file: plex.env
+    network_mode: host
+    volumes:
+      - ./data:/config
+      - /tv:/data/tv
+      - /movies:/data/movies
+      - /music:/data/music
+      - /videos:/data/videos
+      - /transcode:/transcode
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped

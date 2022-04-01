@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    env_file: influxdb.env
+    ports:
+      - 8086:8086
+    volumes:
+      - ./data:/var/lib/influxdb2
+    restart: always
+
+  # chronograf:
+  #   depends_on: influxdb
+  #   image: chronograf:latest
+  #   container_name: chronograf
+  #   ports:
+  #     - 3434:8888
+  #   volumes:
+  #     - ./chronograf_data:/var/lib/chronograf
+  #   restart: unless-stopped

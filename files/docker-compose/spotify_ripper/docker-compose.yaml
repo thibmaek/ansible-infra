@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  spotify_ripper:
+    image: thibmaek/spotify-ripper
+    container_name: spotify_ripper
+    env_file: spotify_ripper.env
+    volumes:
+      - ./config.ini:/root/.spotify-ripper/config.ini
+      - ./playlist.txt:/root/playlist.txt
+      # - /home/user/appdata/logs/docker:/logs
+      # - /home/user/downloads:/data
+    tty: true
+    restart: unless-stopped

@@ -5,6 +5,12 @@
     - 'roles/docker'
 
   tasks:
+    - name: 'Sync compose configs'
+      tags: [compose]
+      ansible.posix.synchronize:
+        src: '../files/docker-compose/'
+        dest: '{{ docker_compose_dir }}/'
+
     - name: 'Remove Docker'
       when: false
       become: true

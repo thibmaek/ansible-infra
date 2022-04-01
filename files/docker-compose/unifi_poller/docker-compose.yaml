@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  unifi_poller:
+    image: golift/unifi-poller
+    container_name: unifi_poller
+    env_file: unifi_poller.env
+    volumes:
+      - ./unifi_poller.conf:/config/unifi-poller.conf
+    restart: unless-stopped

@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  promtail:
+    image: grafana/promtail
+    container_name: promtail
+    env_file: promtail.env
+    ports:
+      - 9080:9080
+      - 1514:1514
+    volumes:
+      - ./config:/config:ro
+      - /var/log:/var/log:ro
+      - /run/log/journal:/run/log/journal:ro
+      - /etc/machine-id:/etc/machine-id:ro
+    command: -config.file=/config/promtail-config.yaml
+    restart: always

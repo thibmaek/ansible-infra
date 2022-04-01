@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd
+    container_name: sabnzbd
+    env_file: sabnzbd.env
+    ports:
+      - 8080:8080
+    volumes:
+      - ./config:/config
+      - /downloads:/downloads
+      - /incomplete_downloads:/incomplete-downloads
+    restart: unless-stopped

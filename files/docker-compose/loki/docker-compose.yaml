@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  loki:
+    image: grafana/loki
+    container_name: loki
+    env_file: loki.env
+    ports:
+      - 3100:3100
+    volumes:
+      - ./config:/config:ro
+    command: -config.file=/config/loki-config.yaml
+    restart: always

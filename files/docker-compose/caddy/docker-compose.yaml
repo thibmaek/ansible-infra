@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  caddy:
+    image: caddy
+    container_name: caddy
+    env_file: caddy.env
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./data:/data
+      - ./config:/config
+    restart: unless-stopped

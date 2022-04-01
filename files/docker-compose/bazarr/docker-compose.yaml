@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  bazarr:
+    image: lscr.io/linuxserver/bazarr
+    container_name: bazarr
+    env_file: bazarr.env
+    ports:
+      - 6767:6767
+    volumes:
+      - ./config:/config
+      - /movies:/movies
+      - /tv:/tv
+    restart: unless-stopped

@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin
+    container_name: jellyfin
+    env_file: jellyfin.env
+    ports:
+      - 8096:8096
+      # - 8920:8920 # https
+      - 7359:7359/udp # jellyfin discovery
+      - 1900:1900/udp # dlna
+    volumes:
+      - ./config:/config
+      - /movies:/data/movies
+      - /tv:/data/tv
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped

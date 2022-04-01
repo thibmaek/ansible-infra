@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  kid3:
+    image: ghcr.io/thibmaek/kid3-docker
+    container_name: kid3
+    env_file: kid3.env
+    ports:
+      - 5800:5800
+    volumes:
+      - ./config:/config
+      - ./qml:/usr/share/kid3/qml
+      - /music:/music
+    restart: unless-stopped

@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  op_connect_api:
+    image: 1password/connect-api
+    container_name: op_connect_api
+    env_file: op_connect.env
+    ports:
+      - 2038:8080
+    volumes:
+      - ./config/1password-credentials.json:/home/opuser/.op/1password-credentials.json
+    restart: unless-stopped
+
+  op_connect_sync:
+    image: 1password/connect-sync
+    container_name: op_connect_sync
+    env_file: op_connect.env
+    ports:
+      - 2039:8080
+    volumes:
+      - ./config/1password-credentials.json:/home/opuser/.op/1password-credentials.json
+      - ./data:/home/opuser/.op/data

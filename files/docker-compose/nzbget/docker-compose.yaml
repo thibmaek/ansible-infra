@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  nzbget:
+    image: lscr.io/linuxserver/nzbget
+    container_name: nzbget
+    env_file: nzbget.env
+    ports:
+      - 6789:6789
+    volumes:
+      - ./config:/config
+      - /downloads:/downloads
+    restart: unless-stopped

@@ -1,0 +1,12 @@
+watch:
+  schedule: "0 */6 * * *"
+  firstCheckNotif: true
+
+providers:
+  docker:
+    watchByDefault: false # If false, containers that don't have diun.enable=true label will be ignored
+
+notif:
+  gotify:
+    endpoint:
+    token:
