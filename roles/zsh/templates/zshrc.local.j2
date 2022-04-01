@@ -2,22 +2,25 @@ SPACESHIP_HOST_SHOW=false
 SPACESHIP_EXIT_CODE_SHOW=true
 COMPOSE_FILE=docker-compose.yaml
 
+{% if ansible_os_family == "Darwin" %}
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-
   autoload -Uz compinit
   compinit
 fi
+{% endif %}
 
 # autojump ZSH completions
+{% if ansible_os_family == 'Darwin' %}
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+{% else %}
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+{% endif %}
 
+{% if ansible_os_family == 'Darwin' %}
 # iTerm integration
-. "$HOME/.iterm2_shell_integration.zsh"
+[ -f "$HOME/.iterm2_shell_integration.zsh" ] && . "$HOME/.iterm2_shell_integration.zsh"
+{% endif %}
 
 # fzf integration
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
-
-{% if has_starship_installed.stdout %}
-eval "$(starship init zsh)"
-{% endif %}

@@ -5,18 +5,16 @@ alias sudo="sudo "
 {% endif %}
 # Programs
 alias ls="exa"
-alias lsa="ls -AF"
+alias lsa="ls -aF"
 alias lf="lsa | fzf"
 alias lsd="ls -lF | grep '^d'"
-alias rm="trash"
 alias gcc="gcc-10"
 {% if ansible_os_family == "Darwin" %}
+alias rm="trash"
 alias textedit="open -a TextEdit"
 {% endif %}
-{% if main_user == "pi" %}
-alias apt="sudo apt"
-{% endif %}
 {% if ansible_os_family == "Debian" %}
+alias apt="sudo apt"
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 {% endif %}

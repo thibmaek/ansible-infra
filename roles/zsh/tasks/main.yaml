@@ -1,5 +1,5 @@
 - name: 'Install ZSH + Oh My ZSH'
-  include_role:
+  ansible.builtin.include_role:
     name: vaulttec.zsh
   vars:
     zsh_user: '{{ main_user }}'
@@ -17,20 +17,20 @@
         repo: 'https://github.com/denysdovhan/spaceship-prompt'
 
 - name: 'Create .zshrc.local'
-  template:
+  ansible.builtin.template:
     mode: 0755
     src: templates/zshrc.local.j2
     dest: "{{ ansible_env.HOME }}/.zshrc.local"
 
 - name: 'Link Spaceship Prompt'
-  file:
-    src: '{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship/spaceship.zsh-theme'
+  ansible.builtin.file:
+    src: '{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme'
     dest: '{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/spaceship.zsh-theme'
     state: link
 
 - name: 'Copy dotfiles to oh-my-zsh'
-  template:
+  ansible.builtin.template:
     mode: 0755
     src: '{{ item }}'
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/{{ item | basename | regex_replace('.j2','.zsh') }}"
-  with_fileglob: ../templates/dotfiles/*.j2
+  with_fileglob: '../templates/dotfiles/*.j2'
