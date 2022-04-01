@@ -1,4 +1,6 @@
 ufw_allowed:
   - OpenSSH
+  - 139 # samba
+  - 445 # samba
 
 ufw_denied:
