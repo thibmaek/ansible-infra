@@ -1,35 +1,40 @@
 - name: 'Install prerequisites'
   become: true
-  apt:
+  ansible.builtin.apt:
     name: unzip
     state: latest
 
 - name: 'Install nano'
   become: true
-  apt:
+  ansible.builtin.apt:
     name: nano
     state: latest
 
 - name: 'Copy .nanorc'
-  copy:
+  ansible.builtin.copy:
     src: './files/.nanorc'
     dest: '{{ ansible_env.HOME }}/.nanorc'
     mode: 0644
 
 - name: 'Ensure nano config dir'
-  file:
+  ansible.builtin.file:
     state: directory
     mode: 0755
     path: '{{ ansible_env.HOME }}/.nano'
 
-- name: 'Download nano syntax highlighting'
-  get_url:
+- name: 'Download nano syntax highlighting install script'
+  ansible.builtin.get_url:
     url: 'https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh'
     dest: '{{ ansible_env.HOME }}/nano_syntax_highlight_install.sh'
     mode: 0755
 
 - name: 'Install nano syntax highlighting'
   changed_when: false
-  command: './nano_syntax_highlight_install.sh --lite'
+  ansible.builtin.command: './nano_syntax_highlight_install.sh --lite'
   args:
     chdir: '{{ ansible_env.HOME }}'
+
+- name: 'Download nano syntax highlighting install script'
+  ansible.builtin.file:
+    dest: '{{ ansible_env.HOME }}/nano_syntax_highlight_install.sh'
+    state: absent
