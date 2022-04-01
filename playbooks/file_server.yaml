@@ -6,6 +6,9 @@
     - name: 'roles/smb'
       tags: [smb]
       vars:
+        samba_users:
+          - username: '{{ main_user }}'
+            password:
         smb_dirs:
           # - name:
           #   path:

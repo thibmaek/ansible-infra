@@ -14,6 +14,7 @@
   pam password change = yes
   map to guest = bad user
   usershare allow guests = yes
+  hosts allow = {{ smb_allowed_hosts }}
 
 [Home]
   path = /home/{{ main_user }}
@@ -21,7 +22,7 @@
   read only = no
   guest ok = no
 
-{% if smb_dirs is defined and smb_dirs|length > 0 %}
+{% if smb_dirs is not none and smb_dirs|length > 0 %}
 {% for block in smb_dirs %}
 [{{ block.name }}]
   path = {{ block.path }}

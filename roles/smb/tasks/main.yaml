@@ -11,11 +11,26 @@
 
 - name: 'Backup previous smb conf'
   when: smb_conf.stat.exists
+  become: true
   ansible.builtin.copy:
     remote_src: true
     src: '{{ smb_conf_path }}'
     dest: '{{ smb_conf_path }}.bak'
     mode: 0644
+
+- name: 'Create smb users'
+  register: smbpasswd
+  become: true
+  changed_when: "'Added user' in smbpasswd.stdout"
+  ansible.builtin.shell: >
+    set -e -o pipefail
+    && (pdbedit --user={{ item.username }} 2>&1 > /dev/null)
+    || (echo '{{ item.password }}'; echo '{{ item.password }}')
+    | smbpasswd -s -a {{ item.username }}
+  args:
+    executable: /bin/bash
+  loop: "{{ samba_users }}"
+  no_log: true
 
 - name: 'Copy smb.conf'
   become: true
