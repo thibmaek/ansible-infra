@@ -1,25 +1,25 @@
 ---
 - name: 'Get the hostname'
   register: motd_hostname
-  command: hostname
   changed_when: false
+  ansible.builtin.command: hostname
 
 - name: 'Remove default MOTD'
   become: true
-  file:
-    path: /etc/motd
+  ansible.builtin.file:
+    path: '/etc/motd'
     state: absent
 
 - name: 'Generate MOTD via cfonts'
   delegate_to: localhost
-  command: cfonts {{ motd_hostname.stdout }} -f simple3d
-  changed_when: false
   register: motd_content
+  changed_when: false
+  ansible.builtin.command: 'cfonts {{ motd_hostname.stdout }} -f simple3d'
 
 - name: 'Copy MOTD'
   become: true
-  copy:
-    dest: /etc/motd
+  ansible.builtin.copy:
+    dest: '/etc/motd'
     content: |
       Welcome to:
       {{ motd_content.stdout }}
