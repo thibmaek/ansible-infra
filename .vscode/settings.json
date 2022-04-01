@@ -15,6 +15,8 @@
     // Bash
     "**/files/dotfiles/linux/**": "shellscript",
     "**/files/dotfiles/mac/**": "shellscript",
+    "**/files/docker-compose/**/docker-compose.yaml": "dockercompose",
+    "**/files/**/*.yaml": "yaml",
     "**/*.sh.j2": "shellscript",
 
     // JSON
