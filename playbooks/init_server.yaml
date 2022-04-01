@@ -7,18 +7,22 @@
 ---
 - hosts: all
 
-  roles:
-    - 'roles/motd'
+  vars:
+    # Force the root user
+    ansible_user: "{{ 'pi' if is_rpi_host else 'root' }}"
 
   tasks:
-    - name: 'Check if host is a Raspberry Pi'
-      set_fact:
-        is_rpi_host: "{{ main_user == 'pi' }}"
+    - name: 'Install sudo'
+      when: not is_rpi_host
+      become: true
+      ansible.builtin.apt:
+        name: sudo
+        state: latest
 
     - name: "Create main user"
       when: not is_rpi_host
       become: true
-      user:
+      ansible.builtin.user:
         name: '{{ main_user }}'
         create_home: true
         password: '{{ temp_pass | password_hash }}'
@@ -31,44 +35,37 @@
           - users
           - systemd-journal
 
-    - name: 'Install sudo'
-      when: not is_rpi_host
-      become: true
-      apt:
-        name: sudo
-        state: latest
-
     - name: 'Enable passwordless sudo for main user'
       when: not is_rpi_host
       become: true
-      lineinfile:
+      ansible.builtin.lineinfile:
         line: '{{ main_user }} ALL=(ALL) NOPASSWD:ALL'
         mode: 0440
         create: true
         path: '/etc/sudoers.d/ansible_sudoers'
         validate: 'visudo -cf %s'
 
-    - name: 'Switch users for playbook'
-      when: not is_rpi_host
-      set_fact:
-        ansible_become_user: '{{ ansible_user }}'
-        ansible_user: '{{ main_user }}'
-
-    - name: 'Reload facts'
-      when: not is_rpi_host
-      setup:
-
-    - name: 'Make home subdirectories'
-      file:
-        mode: 0755
-        path: '{{ ansible_env.HOME }}/{{ item }}'
-        state: directory
-      loop:
-        - data
-        - dev
-        - downloads
-        - drivers
-
     - name: 'Include SSH role'
-      include_role:
+      tags: [ssh]
+      ansible.builtin.include_role:
         name: 'roles/ssh'
+
+    - name: 'Ensure capability is correctly set for ping on Proxmox hosts'
+      when: "'proxmox' in group_names"
+      become: true
+      community.general.capabilities:
+        path: '/bin/ping'
+        capability: cap_net_raw+p
+        state: present
+
+    - name: 'Display success prompt'
+      ansible.builtin.pause:
+        seconds: 1
+        prompt: |
+          ==============================================================================
+            Server initialized!
+
+            It's not recommended to run this playbook more than once against a server.
+            Continue with setup_server.yaml and common.yaml to configure the server for
+            the new main user '{{ main_user }}'
+          ==============================================================================
