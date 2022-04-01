@@ -1,0 +1,22 @@
+- name: 'Ensure mount points exist'
+  become: true
+  ansible.builtin.file:
+    path: '{{ nfs_mount_dir }}/{{ item.path }}'
+    state: directory
+    owner: '{{ main_user }}'
+    group: '{{ main_user }}'
+    recurse: true
+    mode: 0755
+  loop: '{{ nfs_mounts }}'
+
+- name: 'Setup mount in fstab'
+  tags: [fstab]
+  become: true
+  ansible.posix.mount:
+    backup: true
+    src: '{{ item.src }}'
+    path: '{{ nfs_mount_dir }}/{{ item.path }}'
+    opts: 'rw,nfsvers=4,user,nofail'
+    state: mounted
+    fstype: nfs
+  loop: '{{ nfs_mounts }}'

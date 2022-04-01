@@ -1,5 +1,14 @@
 # Sets up a fully functional file server
 ---
 - hosts: all
-  tasks:
-    - include_tasks: ../tasks/samba.yaml
+
+  roles:
+    - name: 'roles/smb'
+      tags: [smb]
+
+    - name: 'roles/nfs'
+      tags: [nfs]
+      vars:
+        nfs_mounts:
+          - src: '{{ synology_nas_host }}:/volume1/media'
+            path: 'media'
