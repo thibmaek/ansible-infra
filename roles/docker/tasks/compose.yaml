@@ -1,6 +1,7 @@
 # Tasks for docker-compose
 ---
 - name: 'Ensure that Docker CLI plugin dir exists'
+  tags: [compose]
   block:
     - name: 'Check if Docker CLI plugin dir dir exists'
       register: cli_plugin_dir
@@ -16,7 +17,13 @@
         state: directory
         recurse: true
 
+- name: 'Ensure github3.py is installed to get docker/compose release'
+  become: true
+  ansible.builtin.pip:
+    name: github3.py
+
 - name: 'Grab latest docker/compose binary'
+  tags: [compose]
   block:
     - name: 'Get latest release from docker/compose Github'
       register: docker_compose_latest_release
@@ -40,6 +47,7 @@
         mode: 0755
 
 - name: 'Ensure the docker-compose folder exists'
+  tags: [compose]
   block:
     - name: 'Check if folder exists'
       register: compose_folder
@@ -56,6 +64,7 @@
         state: directory
 
 - name: 'Copy docker scripts'
+  tags: [compose]
   ansible.builtin.copy:
     dest: '{{ docker_compose_dir }}/'
     src: '{{ item }}'

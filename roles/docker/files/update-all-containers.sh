@@ -12,7 +12,7 @@ for cfg in "${composeConfigs[@]}"; do
   echo ""
   echo "[Updating docker-compose containers for config: $cfg]"
   print_line_break
-  docker-compose -f "$cfg" pull
-  docker-compose -f "$cfg" up -d
+  docker compose -f "$cfg" pull
+  docker compose -f "$cfg" up -d
   docker image prune -a --force
 done
