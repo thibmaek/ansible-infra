@@ -12,7 +12,7 @@
     - name: 'Update apt packages'
       become: true
       tags: [apt]
-      apt:
+      ansible.builtin.apt:
         upgrade: true
         update_cache: true
 
@@ -21,7 +21,7 @@
       block:
         - name: 'Install important system packages'
           become: true
-          apt:
+          ansible.builtin.apt:
             name:
               - apt-transport-https
               - build-essential
@@ -30,13 +30,13 @@
               - software-properties-common
         - name: 'Install general packages'
           become: true
-          apt:
+          ansible.builtin.apt:
             state: latest
             name: '{{ item }}'
           with_items: '{{ install_packages }}'
         - name: 'Install Debian packages'
           become: true
-          apt:
+          ansible.builtin.apt:
             state: latest
             name:
               - cockpit
@@ -54,12 +54,12 @@
               - xclip
 
     - name: 'Copy scripts folder'
-      copy:
+      ansible.builtin.copy:
         src: '../files/scripts'
         dest: '{{ ansible_env.HOME }}/scripts'
         mode: 0755
 
     - name: 'Set timezone'
       become: true
-      timezone:
-        name: Europe/Brussels
+      community.general.timezone:
+        name: '{{ user_timezone }}'
