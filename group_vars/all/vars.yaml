@@ -6,7 +6,7 @@ guid: '1000'
 
 main_user: 'thibmaek'
 
-timezone: 'Europe/Brussels'
+user_timezone: 'Europe/Brussels'
 
 # Packages to install on all systems regardless of CPU architecture, package manager or OS.
 install_packages:
@@ -45,3 +45,7 @@ install_packages:
   - unzip
   - vim
   - wget
+
+tmp_dir: /tmp
+
+is_rpi_host: "{{ main_user }} == 'pi'"
