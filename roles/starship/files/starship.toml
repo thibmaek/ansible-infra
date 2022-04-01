@@ -7,6 +7,12 @@ error_symbol = "✗"
 [cmd_duration]
 min_time = 2000
 
+[container]
+disabled = true
+
+[username]
+disabled = true
+
 # Cloud
 [gcloud]
 disabled = true
@@ -17,9 +23,26 @@ disabled = false
 # Custom
 [custom.asdf]
 description = "Shows symbol if the project is using asdf"
-command = "echo ⌬"
 files = [".tool-versions"]
+command = "echo ⌬"
 
 [custom.file_number]
-command = "ls | wc -l"
+description = "Number of files in the current working directory"
 when = "exit 0"
+symbol = " "
+format = '[$symbol$output]($style) '
+command = "find . -maxdepth 1 -type f -not -name '.DS_Store' | wc -l"
+
+[custom.folder_number]
+description = "Number of folders in the current working directory"
+when = "exit 0"
+symbol = " "
+format = '[$symbol$output]($style) '
+command = "find . -maxdepth 1 -type d -not -name '.git' -not -name '.' | wc -l"
+
+[custom.docker]
+description = "Shows the Docker symbol if the current directory has Dockerfile or docker-compose files"
+files = ["Dockerfile", "docker-compose.yaml"]
+when = """ command -v docker &> /dev/null; exit (echo $?); """
+prefix = "on "
+command = "echo 🐳"

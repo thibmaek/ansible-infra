@@ -1,22 +1,17 @@
----
-- name: 'Download Starship install script'
-  become: true
-  get_url:
-    url: 'https://starship.rs/install.sh'
-    dest: '/tmp/ansible_starship_install.sh'
+- when: ansible_os_family == 'Debian'
+  ansible.builtin.include_tasks: './debian.yaml'
 
-- name: 'Install Starship'
-  become: true
-  script: '/tmp/ansible_starship_install.sh -y'
+- when: ansible_os_family == 'Darwin'
+  ansible.builtin.include_tasks: './macos.yaml'
 
-- name: 'Remove Starship install script'
-  become: true
-  file:
-    path: '/tmp/ansible_starship_install.sh'
-    state: absent
+- name: 'Add Starship to Bash'
+  when: '"bash" in ansible_user_shell'
+  ansible.builtin.lineinfile:
+    path: '{{ ansible_env.HOME }}/.bash_profile'
+    line: 'eval "$(starship init bash)"'
 
-- name: 'Copy Starship TOML config'
-  copy:
-    src: files/starship.toml
-    dest: '{{ ansible_env.HOME }}/.config/starship.toml'
-    mode: 0644
+- name: 'Add Starship to ZSH'
+  when: '"zsh" in ansible_user_shell'
+  ansible.builtin.lineinfile:
+    path: '{{ ansible_env.HOME }}/.zshrc.local'
+    line: 'eval "$(starship init zsh)"'

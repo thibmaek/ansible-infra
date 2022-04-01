@@ -1,0 +1,26 @@
+---
+- name: 'Download Starship install script'
+  become: true
+  ansible.builtin.get_url:
+    url: 'https://starship.rs/install.sh'
+    dest: '{{ tmp_dir }}/ansible_starship_install.sh'
+    mode: 0755
+
+- name: 'Install Starship'
+  become: true
+  ansible.builtin.command: './ansible_starship_install.sh --force'
+  changed_when: false
+  args:
+    chdir: '{{ tmp_dir }}'
+
+- name: 'Remove Starship install script'
+  become: true
+  ansible.builtin.file:
+    path: '{{ tmp_dir }}/ansible_starship_install.sh'
+    state: absent
+
+- name: 'Copy Starship TOML config'
+  ansible.builtin.copy:
+    src: files/starship.toml
+    dest: '{{ ansible_env.HOME }}/.config/starship.toml'
+    mode: 0644
