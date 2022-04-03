@@ -1,7 +1,6 @@
 command_timeout = 300
 
 [character]
-success_symbol = "➜"
 error_symbol = "✗"
 
 [cmd_duration]
@@ -10,8 +9,8 @@ min_time = 2000
 [container]
 disabled = true
 
-[username]
-disabled = true
+[localip]
+disabled = false
 
 # Cloud
 [gcloud]
@@ -44,5 +43,12 @@ command = "find . -maxdepth 1 -type d -not -name '.git' -not -name '.' | wc -l"
 description = "Shows the Docker symbol if the current directory has Dockerfile or docker-compose files"
 files = ["Dockerfile", "docker-compose.yaml"]
 when = """ command -v docker &> /dev/null; exit (echo $?); """
-prefix = "on "
 command = "echo 🐳"
+
+[custom.systemd_services]
+description = "Number of running systemd services"
+os = "linux"
+when = "exit 0"
+symbol = "◉"
+format = '[$symbol$output]($style) services '
+command = "systemctl --state=running --type=service | tail -n1 | egrep -o '[0-9]{1,4}'"
