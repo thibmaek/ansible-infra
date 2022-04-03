@@ -1,0 +1,24 @@
+- name: 'Install latest neovim'
+  become: true
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.apt:
+    name: neovim
+    state: latest
+
+- name: 'Install latest neovim'
+  when: ansible_os_family == 'Darwin'
+  community.general.homebrew:
+    name: neovim
+    state: latest
+
+- name: 'Ensure config dir exists'
+  ansible.builtin.file:
+    path: '{{ nvim_config_dir }}'
+    state: directory
+    mode: 0755
+
+- name: 'Copy neovim config'
+  ansible.builtin.copy:
+    dest: '{{ nvim_config_dir }}/init.vim'
+    src: 'files/init.vim'
+    mode: 0644
