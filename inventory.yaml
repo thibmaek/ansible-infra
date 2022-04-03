@@ -3,6 +3,14 @@ proxmox:
     saule-lxc:
       ansible_host: saule
       ansible_user: thibmaek
+      docker_compose_sync:
+        - gotify
+        - heimdall
+        - portainer
+        - uptime_kuma
+    berghain:
+      ansible_host: berghain
+      ansible_user: thibmaek
 
 vms:
   hosts:
