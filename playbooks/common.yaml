@@ -1,12 +1,14 @@
 # Common playbook to recurringly run on existing hosts
 ---
-- hosts:
-    - proxmox
-    - vms
-    - rpi
+- hosts: all
 
   roles:
-    - 'roles/nano'
+    - name: 'roles/nano'
+      tags: [nano]
+    - name: 'roles/htop'
+      tags: [htop]
+    - name: 'roles/nvim'
+      tags: [nvim]
 
   tasks:
     - name: 'Update apt packages'
@@ -54,12 +56,14 @@
               - xclip
 
     - name: 'Copy scripts folder'
+      tags: [scripts]
       ansible.builtin.copy:
         src: '../files/scripts'
-        dest: '{{ ansible_env.HOME }}/scripts'
+        dest: '{{ ansible_env.HOME }}/'
         mode: 0755
 
     - name: 'Set timezone'
+      tags: [timezone]
       become: true
       community.general.timezone:
         name: '{{ user_timezone }}'

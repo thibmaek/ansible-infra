@@ -8,9 +8,9 @@
       prompt: "Loki host (IP + port)"
 
   roles:
-    - name: '../roles/telegraf'
+    - name: 'roles/telegraf'
       tags: [telegraf]
-    - name: '../roles/glances'
+    - name: 'roles/glances'
       tags: [glances]
     - name: patrickjahns.promtail
       tags: [promtail]
