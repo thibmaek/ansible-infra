@@ -1,0 +1,52 @@
+- name: 'Install autorestic'
+  tags: [autorestic]
+  when: ansible_os_family == 'Darwin'
+  community.general.homebrew:
+    name: autorestic
+    state: latest
+
+- name: 'Ensure github3.py is installed to get cupcakearmy/autorestic release'
+  tags: [autorestic]
+  when: ansible_os_family == 'Debian'
+  become: true
+  ansible.builtin.pip:
+    name: github3.py
+
+- name: 'Grab latest cupcakearmy/autorestic binary'
+  tags: [autorestic]
+  when: ansible_os_family == 'Debian'
+  block:
+    - name: 'Get latest release from cupcakearmy/autorestic Github'
+      register: autorestic_latest_release
+      github_release:
+        action: latest_release
+        user: cupcakearmy
+        repo: autorestic
+
+    - name: 'Grab autorestic binary (x86_64)'
+      when: ansible_architecture == 'x86_64'
+      become: true
+      ansible.builtin.get_url:
+        dest: "{{ tmp_dir }}/autorestic_{{ autorestic_latest_release['tag'] | regex_replace('v', '') }}_linux.bz2"
+        url: "https://github.com/cupcakearmy/autorestic/releases/download/{{ autorestic_latest_release['tag'] }}/autorestic_{{ autorestic_latest_release['tag'] | regex_replace('v', '') }}_linux_amd64.bz2"
+        mode: 0755
+
+    - name: 'Grab docker-compose binary (arm)'
+      when: ansible_architecture == 'arm'
+      become: true
+      ansible.builtin.get_url:
+        dest: "{{ tmp_dir }}/autorestic_{{ autorestic_latest_release['tag'] | regex_replace('v', '') }}_linux.bz2"
+        url: "https://github.com/cupcakearmy/autorestic/releases/download/{{ autorestic_latest_release['tag'] }}/autorestic_{{ autorestic_latest_release['tag'] | regex_replace('v', '') }}_linux_arm.bz2"
+        mode: 0755
+
+    - name: 'Set output file name'
+      ansible.builtin.set_fact:
+        autorestic_archive: "autorestic_{{ autorestic_latest_release['tag'] | regex_replace('v', '') }}_linux.bz2"
+
+    - name: 'Unpack autorestic release'
+      changed_when: true
+      ansible.builtin.command:
+        shell: >
+          bzip2 -d {{ autorestic_archive }} && mv {{ autorestic_archive | regex_replace('.bz2', '') }} /usr/local/bin/autorestic
+      args:
+        chdir: '{{ tmp_dir }}'

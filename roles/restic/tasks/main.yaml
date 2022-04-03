@@ -1,39 +1,41 @@
 ---
 - name: 'Install Restic'
   become: true
-  apt:
+  ansible.builtin.apt:
     name: restic
     state: latest
 
 - name: 'Setup Restic environment'
   become: true
-  copy:
-    src: ./files/restic-env
+  ansible.builtin.copy:
+    src: 'files/restic-env'
     dest: '{{ restic_auto_dir }}/restic-env'
     mode: 0755
 
-- name: 'Setup script for automatic backup '
+- name: 'Setup script for automatic backup'
   become: true
-  template:
+  ansible.builtin.template:
     src: ./templates/restic-auto.sh.j2
     dest: '{{ restic_auto_script }}'
     mode: 0755
 
 - name: 'Setup service'
   become: true
-  template:
+  ansible.builtin.template:
     src: ./templates/restic-auto.service.j2
-    dest: '/etc/systemd/system/restic-auto.service'
+    dest: '{{ systemd_dir }}/restic-auto.service'
+    mode: 0644
 
 - name: 'Setup timer'
   become: true
-  template:
+  ansible.builtin.template:
     src: ./templates/restic-auto.timer.j2
-    dest: '/etc/systemd/system/restic-auto.timer'
+    dest: '{{ systemd_dir }}/restic-auto.timer'
+    mode: 0644
 
 - name: 'Enable & start service'
   become: true
-  systemd:
+  ansible.builtin.systemd:
     name: restic-auto.timer
     enabled: true
     state: started
