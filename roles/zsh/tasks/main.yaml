@@ -6,6 +6,8 @@
     zsh_ohmy_theme: spaceship
     zsh_ohmy_disable_auto_update: false
     zsh_ohmy_plugins:
+      - docker
+      - docker-compose
       - git
       - git-flow
       - zsh-autosuggestions

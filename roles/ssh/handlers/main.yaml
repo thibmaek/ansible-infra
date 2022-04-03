@@ -2,5 +2,6 @@
   become: true
   ansible.builtin.systemd:
     name: sshd
+    daemon_reload: true
     state: restarted
     enabled: true

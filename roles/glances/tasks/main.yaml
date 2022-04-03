@@ -1,8 +1,7 @@
 ---
 - name: 'Install glances'
   become: true
-  pip:
-    executable: pip3
+  ansible.builtin.pip:
     name:
       - glances
       - bottle
@@ -11,7 +10,7 @@
 - name: 'Copy systemd service'
   become: true
   notify: restart_glances
-  copy:
+  ansible.builtin.copy:
     src: ./files/glances.service
     dest: /etc/systemd/system/glances.service
     mode: 0644
