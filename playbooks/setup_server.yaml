@@ -4,8 +4,11 @@
 
   roles:
     - name: 'roles/motd'
+      tags: [motd]
     - name: 'roles/logrotate'
       tags: [logs]
+    - name: 'roles/tmux'
+      tags: [tmux]
 
   tasks:
     - name: 'Make home subdirectories'

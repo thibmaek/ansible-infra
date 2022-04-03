@@ -1,0 +1,22 @@
+- name: 'Install tmux'
+  when: ansible_os_family == 'Debian'
+  become: true
+  ansible.builtin.apt:
+    name: tmux
+    state: latest
+
+- name: 'Install tmux'
+  when: ansible_os_family == 'Darwin'
+  community.general.homebrew:
+    name: tmux
+    state: latest
+
+- name: 'Copy tmux config'
+  ansible.builtin.copy:
+    src: './files/.tmux.conf'
+    dest: '{{ ansible_env.HOME }}/.tmux.conf'
+    mode: 0644
+
+- name: 'Source new tmux conf'
+  changed_when: false
+  ansible.builtin.command: 'tmux source {{ ansible_env.HOME }}/.tmux.conf'
