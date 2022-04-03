@@ -1,7 +1,14 @@
 ansible_user: root
 
+# Directories
 docker_compose_dir: '{{ ansible_env.HOME }}/docker-compose'
+tmp_dir: /tmp
+systemd_dir: '/etc/systemd/system'
 
+# Flags
+is_rpi_host: "{{ main_user }} == 'pi'"
+
+# Other
 guid: '1000'
 
 main_user: 'thibmaek'
@@ -45,7 +52,3 @@ install_packages:
   - unzip
   - vim
   - wget
-
-tmp_dir: /tmp
-
-is_rpi_host: "{{ main_user }} == 'pi'"

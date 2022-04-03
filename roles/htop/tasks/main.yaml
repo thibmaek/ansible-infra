@@ -1,0 +1,24 @@
+- name: 'Install latest htop'
+  become: true
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.apt:
+    name: htop
+    state: latest
+
+- name: 'Install latest htop'
+  when: ansible_os_family == 'Darwin'
+  community.general.homebrew:
+    name: htop
+    state: latest
+
+- name: 'Ensure config dir exists'
+  ansible.builtin.file:
+    path: '{{ htop_config_dir }}'
+    state: directory
+    mode: 0755
+
+- name: 'Copy .htoprc'
+  ansible.builtin.copy:
+    dest: '{{ htop_config_dir }}/.htoprc'
+    src: 'files/.htoprc'
+    mode: 0644
