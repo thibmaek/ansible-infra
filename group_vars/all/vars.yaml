@@ -40,6 +40,7 @@ install_packages:
   - moreutils
   - nano
   - ncdu
+  - neofetch
   - neovim
   - netcat
   - nmap

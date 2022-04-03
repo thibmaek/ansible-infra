@@ -41,8 +41,10 @@
           ansible.builtin.apt:
             state: latest
             name:
+              - avahi-daemon
               - cockpit
               - gdisk
+              - iotop
               - openssh-client
               - python3
               - python3-dev
