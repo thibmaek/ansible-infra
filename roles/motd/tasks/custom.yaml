@@ -1,0 +1,13 @@
+- name: 'Cockpit'
+  block:
+    - name: 'Check if cockpit motd is present'
+      register: cockpit_motd
+      ansible.builtin.stat:
+        path: '{{ motd_config_dir }}/cockpit'
+
+    - name: 'Remove default cockpit motd'
+      when: cockpit_motd.stat.exists
+      become: true
+      ansible.builtin.file:
+        path: '{{ motd_config_dir }}/cockpit'
+        state: absent

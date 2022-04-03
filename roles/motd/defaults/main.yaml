@@ -1,0 +1,2 @@
+motd_config: '/etc/motd'
+motd_config_dir: '/etc/motd.d'

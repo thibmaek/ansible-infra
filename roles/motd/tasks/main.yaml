@@ -7,7 +7,7 @@
 - name: 'Remove default MOTD'
   become: true
   ansible.builtin.file:
-    path: '/etc/motd'
+    path: '{{ motd_config }}'
     state: absent
 
 - name: 'Generate MOTD via cfonts'
@@ -19,8 +19,10 @@
 - name: 'Copy MOTD'
   become: true
   ansible.builtin.copy:
-    dest: '/etc/motd'
+    dest: '{{ motd_config }}'
     content: |
       Welcome to:
       {{ motd_content.stdout }}
     mode: 0644
+
+- ansible.builtin.include_tasks: './custom.yaml'
