@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  youtube_dl_material:
+    image: tzahi12345/youtubedl-material
+    container_name: youtube_dl_material
+    env_file: youtube_dl_material.env
+    ports:
+      - 8998:17442
+    volumes:
+      - ./data:/app/appdata
+      - /audio:/audio
+      - /video:/video
+    restart: unless-stopped
