@@ -1,4 +1,11 @@
-{% if ansible_os_family == "Darwin" %}
+{% if ansible_os_family == 'Debian' %}
+# Folder aliases
+export DOCKER_COMPOSE_DIR="{{ docker_compose_dir }}"
+export SYSTEMD_DIR="/etc/systemd/system"
+export CONFIG_DIR="{{ ansible_env.HOME }}/.config"
+
+{% endif %}
+{% if ansible_os_family == 'Darwin' %}
 # Use brew command-not-found
 if brew command command-not-found-init > /dev/null; then
   eval "$(brew command-not-found-init)"
