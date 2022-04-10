@@ -12,6 +12,7 @@ alias gcc="gcc-10"
 {% if ansible_os_family == "Darwin" %}
 alias rm="trash"
 alias textedit="open -a TextEdit"
+alias vsc="code"
 {% endif %}
 {% if ansible_os_family == "Debian" %}
 alias apt="sudo apt"
@@ -29,6 +30,7 @@ alias youtube-mp3="youtube-dl --extract-audio --audio-format mp3 --audio-quality
 alias list_serial_ports="ls /dev/{tty,cu}.*"
 alias grep="grep --color=auto"
 alias dns="dig +noall +answer"
+alias generate_password="openssl rand -base64 30"
 {% if ansible_os_family == "Darwin" %}
 alias here="open ."
 alias d="cd $HOME/Desktop"

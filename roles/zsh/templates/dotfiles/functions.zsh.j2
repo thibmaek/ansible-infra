@@ -37,9 +37,9 @@ function fs() {
     local arg=-sh;
   fi
   if [[ -n "$@" ]]; then
-    du $arg -- "$@" | gsort -h;
+    du $arg -- "$@" | sort -h;
   else
-    du $arg .[^.]* * | gsort -h;
+    du $arg .[^.]* * | sort -h;
   fi;
 }
 
