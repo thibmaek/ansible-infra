@@ -1,33 +1,43 @@
 {
   "files.associations": {
-    // Ansible
+    //#region: Ansible
     "**/*.yaml": "ansible",
     "roles/docker/tasks/compose.yaml": "ansible",
+    //#endregion: Ansible
 
-    // YAML
+    //#region: YAML
     ".ansible-lint": "yaml",
     ".github/workflows/*.yaml": "yaml",
     ".pre-commit-config.yaml": "yaml",
     ".yamllint": "yaml",
     "inventory.yaml": "yaml",
     "requirements.yaml": "yaml",
+    "**/files/**/*.yaml": "yaml",
+    //#endregion: YAML
 
-    // Bash
+    //#region: Docker
+    "**/files/docker-compose/**/docker-compose.yaml": "dockercompose",
+    //#endregion: Docker
+
+    //#region: Bash
     "**/files/dotfiles/linux/**": "shellscript",
     "**/files/dotfiles/mac/**": "shellscript",
-    "**/files/docker-compose/**/docker-compose.yaml": "dockercompose",
-    "**/files/**/*.yaml": "yaml",
     "**/*.sh.j2": "shellscript",
+    "**/roles/zsh/templates/**/*.j2": "shellscript",
+    //#endregion: Bash
 
-    // JSON
+    //#region: JSON
     "**/radio-favourites": "json",
+    //#endregion: JSON
 
-    // SystemD
+    //#region: SystemD
     "**/*.timer.j2": "systemd-conf",
     "**/*.service.j2": "systemd-conf",
+    //#endregion: SystemD
 
-    // Toml
+    //#region: TOML
     "**/telegraf/files/**/*.conf": "toml",
     "**/telegraf/templates/*.conf.j2": "toml",
+    //#endregion: TOML
   }
 }
