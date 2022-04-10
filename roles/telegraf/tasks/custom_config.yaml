@@ -1,0 +1,32 @@
+# Tasks related to custom configuration inputs & outputs for Telegraf
+---
+- name: 'Copy custom plugins to config dir'
+  become: true
+  tags: [config, custom_config]
+  ansible.builtin.file:
+    path: '{{ telegraf_dir }}/custom_plugins/net_iface'
+    state: directory
+    mode: 0755
+    recurse: true
+
+- name: 'Copy custom plugin net_iface'
+  when: ansible_architecture == 'arm'
+  become: true
+  tags:
+    - config
+    - custom_config
+  ansible.builtin.copy:
+    src: ../files/custom_plugins/net_iface/net_iface_linux_arm
+    dest: '{{ telegraf_dir }}/custom_plugins/net_iface/net_iface'
+    mode: 0755
+
+- name: 'Copy custom plugin net_iface'
+  when: ansible_architecture == 'x86_64'
+  become: true
+  tags:
+    - config
+    - custom_config
+  ansible.builtin.copy:
+    src: ../files/custom_plugins/net_iface/net_iface_linux_amd64
+    dest: '{{ telegraf_dir }}/custom_plugins/net_iface/net_iface'
+    mode: 0755

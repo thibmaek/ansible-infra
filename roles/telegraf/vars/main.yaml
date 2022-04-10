@@ -2,3 +2,5 @@ influxdb:
   url: "http://192.168.1.18:8086"
   database: telegraf
   org: thibmaek
+
+telegraf_smart_devices: []

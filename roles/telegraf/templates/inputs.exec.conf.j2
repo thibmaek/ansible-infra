@@ -1,0 +1,20 @@
+# https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec
+{% if is_rpi_host %}
+[[inputs.exec]]
+  commands = ["/opt/vc/bin/vcgencmd measure_temp"]
+  name_override = "gpu_temperature"
+  data_format = "grok"
+  grok_patterns = ["%{NUMBER:value:float}"]
+{% endif %}
+
+[[inputs.exec]]
+  commands = ["{{ telegraf_dir }}/scripts/disk-usage.sh"]
+  timeout = "20s"
+  name_override = "du"
+  name_suffix = ""
+  data_format = "json"
+  tag_keys = ["path"]
+
+[[inputs.exec]]
+  commands = ["{{ telegraf_dir }}/custom_plugins/net_iface/net_iface"]
+  data_format = "influx"

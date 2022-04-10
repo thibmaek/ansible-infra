@@ -1,0 +1,10 @@
+# Telegraf tasks only required on Raspberry Pi
+---
+- name: 'Add telegraf user to the video group (for GPU temp)'
+  become: true
+  tags: [config]
+  ansible.builtin.user:
+    append: yes
+    groups:
+      - video
+    name: 'telegraf'

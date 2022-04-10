@@ -1,0 +1,16 @@
+# Telegraf specifics for usage in combination with Docker
+---
+- name: 'Ensure Docker group exists'
+  tags: [docker]
+  register: group_list
+  changed_when: false
+  ansible.builtin.command: groups
+
+- name: "Add telegraf to docker user group"
+  when: '"docker" in group_list.stdout'
+  tags: [docker]
+  become: true
+  ansible.builtin.user:
+    groups:
+      - docker
+    name: telegraf
