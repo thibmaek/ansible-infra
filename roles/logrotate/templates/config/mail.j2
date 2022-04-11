@@ -1,3 +1,4 @@
+{% if user_mail.stat.exists %}
 /var/mail/{{ main_user }} {
   su {{ main_user }} mail
 
@@ -13,8 +14,11 @@
   # Compresses rotated logs, default:
   compress
 }
+{% endif %}
 
 /var/mail/root {
+  su root mail
+
   # Rotate if the size is >=10MB:
   size 10M
 

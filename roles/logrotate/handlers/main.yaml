@@ -1,0 +1,6 @@
+- name: restart_logrotate
+  become: true
+  ansible.builtin.systemd:
+    name: logrotate
+    state: restarted
+    enabled: true
