@@ -34,7 +34,7 @@
   args:
     chdir: '{{ ansible_env.HOME }}'
 
-- name: 'Download nano syntax highlighting install script'
+- name: 'Remove nano syntax highlighting install script'
   ansible.builtin.file:
     dest: '{{ ansible_env.HOME }}/nano_syntax_highlight_install.sh'
     state: absent
