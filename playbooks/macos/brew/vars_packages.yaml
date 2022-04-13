@@ -1,12 +1,13 @@
 homebrew_installed_packages:
   - diff-so-fancy
   - ffmpeg
+  - git-delta
   - glow
   - gnutls
   - gzip
-  - mas
-  - lazygit
   - lazydocker
+  - lazygit
+  - mas
   - pkg-config
   - readline
   - shfmt
