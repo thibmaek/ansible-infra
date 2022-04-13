@@ -1,0 +1,50 @@
+---
+- name: 'Check if duf is installed'
+  register: duf_installed
+  failed_when: duf_installed.rc > 1
+  changed_when: duf_installed == 1
+  ansible.builtin.command: dpkg-query -W duf
+
+- name: 'Get latest release from muesli/duf Github'
+  register: duf_latest_release
+  github_release:
+    action: latest_release
+    user: muesli
+    repo: duf
+
+- name: 'Set .deb output file name'
+  ansible.builtin.set_fact:
+    duf_deb_output_path: "{{ tmp_dir }}/duf_{{ duf_latest_release['tag'] }}.deb"
+
+- name: 'Grab duf .deb package (x86_64)'
+  when:
+    - ansible_architecture == 'x86_64'
+    - duf_installed.rc == 1
+  become: true
+  ansible.builtin.get_url:
+    dest: "{{ duf_deb_output_path }}"
+    url: "https://github.com/muesli/duf/releases/download/{{ duf_latest_release['tag'] }}/duf_{{ duf_latest_release['tag'] | regex_replace('v', '') }}_linux_amd64.deb"
+    mode: 0755
+
+- name: 'Grab duf .deb package (arm)'
+  when:
+    - ansible_architecture == 'arm'
+    - duf_installed.rc == 1
+  become: true
+  ansible.builtin.get_url:
+    dest: "{{ duf_deb_output_path }}"
+    url: "https://github.com/muesli/duf/releases/download/{{ duf_latest_release['tag'] }}/duf_{{ duf_latest_release['tag'] | regex_replace('v', '') }}_linux_arm64.deb"
+    mode: 0755
+
+- name: 'Install duf.deb package'
+  when: duf_installed.rc == 1
+  become: true
+  ansible.builtin.apt:
+    deb: '{{ duf_deb_output_path }}'
+
+- name: 'Remove downloaded deb package'
+  when: duf_installed.rc == 1
+  become: true
+  ansible.builtin.file:
+    path: '{{ duf_deb_output_path }}'
+    state: absent

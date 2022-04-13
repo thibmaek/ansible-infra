@@ -9,6 +9,8 @@
       tags: [logs]
     - name: 'roles/tmux'
       tags: [tmux]
+    - name: 'roles/duf'
+      tags: [duf]
 
   tasks:
     - name: 'Make home subdirectories'
