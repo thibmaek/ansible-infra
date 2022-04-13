@@ -1,0 +1,27 @@
+- name: 'Download lazydocker install script'
+  tags: [lazydocker]
+  become: true
+  ansible.builtin.get_url:
+    url: 'https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh'
+    dest: '{{ tmp_dir }}/install_lazydocker.sh'
+    mode: 0755
+
+- name: 'Install lazydocker'
+  tags: [lazydocker]
+  changed_when: false
+  become: true
+  ansible.builtin.command: './install_lazydocker.sh'
+  environment:
+    DIR: '/usr/local/bin'
+  args:
+    chdir: '{{ tmp_dir }}'
+
+- name: 'Remove lazydocker install script'
+  tags: [lazydocker]
+  become: true
+  ansible.builtin.file:
+    dest: '{{ tmp_dir }}/{{ item }}'
+    state: absent
+  loop:
+    - 'install_lazydocker.sh'
+    - 'lazydocker'

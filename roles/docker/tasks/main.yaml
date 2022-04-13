@@ -70,6 +70,11 @@
   tags: [compose]
   ansible.builtin.include_tasks: 'compose.yaml'
 
+- name: 'Include lazydocker tasks'
+  when: ansible_os_family == 'Debian'
+  tags: [lazydocker]
+  ansible.builtin.include_tasks: 'lazydocker.yaml'
+
 - name: 'Report the Docker version'
   changed_when: false
   ansible.builtin.command: docker --version
