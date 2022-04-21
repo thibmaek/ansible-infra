@@ -24,3 +24,10 @@ fi
 
 # fzf integration
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
+{% if ansible_os_family == "Darwin" %}
+source "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh"
+source "$(brew --prefix)/opt/fzf/shell/completion.zsh"
+{% elif ansible_os_family == "Debian" %}
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
+{% endif %}
