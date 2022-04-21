@@ -9,6 +9,6 @@ services:
       - 8998:17442
     volumes:
       - ./data:/app/appdata
-      - /audio:/audio
-      - /video:/video
+      - /audio:/app/audio
+      - /video:/app/video
     restart: unless-stopped
