@@ -1,3 +1,4 @@
+---
 - hosts: all
 
   vars_prompt:
@@ -16,16 +17,16 @@
       tags: [promtail]
       vars:
         promtail_version: latest
-        promtail_loki_server_url: "{{ loki_host }}"
-        promtail_config_dir: /opt/promtail
-        promtail_positions_directory: /tmp
+        promtail_loki_server_url: '{{ loki_host }}'
+        promtail_config_dir: '/opt/promtail'
+        promtail_positions_directory: '/tmp'
         promtail_config_server:
           http_listen_port: 9080
           grpc_listen_port: 9081
         promtail_config_clients:
-          - url: "http://{{ promtail_loki_server_url }}/loki/api/v1/push"
+          - url: 'http://{{ promtail_loki_server_url }}/loki/api/v1/push'
             external_labels:
-              host: "{{ ansible_hostname }}"
+              host: '{{ ansible_hostname }}'
         promtail_config_scrape_configs:
           - job_name: system
             static_configs:
@@ -33,4 +34,4 @@
                   - localhost
                 labels:
                   job: varlogs
-                  __path__: /var/log/*log
+                  __path__: '/var/log/*log'
