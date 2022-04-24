@@ -41,16 +41,26 @@
   become: true
   tags: [config]
   ansible.builtin.template:
-    src: "{{ item }}"
+    src: '{{ item }}'
     dest: "{{ telegraf_dir }}/telegraf.d/{{ item | basename | regex_replace('.j2','') }}"
     mode: 0644
   with_fileglob: '../templates/*.j2'
 
 - name: 'Remove SMART config when no devices monitored'
   when: telegraf_smart_devices | length == 0
+  become: true
+  tags: [config]
   ansible.builtin.file:
-    path: '{{ telegraf_dir }}/telegraf.d/inputs.swap.conf'
+    path: '{{ telegraf_dir }}/telegraf.d/inputs.smart.conf'
     state: absent
+
+- name: 'Copy main telegraf.conf'
+  become: true
+  tags: [config]
+  ansible.builtin.template:
+    src: 'templates/telegraf.conf.j2'
+    dest: "{{ telegraf_dir }}/telegraf.conf"
+    mode: 0644
 
 - name: 'Include custom config tasks'
   ansible.builtin.include_tasks: './custom_config.yaml'

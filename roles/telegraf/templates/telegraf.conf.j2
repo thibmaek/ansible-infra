@@ -3,10 +3,7 @@
 
 # Global tags can be specified here in key="value" format.
 [global_tags]
-  {% if is_rpi_host %}
-  machine = "rpi"
-  {% endif %}
-  cpu_arch = "$MACHTYPE"
+  cpu_arch = "{{ ansible_architecture }}"
 
 # Configuration for telegraf agent
 [agent]
