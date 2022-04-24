@@ -68,6 +68,10 @@
 - name: 'Include docker tasks'
   ansible.builtin.include_tasks: './docker.yaml'
 
+- name: 'Include SNMP tasks'
+  tags: [snmp]
+  ansible.builtin.include_tasks: './snmp.yaml'
+
 - name: 'Restart telegraf'
   notify: restart_telegraf
   ansible.builtin.command: /bin/true
