@@ -19,6 +19,14 @@
         name: sudo
         state: latest
 
+    - name: 'Add the non-free repository'
+      when: not is_rpi_host
+      become: true
+      ansible.builtin.replace:
+        dest: '/etc/apt/sources.list'
+        regexp: '^(deb(?!.* non-free).*)'
+        replace: '\1 non-free'
+
     - name: "Create main user"
       when: not is_rpi_host
       become: true
