@@ -2,11 +2,14 @@ version: '3'
 
 services:
   diun:
-    image: crazymax/diun:latest
+    image: ghcr.io/crazy-max/diun
     container_name: diun
+    command: serve
     env_file: diun.env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./data:/data
       - ./diun.yaml:/diun.yml:ro
     restart: always
+    labels:
+      - 'diun.enable=true'

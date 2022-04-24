@@ -1,6 +1,5 @@
 watch:
   schedule: "0 */6 * * *"
-  firstCheckNotif: true
 
 providers:
   docker:
