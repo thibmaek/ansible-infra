@@ -1,13 +1,12 @@
 version: "3"
 
 services:
-  loki:
-    image: grafana/grafana
+  grafana:
+    image: grafana/grafana-oss
     container_name: grafana
     env_file: grafana.env
+    volumes:
+      - ./plugins:/var/lib/grafana/plugins
     ports:
       - 3000:3000
-    volumes:
-      - ./data:/var/lib/grafana
-      - ./config/config.ini:/usr/share/grafana/conf/defaults.ini
     restart: always
