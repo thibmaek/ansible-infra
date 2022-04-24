@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    env_file: prometheus.env
+    ports:
+      - 9092:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./custom:/custom
+    restart: always
+
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    env_file: prometheus.env
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    restart: always
+    depends_on:
+      - prometheus
+
+  alertmanager_gotify_bridge:
+    image: ghcr.io/druggeri/alertmanager_gotify_bridge
+    container_name: alertmanager_gotify_bridge
+    env_file: alertmanager_gotify_bridge.env
+    ports:
+      - 8089:8080
+    restart: unless-stopped
+    depends_on:
+      - alertmanager
