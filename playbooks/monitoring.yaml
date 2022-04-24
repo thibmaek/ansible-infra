@@ -11,6 +11,8 @@
   roles:
     - name: 'roles/telegraf'
       tags: [telegraf]
+      vars:
+        synology_nas_host:
     - name: 'roles/glances'
       tags: [glances]
     - name: patrickjahns.promtail

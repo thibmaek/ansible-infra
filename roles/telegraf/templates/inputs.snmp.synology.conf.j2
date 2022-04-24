@@ -1,0 +1,120 @@
+# https://github.com/influxdata/telegraf/tree/master/plugins/inputs/snmp
+# [[inputs.snmp]]
+#   agents = ["{{ synology_nas_host }}:161"]
+#   version = 2
+#   community = "public"
+#   name = "synology"
+
+#   [[inputs.snmp.field]]
+#     is_tag = true
+#     name = "synology_hostname"
+#     oid = "RFC1213-MIB::sysName.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_power_status"
+#     oid = "SYNOLOGY-SYSTEM-MIB::powerStatus.0"
+
+#   [[inputs.snmp.field]]
+#     is_tag = true
+#     name = "synology_modelname"
+#     oid = "SYNOLOGY-SYSTEM-MIB::modelName.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_dsm_version"
+#     oid = "SYNOLOGY-SYSTEM-MIB::version.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_temperature"
+#     oid = "SYNOLOGY-SYSTEM-MIB::temperature.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_upgrade"
+#     oid = "SYNOLOGY-SYSTEM-MIB::upgradeAvailable.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_system_status"
+#     oid = "SYNOLOGY-SYSTEM-MIB::systemStatus.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_cpu_fan_status"
+#     oid = "SYNOLOGY-SYSTEM-MIB::cpuFanStatus.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_system_fan_status"
+#     oid = "SYNOLOGY-SYSTEM-MIB::systemFanStatus.0"
+
+#   [[inputs.snmp.table]]
+#     oid = "SYNOLOGY-DISK-MIB::diskTable"
+#     [[inputs.snmp.table.field]]
+#       is_tag = true
+#       oid = "SYNOLOGY-DISK-MIB::diskID"
+
+#   [[inputs.snmp.table]]
+#     oid = "UCD-SNMP-MIB::laTable"
+#     [[inputs.snmp.table.field]]
+#       is_tag = true
+#       oid = "UCD-SNMP-MIB::laNames"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_swap_total"
+#     oid = "UCD-SNMP-MIB::memTotalSwap.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_swap_available"
+#     oid = "UCD-SNMP-MIB::memAvailSwap.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_mem_total_real"
+#     oid = "UCD-SNMP-MIB::memTotalReal.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_mem_avail_real"
+#     oid = "UCD-SNMP-MIB::memAvailReal.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_mem_avail_free"
+#     oid = "UCD-SNMP-MIB::memTotalFree.0"
+
+#   [[inputs.snmp.table]]
+#      oid = "HOST-RESOURCES-MIB::hrStorageTable"
+#      [[inputs.snmp.table.field]]
+#       is_tag = true
+#       oid = "HOST-RESOURCES-MIB::hrStorageDescr"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_cpu_user"
+#     oid = ".1.3.6.1.4.1.2021.11.9.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_cpu_system"
+#     oid = ".1.3.6.1.4.1.2021.11.10.0"
+
+#   [[inputs.snmp.field]]
+#     name = "synology_cpu_idle"
+#     oid = ".1.3.6.1.4.1.2021.11.11.0"
+
+#   [[inputs.snmp.table.field]]
+#     name = "synology_cifs_users"
+#     oid = "SYNOLOGY-SERVICES-MIB::serviceUsers"
+#     oid_index_suffix = "1"
+
+#   [[inputs.snmp.table.field]]
+#     name = "synology_nfs_users"
+#     oid = "SYNOLOGY-SERVICES-MIB::serviceUsers"
+#     oid_index_suffix = "3"
+
+#   [[inputs.snmp.table.field]]
+#     name = "synology_http_users"
+#     oid = "SYNOLOGY-SERVICES-MIB::serviceUsers"
+#     oid_index_suffix = "6"
+
+#   [[inputs.snmp.table.field]]
+#     name = "synology_ssh_users"
+#     oid = "SYNOLOGY-SERVICES-MIB::serviceUsers"
+#     oid_index_suffix = "8"
+
+#   [[inputs.snmp.table]]
+#     oid = "SYNOLOGY-STORAGEIO-MIB::storageIOTable"
+#     [[inputs.snmp.table.field]]
+#       is_tag = true
+#       oid = "SYNOLOGY-STORAGEIO-MIB::storageIODevice"
