@@ -41,6 +41,7 @@
           ansible.builtin.apt:
             state: latest
             name:
+              - apparmor-utils
               - avahi-daemon
               - cockpit
               - gdisk
