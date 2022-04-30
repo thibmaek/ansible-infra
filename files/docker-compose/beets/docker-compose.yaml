@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  beets:
+    image: lscr.io/linuxserver/beets
+    container_name: beets
+    env_file: beets.env
+    ports:
+      - 8337:8337
+    volumes:
+      - ./config:/config
+      - ./scripts:/scripts
+      - ./downloads:/downloads
+      - ./music:/music
+    restart: unless-stopped
