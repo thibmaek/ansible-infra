@@ -7,6 +7,14 @@
       - bottle
     state: latest
 
+- name: 'Install Glances Docker plugin requirements'
+  tags: [docker]
+  become: true
+  ansible.builtin.pip:
+    name:
+      - docker
+      - python-dateutil
+
 - name: 'Copy systemd service'
   become: true
   notify: restart_glances
