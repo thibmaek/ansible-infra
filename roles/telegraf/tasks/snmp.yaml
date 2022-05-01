@@ -9,7 +9,7 @@
 
 - name: 'Synology SNMP'
   tags: [synology, mibs]
-  ansible.builtin.block:
+  block:
     - name: 'Download Synology mibs'
       become: true
       ansible.builtin.unarchive:
@@ -18,6 +18,7 @@
         remote_src: true
     - name: 'Move Synology mibs to correct dir'
       become: true
+      changed_when: true
       ansible.builtin.shell: 'mv *.txt {{ snmp_mibs_dir }}/'
       args:
         chdir: '{{ snmp_mibs_dir }}/Synology_MIB_File'
@@ -30,4 +31,5 @@
 - name: 'Download base mibs'
   become: true
   tags: [mibs]
-  ansible.builitin.command: download-mibs
+  changed_when: true
+  ansible.builtin.command: 'download-mibs'
