@@ -11,6 +11,11 @@
     # Force the root user
     ansible_user: "{{ 'pi' if is_rpi_host else 'root' }}"
 
+  vars_prompt:
+    - name: temp_pass
+      prompt: "Password for the new main user"
+      private: true
+
   tasks:
     - name: 'Install sudo'
       when: not is_rpi_host
@@ -26,6 +31,11 @@
         dest: '/etc/apt/sources.list'
         regexp: '^(deb(?!.* non-free).*)'
         replace: '\1 non-free'
+
+    - name: 'Update apt repo'
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: true
 
     - name: "Create main user"
       when: not is_rpi_host
