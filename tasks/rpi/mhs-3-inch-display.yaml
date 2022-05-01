@@ -1,26 +1,29 @@
 - name: 'Download drivers for MHS 3.5" GPIO LCD'
   tags: [lcd]
-  git:
+  ansible.builtin.git:
     dest: '{{ ansible_env.HOME }}/drivers/LCD-show'
     repo: 'https://github.com/goodtft/LCD-show'
 
 - name: 'Set folder permissions'
   become: true
-  file:
-    mode: 0755
+  ansible.builtin.file:
     path: '{{ ansible_env.HOME }}/drivers/LCD-show'
+    mode: 0755
     recurse: yes
+    owner: '{{ main_user }}'
+    group: '{{ main_user }}'
 
 - name: 'Build & install for MHS 3.5" GPIO LCD'
   tags: [lcd]
   become: true
-  script: ./MHS35-show
+  changed_when: true
+  ansible.builtin.command: './MHS35-show'
   args:
     chdir: '{{ ansible_env.HOME }}/drivers/LCD-show'
 
 - name: 'Wait for reboot'
   tags: [lcd]
-  wait_for_connection:
+  ansible.builtin.wait_for_connection:
     connect_timeout: 20
     sleep: 5
     delay: 5

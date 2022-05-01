@@ -1,15 +1,19 @@
 - name: 'Download drivers for generic 7" HDMI LCD'
-  tags:
-    - lcd
-  git:
-    repo: https://github.com/goodtft/LCD-show
-    dest: "{{ ansible_env.HOME }}/drivers/LCD-show"
+  tags: [lcd]
+  ansible.builtin.git:
+    repo: 'https://github.com/goodtft/LCD-show'
+    dest: '{{ ansible_env.HOME }}/drivers/LCD-show'
+
+- name: 'Ensure scripts are executable'
+  ansible.builtin.file:
+    mode: 0755
+    path: '{{ ansible_env.HOME }}/drivers/LCD-show'
+    recurse: true
 
 - name: 'Build & install for generic 7" HDMI LCD'
-  tags:
-    - lcd
+  tags: [lcd]
   become: true
-  shell: |
-    chmod -R 755 {{ ansible_env.HOME }}/drivers/LCD-show
-    cd {{ ansible_env.HOME }}/drivers/LCD-show
-    ./LCD7C-show
+  changed_when: true
+  ansible.builtin.command: './LCD7C-show'
+  args:
+    chdir: '{{ ansible_env.HOME }}/drivers/LCD-show'

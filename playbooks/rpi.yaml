@@ -1,32 +1,30 @@
 - hosts: rpi
+
+  roles:
+    - name: 'roles/mjpg_streamer'
+      tags: [mjpg_streamer]
+      when: has_csi_camera is defined and has_csi_camera
+
   tasks:
-    - name: "Install support for USB boot"
-      tags:
-        - usb_boot
+    - name: 'Install support for USB boot'
+      tags: [usb_boot]
       become: true
-      lineinfile:
-        path: /boot/config.txt
-        line: "program_usb_boot_mode=1"
+      ansible.builtin.lineinfile:
+        path: '/boot/config.txt'
+        line: 'program_usb_boot_mode=1'
 
-    - name: "Install support for a power button"
+    - name: 'Install support for a power button'
       when: has_power_button is defined
-      include_tasks: ../tasks/rpi/power-button.yaml
+      ansible.builtin.include_tasks: '../tasks/rpi/power-button.yaml'
 
-    - name: "Install mjpeg-streamer"
-      when:
-        - has_csi_camera is defined
-        - mjpeg_streamer is defined
-      include_tasks: ../tasks/rpi/mjpeg-streamer.yaml
+    - name: 'Install v4l2rtspserver'
+      when: has_csi_camera is defined and has_csi_camera
+      tags: [v4l2_rtsp]
+      ansible.builtin.include_tasks: '../tasks/rpi/v4l2-rtsp.yaml'
 
-    - name: "Install v4l2rtspserver"
-      when:
-        - has_csi_camera is defined
-        - v4l2_rtsp is defined
-      include_tasks: ../tasks/rpi/v4l2-rtsp.yaml
-
-    - name: "Install drivers for generic LCD display"
-      when: has_generic_lcd is defined
-      include_tasks: "{{ item }}"
+    - name: 'Install drivers for generic LCD display'
+      when: has_generic_lcd is defined and has_generic_lcd
+      ansible.builtin.include_tasks: '{{ item }}'
       loop:
-        - ../tasks/rpi/7-inch-display.yaml
-        - ../tasks/rpi/mhs-3.5-inch-display.yaml
+        - '../tasks/rpi/7-inch-display.yaml'
+        - '../tasks/rpi/mhs-3-inch-display.yaml'

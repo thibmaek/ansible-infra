@@ -1,13 +1,23 @@
 # Ref: https://howchoo.com/g/mwnlytk3zmm/how-to-add-a-power-button-to-your-raspberry-pi
 ---
-- name: "Clone howchoo/pi-power-button"
-  git:
-    repo: https://github.com/Howchoo/pi-power-button
-    dest: "{{ ansible_env.HOME }}/dev/pi-power-button"
+- name: 'Clone howchoo/pi-power-button'
+  ansible.builtin.git:
+    repo: 'https://github.com/Howchoo/pi-power-button'
+    dest: '{{ ansible_env.HOME }}/dev/pi-power-button'
 
-- name: "Execute install script"
+- name: 'Execute install script'
   become: true
-  script: "{{ ansible_env.HOME }}/dev/pi-power-button/script/install"
+  changed_when: true
+  ansible.builtin.command: './install'
+  args:
+    chdir: '{{ ansible_env.HOME }}/dev/pi-power-button/script'
 
-- debug:
-    msg: Connect a button to pin 5 (GPIO 3/SCL) and pin 6 (GND) to shutdown/wake the Pi
+- name: 'Display success prompt'
+  ansible.builtin.pause:
+    seconds: 1
+    prompt: |
+      ==============================================================================
+        Power button setup!
+
+        Connect a button to pin 5 (GPIO 3/SCL) and pin 6 (GND) to shutdown/wake the Pi
+      ==============================================================================

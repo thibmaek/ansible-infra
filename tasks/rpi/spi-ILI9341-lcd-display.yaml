@@ -1,50 +1,63 @@
 ---
-- name: "Set facts for fbcp-ili9341"
-  set_fact:
-    fbcp_ili9341_dir: "{{ ansible_env.HOME }}/drivers/fbcp-ili9341"
-    fbcp_ili9341_build_dir: "{{ ansible_env.HOME }}/drivers/fbcp-ili9341/build"
-    fbcp_ili9341_systemd_unit: "/etc/systemd/system/fbcp-ili9341.service"
+- name: 'Set facts for fbcp-ili9341'
+  ansible.builtin.set_fact:
+    fbcp_ili9341_dir: '{{ ansible_env.HOME }}/drivers/fbcp-ili9341'
+    fbcp_ili9341_build_dir: '{{ ansible_env.HOME }}/drivers/fbcp-ili9341/build'
+    fbcp_ili9341_systemd_unit: '/etc/systemd/system/fbcp-ili9341.service'
 
-- name: "Clone fbcp-ili9341"
-  git:
+- name: 'Clone fbcp-ili9341'
+  tags: [git]
+  ansible.builtin.git:
     repo: https://github.com/juj/fbcp-ili9341
-    dest: "{{ fbcp_ili9341_dir }}"
+    dest: '{{ fbcp_ili9341_dir }}'
 
-- name: "Install dependencies"
+- name: 'Install dependencies'
   become: true
-  apt:
+  tags: [apt]
+  ansible.builtin.apt:
     name: cmake
     upgrade: yes
     update_cache: true
 
-- name: "Make build directory"
-  file:
-    path: "{{ fbcp_ili9341_build_dir }}"
+- name: 'Make build directory'
+  tags: [build, compile]
+  ansible.builtin.file:
+    path: '{{ fbcp_ili9341_build_dir }}'
     state: directory
-    owner: "{{ main_user }}"
-    group: "{{ main_user }}"
+    mode: 0755
+    recurse: true
+    owner: '{{ main_user }}'
+    group: '{{ main_user }}'
 
-- name: "Prepare install"
-  command: "cmake .."
+- name: 'Prepare install'
+  tags: [build, compile]
+  changed_when: true
+  ansible.builtin.command: 'cmake ..'
   args:
-    chdir: "{{ fbcp_ili9341_build_dir }}"
+    chdir: '{{ fbcp_ili9341_build_dir }}'
 
-- name: "Compile fbcp-ili9341"
-  command: "make -j"
+- name: 'Compile fbcp-ili9341'
+  tags: [build, compile]
+  changed_when: true
+  ansible.builtin.command: 'make -j'
   args:
-    chdir: "{{ fbcp_ili9341_build_dir }}"
+    chdir: '{{ fbcp_ili9341_build_dir }}'
 
-- name: "Install fbcp-ili9341"
+- name: 'Install fbcp-ili9341'
+  tags: [build, compile]
   become: true
-  script: fbcp-ili9341
+  changed_when: true
+  ansible.builtin.command: './fbcp-ili9341'
   args:
-    chdir: "{{ fbcp_ili9341_build_dir }}"
+    chdir: '{{ fbcp_ili9341_build_dir }}'
 
-- name: "Create systemd unit"
+- name: 'Create systemd unit'
+  tags: [systemd]
   become: true
-  blockinfile:
+  ansible.builtin.blockinfile:
     create: true
-    path: "{{ fbcp_ili9341_systemd_unit }}"
+    mode: 0600
+    path: '{{ fbcp_ili9341_systemd_unit }}'
     block: |
       [Unit]
       Description=fbcp-ili9341 driver
@@ -58,8 +71,10 @@
       [Install]
       WantedBy=multi-user.target
 
-- name: "Enable systemd unit"
+- name: 'Enable systemd unit'
+  tags: [systemd]
   become: true
-  shell: |
-    systemctl daemon-reload
-    systemctl enable fbcp-ili9341.service
+  ansible.builtin.systemd:
+    name: fbcp-ili9341
+    daemon_reload: true
+    enabled: true
