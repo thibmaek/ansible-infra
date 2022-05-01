@@ -1,0 +1,39 @@
+- name: 'Install required VNC packages'
+  tags: [apt]
+  become: true
+  ansible.builtin.apt:
+    name:
+      - xfce4
+      - xfce4-goodies
+      - tigervnc-standalone-server
+    state: latest
+
+- name: 'Setup VNC password'
+  tags: [config]
+  changed_when: true
+  ansible.builtin.command: vncpasswd
+
+- name: 'Configure TigerVNC to use XFCE'
+  tags: [config, xfce]
+  ansible.builtin.copy:
+    src: 'files/xstartup'
+    dest: '{{ tigervnc_config_dir }}/xstartup'
+    mode: 0744
+
+- name: 'Create TigerVNC config file'
+  tags: [tigervnc]
+  ansible.builtin.blockinfile:
+    create: true
+    mode: 0644
+    path: '{{ ansible_env.HOME }}/.vnc/config'
+    block: |
+      geometry={{ vnc_resolution_width }}x{{ vnc_resolution_height }}
+      dpi={{ vnc_resolution_dpi }}
+
+- name: 'Create systemd unit'
+  become: true
+  notify: restart_tigervnc
+  ansible.builtin.template:
+    mode: 0644
+    src: 'templates/tigervnc.service.j2'
+    dest: '{{ tigervnc_systemd_unit }}'
