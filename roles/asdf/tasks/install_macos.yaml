@@ -1,0 +1,10 @@
+- name: 'Install asdf'
+  tags: [brew]
+  when: ansible_os_family == 'Darwin'
+  community.general.homebrew:
+    name: asdf
+    state: latest
+
+- name: "Set fact 'asdf_via_brew'"
+  ansible.builtin.set_fact:
+    asdf_via_brew: true

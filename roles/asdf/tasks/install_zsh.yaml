@@ -1,13 +1,13 @@
 - name: 'Check if .zshrc.local exists'
   register: zshrc_local
-  stat:
+  ansible.builtin.stat:
     path: '{{ ansible_env.HOME }}/.zshrc.local'
 
 - name: 'Source asdf.sh (zsh, custom profile)'
   when:
-    - ansible_via_git
+    - asdf_via_git
     - zshrc_local.stat.exists
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: '{{ ansible_env.HOME }}/.zshrc.local'
     block: |
       # append completions to fpath
@@ -17,17 +17,17 @@
 
 - name: 'Source asdf.sh (zsh, custom profile)'
   when:
-    - ansible_via_homebrew
+    - asdf_via_brew
     - zshrc_local.stat.exists
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ ansible_env.HOME }}/.zshrc.local'
     line: '. $(brew --prefix asdf)/libexec/asdf.sh'
 
 - name: 'Source asdf (zsh)'
   when:
-    - ansible_via_git
+    - asdf_via_git
     - not zshrc_local.exists
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: '{{ ansible_env.HOME }}/.zshrc'
     block: |
       # append completions to fpath
@@ -37,8 +37,8 @@
 
 - name: 'Source asdf (zsh)'
   when:
-    - ansible_via_homebrew
+    - asdf_via_brew
     - not zshrc_local.stat.exists
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ ansible_env.HOME }}/.zshrc'
     line: '. $(brew --prefix asdf)/libexec/asdf.sh'

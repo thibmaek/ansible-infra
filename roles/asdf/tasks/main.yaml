@@ -1,37 +1,31 @@
 # Installs asdf on the system
 ---
-- when: ansible_os_family == 'Debian'
-  include_tasks: './git/install_git.yaml'
+- name: 'Install asdf (git)'
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.include_tasks: './install_debian.yaml'
 
-- name: 'Install asdf'
+- name: 'Install asdf (brew)'
   when: ansible_os_family == 'Darwin'
-  register: asdf_via_homebrew
-  homebrew:
-    name: asdf
-    state: latest
-
-- when:
-    - ansible_os_family == 'Darwin'
-    - asdf_via_homebrew.succeeded
-  set_fact:
-    ansible_via_homebrew: true
+  ansible.builtin.include_tasks: './install_macos.yaml'
 
 - name: 'Source asdf in shell (bash)'
   when: '"bash" in ansible_user_shell'
-  include_tasks: './install_bash.yaml'
+  ansible.builtin.include_tasks: './install_bash.yaml'
 
 - name: 'Source asdf in shell (zsh)'
   when: '"zsh" in ansible_user_shell'
-  include_tasks: './install_zsh.yaml'
+  ansible.builtin.include_tasks: './install_zsh.yaml'
 
 - name: 'Update existing plugins'
   tags: [update]
-  shell: 'asdf plugin update --all'
+  changed_when: true
+  ansible.builtin.command: 'asdf plugin update --all'
 
-- name: 'Add all runtimes'
+- name: 'Install runtimes'
   tags: [runtimes]
-  include_tasks:
-    - './golang.yaml'
-    - './nodejs.yaml'
-    - './python.yaml'
-    - './ruby.yaml'
+  ansible.builtin.include_tasks: './runtimes/{{ item }}.yaml'
+  loop:
+    - golang
+    - nodejs
+    - python
+    - ruby

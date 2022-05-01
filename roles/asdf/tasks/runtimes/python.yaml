@@ -1,23 +1,19 @@
-- name: 'Add python plugin'
-  register: asdf_add_python
-  failed_when:
-    - asdf_add_python.rc != 0
-    - '"already added" not in asdf_add_python.stderr'
-  command: 'asdf plugin add python'
-
 - name: 'Install prereqs'
   when: ansible_os_family == 'Darwin'
-  homebrew:
+  tags: [brew]
+  ansible.builtin.homebrew:
     name:
       - openssl
       - readline
       - sqlite3
       - xz
       - zlib
+    state: latest
 
 - name: 'Install prereqs'
   when: ansible_os_family == 'Debian'
-  apt:
+  tags: [apt]
+  ansible.builtin.apt:
     name:
       - build-essential
       - curl
@@ -36,6 +32,15 @@
       - wget
       - xz-utils
       - zlib1g-dev
+    state: latest
+
+- name: 'Add python plugin'
+  register: asdf_add_python
+  changed_when: '"already added" not in asdf_add_python.stderr'
+  failed_when:
+    - asdf_add_python.rc != 0
+    - '"already added" not in asdf_add_python.stderr'
+  ansible.builtin.command: 'asdf plugin add python'
 
 - name: 'Install latest python 3'
   register: asdf_python_install
@@ -43,12 +48,13 @@
   failed_when:
     - asdf_python_install.rc != 0
     - '"already added" not in asdf_python_install.stderr'
-  command: 'asdf install python latest:{{ asdf_lts_versions.python }}'
+  ansible.builtin.command: 'asdf install python latest:{{ asdf_lts_versions.python }}'
 
-- name: 'Set global to python@{{ python_latest.stdout }}' # noqa no-changed-when
-  command: "asdf global python latest:{{ asdf_lts_versions.python }}"
+- name: 'Set global to python@{{ python_latest.stdout }}'
+  changed_when: true
+  ansible.builtin.command: "asdf global python latest:{{ asdf_lts_versions.python }}"
 
 - name: 'Install additional python version'
   when: python_versions is defined and (python_versions | length > 0)
-  command: 'asdf install python {{ item }}'
-  loop: python_versions
+  ansible.builtin.command: 'asdf install python {{ item }}'
+  loop: '{{ python_versions }}'

@@ -7,7 +7,7 @@ asdf_runtimes:
 asdf_lts_versions:
   nodejs: lts-gallium
   python: 3
-  ruby: 2
+  ruby: 3
 
 nodejs_versions:
 

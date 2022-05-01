@@ -1,15 +1,18 @@
 - name: 'Install prereqs'
+  tags: [apt]
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - curl
       - git
     state: latest
 
 - name: 'Clone asdf repo'
-  git:
-    repo: 'https://github.com/asdf-vm/asdf.git'
+  tags: [apt]
+  ansible.builtin.git:
+    repo: '{{ asdf_git_repo }}'
     dest: '{{ asdf_git_dir }}'
 
-- set_fact:
+- name: "Set fact 'asdf_via_git'"
+  ansible.builtin.set_fact:
     asdf_via_git: true

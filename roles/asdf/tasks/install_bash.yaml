@@ -1,18 +1,18 @@
 - name: 'Source asdf.sh'
-  when: ansible_via_git
-  lineinfile:
+  when: asdf_via_git
+  ansible.builtin.lineinfile:
     path: '{{ ansible_env.HOME }}/.bashrc'
     line: '. "{{ asdf_git_dir }}/asdf.sh"'
 
 - name: 'Source bash completions'
-  when: ansible_via_git
-  lineinfile:
+  when: asdf_via_git
+  ansible.builtin.lineinfile:
     path: '{{ ansible_env.HOME }}/.bashrc'
     line: '. "{{ asdf_git_dir }}/completions/asdf.bash"'
 
 - name: 'Source asdf.sh'
-  when: ansible_via_homebrew
-  blockinfile:
+  when: asdf_via_git
+  ansible.builtin.blockinfile:
     path: '{{ ansible_env.HOME }}/.bashrc'
     block: |
       # asdf
@@ -20,4 +20,5 @@
       . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
 
 - name: 'Reload the shell'
-  shell: 'exec $SHELL -l'
+  changed_when: true
+  ansible.builtin.shell: 'exec $SHELL -l'
