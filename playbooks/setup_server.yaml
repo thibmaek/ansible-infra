@@ -9,6 +9,8 @@
       tags: [logs]
     - name: 'roles/tmux'
       tags: [tmux]
+    - name: 'roles/python'
+      tags: [python]
     - name: 'roles/duf'
       tags: [duf]
 
