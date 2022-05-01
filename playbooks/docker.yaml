@@ -9,7 +9,7 @@
       when: docker_compose_sync is defined and (docker_compose_sync | length > 0)
       tags: [compose]
       ansible.builtin.copy:
-        src: '../files/docker-compose/{{ item }}'
+        src: '../files/docker_compose/{{ item }}'
         dest: '{{ docker_compose_dir }}/'
         mode: 0755
       loop: '{{ docker_compose_sync }}'
@@ -18,7 +18,7 @@
       when: docker_compose_sync is none or (docker_compose_sync | length <= 0)
       tags: [compose]
       ansible.posix.synchronize:
-        src: '../files/docker-compose/'
+        src: '../files/docker_compose/'
         dest: '{{ docker_compose_dir }}/'
 
     - name: 'Remove Docker'

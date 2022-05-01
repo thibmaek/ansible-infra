@@ -16,7 +16,7 @@
     //#endregion: YAML
 
     //#region: Docker
-    "**/files/docker-compose/**/docker-compose.yaml": "dockercompose",
+    "**/files/docker_compose/**/docker-compose.yaml": "dockercompose",
     //#endregion: Docker
 
     //#region: Bash
