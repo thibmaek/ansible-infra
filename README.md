@@ -18,6 +18,10 @@ $ ansible-playbook -v playbooks/common.yaml -l rpi_node_tresor
 $ make play_local playbook=playbooks/local/macos.yaml
 ```
 
+## Order of running plays (Debian)
+
+![Mermaid](https://mermaid.ink/img/pako:eNpdj9EKgzAMRX9F8qz7gA725L5geyyM0EYts63UVBjivy9OHWP3IST3HkIyg4mWQEGbcOiKe33WoRC54PgxUpooVdVlJM7DPm75ryOAid7HsEVbL6aN5nnwX1Oq45hcaP-C00dQgqfk0Vm5aV4RDdyRJw1KWksN5p416LAImgeLTFe7bgTVYD9SCZg53l7BgOKU6YBqh_Ki36nlDXsqU-I)
+
 ## Styleguide
 
 This follows:
