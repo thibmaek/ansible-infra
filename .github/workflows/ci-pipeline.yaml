@@ -6,22 +6,18 @@ on:
       - master
 
 jobs:
-  lint:
+  lint_core:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
 
-      - name: "Set up Python"
-        uses: actions/setup-python@master
-        with:
-          python-version: 3.9.12
+      - name: 'Install runtimes (asdf)'
+        uses: asdf-vm/actions/install@v1
 
-      - name: "Install dependencies"
-        run: |
-          python -m pip install --upgrade pip
-          make dependencies
+      - name: 'Install dependencies'
+        run: make dependencies
 
-      - name: "Lint Ansible files"
+      - name: 'Lint: Ansible + YAML'
         run: make lint
 
       - name: "Lint extra files"
@@ -29,11 +25,11 @@ jobs:
         env:
           VALIDATE_ANSIBLE: false
           VALIDATE_YAML: false
+          VALIDATE_GO: false
           VALIDATE_BASH: true
           VALIDATE_BASH_EXEC: true
           VALIDATE_DOCKERFILE: true
           VALIDATE_ENV: true
-          VALIDATE_GO: true
           VALIDATE_JSON: true
           VALIDATE_MARKDOWN: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
