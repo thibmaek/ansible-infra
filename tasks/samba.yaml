@@ -1,4 +1,0 @@
-- name: Install Samba (SMB)
-  become: true
-  apt:
-    name: samba
