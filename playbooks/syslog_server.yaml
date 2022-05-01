@@ -1,0 +1,11 @@
+# Playbook to setup a syslog server
+---
+- hosts: [fabric-lxc]
+
+  roles:
+    - name: 'roles/logrotate'
+      tags: [logs]
+    - name: 'roles/rsyslog'
+      tags: [rsyslog]
+      vars:
+        rsyslog_templates: []

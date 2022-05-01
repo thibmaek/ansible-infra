@@ -1,0 +1,64 @@
+- name: 'Install rsyslog'
+  tags: [apt]
+  become: true
+  ansible.builtin.apt:
+    name: rsyslog
+
+- name: 'Enable UDP ingestion'
+  when: ingest_udp
+  tags: [config]
+  become: true
+  notify: restart_rsyslog
+  block:
+    - name: 'Enable UDP module'
+      ansible.builtin.replace:
+        dest: '/etc/rsyslog.conf'
+        regexp: '^#module\(load="imudp"\)'
+        replace: 'module(load="imudp")'
+    - name: 'Enable UDP port 514'
+      ansible.builtin.replace:
+        dest: '/etc/rsyslog.conf'
+        regexp: '^#input\(type="imudp" port="514"\)'
+        replace: 'input(type="imudp" port="514")'
+
+- name: 'Enable TCP ingestion'
+  when: ingest_tcp
+  tags: [config]
+  become: true
+  notify: restart_rsyslog
+  block:
+    - name: 'Enable TCP module'
+      ansible.builtin.replace:
+        dest: '/etc/rsyslog.conf'
+        regexp: '^#module\(load="imtcp"\)'
+        replace: 'module(load="imtcp")'
+    - name: 'Enable TCP port 514'
+      ansible.builtin.replace:
+        dest: '/etc/rsyslog.conf'
+        regexp: '^#input\(type="imtcp" port="514"\)'
+        replace: 'input(type="imtcp" port="514")'
+
+- name: 'Ensure the log ingest dir exists'
+  when: rsyslog_templates | length > 0
+  tags: [config]
+  become: true
+  ansible.builtin.file:
+    path: '{{ rsyslog_ingest_dir }}'
+    mode: 0755
+    state: directory
+    recurse: true
+
+- name: 'Configure templates'
+  when: rsyslog_templates | length > 0
+  tags: [config]
+  become: true
+  notify: restart_rsyslog
+  ansible.builtin.blockinfile:
+    path: '{{ rsyslog_config_dir }}/{{ item.name }}.conf'
+    create: true
+    mode: 0644
+    block: |
+      $template {{ item.name }}_log, "/var/log/rsyslog_ingest_dir/{{ item.name }}.log"
+      if $fromhost-ip startswith "{{ item.ip_addr }}" then -?{{ item.name }}_log
+      & stop
+  loop: '{{ rsyslog_templates }}'

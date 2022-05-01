@@ -25,7 +25,6 @@ alias temp="cd $HOME/Downloads && mkd temp"
 alias mime="file --mime-type"
 alias reload="exec $SHELL -l"
 alias path='echo -e ${PATH//:/\\n}'
-alias octal="gstat -c \"%a %n\""
 alias youtube-mp3="youtube-dl --extract-audio --audio-format mp3 --audio-quality 0"
 alias list_serial_ports="ls /dev/{tty,cu}.*"
 alias grep="grep --color=auto"
@@ -38,4 +37,6 @@ alias dl="cd $HOME/Downloads"
 alias bundle_id="mdls -name kMDItemCFBundleIdentifier -r"
 alias swap_usage="sudo fsusage | grep swapfile"
 alias cpu_temp="sudo powermetrics --samplers smc | grep -i \"CPU die temperature\""
+{% else %}
+alias octal="gstat -c \"%a %n\""
 {% endif %}

@@ -4,10 +4,9 @@ proxmox:
       ansible_host: saule
       ansible_user: thibmaek
       docker_compose_sync:
-        - gotify
-        - heimdall
-        - portainer
-        - uptime_kuma
+    fabric-lxc:
+      ansible_host: fabric
+      ansible_user: thibmaek
     berghain:
       ansible_host: berghain
       ansible_user: thibmaek
