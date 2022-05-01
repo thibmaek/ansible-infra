@@ -1,49 +1,47 @@
 - name: 'Install motioneye dependencies'
+  tags: [apt]
   become: true
-  apt:
+  ansible.builtin.apt:
     name: '{{ motioneye_dependencies }}'
+    state: latest
 
 - name: 'Install motion dependencies'
+  tags: [apt]
   become: true
-  apt:
+  ansible.builtin.apt:
     name: '{{ motion_dependencies }}'
+    state: latest
 
 - name: 'Install motioneye'
+  tags: [pip]
   become: true
-  pip:
-    name: 'motioneye'
+  ansible.builtin.pip:
+    name: motioneye
     state: latest
 
 - name: 'Create motioneye config dir'
   become: true
-  file:
+  ansible.builtin.file:
     group: '{{ main_user }}'
     mode: 0755
     owner: '{{ main_user }}'
     path: '{{ item }}'
     state: directory
-  with_items:
+  loop:
     - '{{ motioneye_config_dir }}'
     - '{{ motioneye_media_dir }}'
 
 - name: 'Copy motioneye config'
   become: true
-  template:
-    mode: 0644
-    src: 'motioneye.conf.j2'
+  ansible.builtin.template:
+    src: 'templates/motioneye.conf.j2'
     dest: '{{ motioneye_config_dir }}/motioneye.conf'
+    mode: 0644
 
 - name: 'Copy systemd service'
   become: true
-  template:
+  notify: restart_motioneye
+  ansible.builtin.template:
     mode: 0600
     src: 'motioneye.service.j2'
-    dest: '/etc/systemd/system/motioneye.service'
-
-- name: 'Enable & restart motioneye service'
-  become: true
-  systemd:
-    daemon_reload: true
-    enabled: true
-    name: motioneye
-    state: restarted
+    dest: '{{ motioneye_systemd_unit }}'
