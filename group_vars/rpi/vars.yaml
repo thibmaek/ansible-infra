@@ -1,3 +1,5 @@
 ansible_user: pi
 
 main_user: pi
+
+is_rpi_host: true

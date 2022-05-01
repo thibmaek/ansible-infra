@@ -6,7 +6,7 @@ tmp_dir: /tmp
 systemd_dir: '/etc/systemd/system'
 
 # Flags
-is_rpi_host: "{{ main_user }} == 'pi'"
+is_rpi_host: false
 
 # Other
 guid: '1000'
