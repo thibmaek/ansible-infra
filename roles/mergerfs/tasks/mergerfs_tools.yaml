@@ -1,0 +1,12 @@
+- name: 'Clone mergerfs-tools repo'
+  tags: [git]
+  ansible.builtin.git:
+    repo: '{{ mergerfs_tools_repo }}'
+    dest: '{{ mergerfs_tools_dir }}'
+
+- name: 'Install mergerfs-tools'
+  tags: [build, compile]
+  community.general.make:
+    target: install
+  args:
+    chdir: '{{ mergerfs_tools_dir }}'

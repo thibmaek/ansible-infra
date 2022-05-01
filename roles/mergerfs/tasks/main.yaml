@@ -1,0 +1,39 @@
+- name: 'Install mergerfs dependencies'
+  tags: [apt]
+  become: true
+  ansible.builtin.apt:
+    name: '{{ mergerfs_dependencies }}'
+    state: latest
+
+- name: 'Install mergerfs'
+  tags: [apt]
+  become: true
+  ansible.builtin.apt:
+    name: mergerfs
+    state: latest
+
+- name: 'Ensure mount dir exists'
+  tags: [config]
+  become: true
+  ansible.builtin.file:
+    path: '{{ mergerfs_mount_dir }}'
+    mode: 0755
+    state: directory
+    recurse: true
+    owner: '{{ main_user }}'
+    group: '{{ main_user }}'
+
+- name: 'Setup mount in fstab'
+  tags: [fstab]
+  become: true
+  ansible.posix.mount:
+    backup: true
+    src: '/mnt/disk-*'
+    path: '/mnt/mergerfs'
+    opts: 'direct_io,defaults,allow_other,minfreespace=30G,fsname=mergerfs'
+    state: mounted
+    fstype: fuse.mergerfs
+
+- name: 'Include mergerfs-tools tasks'
+  tags: [mergerfs_tools]
+  ansible.builtin.include_tasks: './mergerfs_tools.yaml'

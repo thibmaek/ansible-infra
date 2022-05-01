@@ -1,0 +1,6 @@
+mergerfs_tools_dir: '/opt/mergerfs/mergerfs-ctl'
+mergerfs_tools_repo: 'https://github.com/trapexit/mergerfs-tools'
+mergerfs_mount_dir: '/mnt/mergerfs'
+
+mergerfs_dependencies:
+  - fuse
