@@ -1,9 +1,12 @@
 - hosts: all
+
   serial: 2
+
   tasks:
     - name: 'Upgrade apt packages'
+      tags: [apt]
       become: true
-      apt:
+      ansible.builtin.apt:
         update_cache: true
         upgrade: true
 
@@ -12,13 +15,14 @@
       block:
         - name: 'Check if upgrade script exists'
           register: docker_compose_upgrade_script
-          stat:
+          ansible.builtin.stat:
             path: '{{ docker_compose_dir }}/update-all-containers.sh'
 
-        - name: "Upgrade docker-compose containers"
+        - name: 'Upgrade docker-compose containers'
           when:
             - docker_compose_upgrade_script.stat.exists
             - docker_compose_upgrade_script.stat.executable
-          script: './update-all-containers.sh'
+          changed_when: true
+          ansible.builtin.command: './update-all-containers.sh'
           args:
             chdir: '{{ docker_compose_dir }}'
