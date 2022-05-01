@@ -1,0 +1,2 @@
+powerline_git_repo: 'https://github.com/powerline/fonts'
+powerline_fonts_dir: '{{ tmp_dir }}/powerline-fonts'

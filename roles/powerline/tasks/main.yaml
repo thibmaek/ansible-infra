@@ -1,0 +1,3 @@
+- name: 'Install Powerline fonts'
+  tags: [fonts]
+  ansible.builtin.include_tasks: './fonts.yaml'
