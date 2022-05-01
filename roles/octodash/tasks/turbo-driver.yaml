@@ -1,0 +1,50 @@
+- name: 'Download git repo'
+  ansible.builtin.git:
+    dest: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+    repo: '{{ turbo_driver_repo }}'
+
+- name: 'Update xf86-video-fbturbo configuration'
+  changed_when: true
+  tags: [compile]
+  ansible.builtin.command: 'autoreconf -vi'
+  args:
+    chdir: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+
+- name: 'Configure xf86-video-fbturbo'
+  changed_when: true
+  tags: [compile]
+  ansible.builtin.command: './configure --prefix=/usr'
+  args:
+    chdir: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+
+- name: 'Compile xf86-video-fbturbo'
+  tags: [compile]
+  community.general.make:
+    chdir: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+
+- name: 'Install xf86-video-fbturbo'
+  tags: [compile]
+  become: true
+  community.general.make:
+    target: install
+    chdir: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo'
+
+- name: 'Ensure X11 dir exists'
+  tags: [x11]
+  become: true
+  ansible.builtin.file:
+    group: '{{ ansible_user }}'
+    owner: '{{ ansible_user }}'
+    path: '/etc/x11'
+    recurse: true
+    state: directory
+
+- name: 'Copy X11 config'
+  tags: [x11]
+  ansible.builtin.copy:
+    dest: '/etc/x11/xorg.conf'
+    group: '{{ ansible_user }}'
+    mode: 0644
+    owner: '{{ ansible_user }}'
+    remote_src: true
+    src: '{{ ansible_env.HOME }}/drivers/xf86-video-fbturbo/xorg.conf'

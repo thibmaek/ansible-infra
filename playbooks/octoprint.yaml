@@ -3,8 +3,10 @@
 
   tasks:
     - name: 'Setup 3.5 TFT touch display'
-      ansible.builtin.include_tasks: 'tasks/rpi/mhs-3.5-inch-display.yaml'
+      tags: [octodash]
+      ansible.builtin.include_tasks: '../tasks/rpi/mhs-3-inch-display.yaml'
 
     - name: 'OctoDash'
+      tags: [octodash]
       ansible.builtin.include_role:
         name: 'roles/octodash'

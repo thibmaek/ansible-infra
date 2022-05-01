@@ -1,3 +1,6 @@
+octodash_repo: 'https://github.com/UnchartedBull/OctoDash'
+turbo_driver_repo: 'https://github.com/ssvb/xf86-video-fbturbo'
+
 octodash_deps:
   - automake
   - libdrm-dev
