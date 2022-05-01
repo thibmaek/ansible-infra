@@ -1,10 +1,14 @@
-- name: "Upgrade npm"
-  npm:
+- name: 'Upgrade npm'
+  tags: [npm]
+  community.general.npm:
     global: true
     state: latest
     name: npm
 
-- name: "Install CLI tools via npm"
-  shell: "npm i -g {{ item }}@latest"
+- name: 'Install CLI tools via npm'
+  changed_when: true
+  tags: [npm]
+  ansible.builtin.command: 'npm i -g {{ item }}@latest'
   loop:
+    - cfonts
     - gitmoji-cli

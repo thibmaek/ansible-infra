@@ -1,12 +1,13 @@
-- name: "Upgrade pip"
-  pip:
+- name: 'Upgrade pip'
+  ansible.builtin.pip:
     name: pip
     state: latest
 
-- name: "Install CLI tools via pip"
-  pip:
+- name: 'Install CLI tools via pip'
+  ansible.builtin.pip:
     name:
       - esptool
       - esphome
       - pre-commit
       - yamllint
+    state: latest

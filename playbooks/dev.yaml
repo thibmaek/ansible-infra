@@ -1,3 +1,4 @@
+# Playbook for a basic development environment
 ---
 - hosts: all
 
@@ -6,14 +7,17 @@
       tags: [asdf]
 
   tasks:
-    - include: tasks/dev/python.yaml
-      tags: [python]
+    - name: 'Include Python tasks'
       when: asdf_python_installed
+      tags: [python]
+      ansible.builtin.include_tasks: '../tasks/dev/python.yaml'
 
-    - include: tasks/dev/nodejs.yaml
-      tags: [nodejs]
+    - name: 'Include Node.js tasks'
       when: asdf_nodejs_installed
+      tags: [nodejs]
+      ansible.builtin.include_tasks: '../tasks/dev/nodejs.yaml'
 
-    - include: tasks/dev/ruby.yaml
-      tags: [ruby]
+    - name: 'Include Ruby tasks'
       when: asdf_ruby_installed
+      tags: [ruby]
+      ansible.builtin.include_tasks: '../tasks/dev/nodejs.yaml'
