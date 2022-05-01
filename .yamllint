@@ -12,4 +12,3 @@ rules:
   braces:
     max-spaces-inside: 1
     min-spaces-inside: 1
-
