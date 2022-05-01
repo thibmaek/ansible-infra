@@ -1,0 +1,7 @@
+- name: restart_mjpg_streamer
+  become: true
+  ansible.builtin.systemd:
+    name: mjpg-streamer
+    daemon_reload: true
+    state: restarted
+    enabled: true

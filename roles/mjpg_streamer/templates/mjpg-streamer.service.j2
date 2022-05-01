@@ -1,0 +1,11 @@
+[Unit]
+Description=A server for streaming Motion-JPEG from a video capture device
+After=network.target
+
+[Service]
+User={{ main_user }}
+Environment=LD_LIBRARY_PATH={{ mjpg_streamer_compile_dir }}
+ExecStart=/usr/local/bin/mjpg_streamer -o "output_http.so -w ./www" -i "input_raspicam.so -x {{ mjpg_resolution_height }} -y {{ mjpg_resolution_height }} -fps {{ mjpg_resolution_fps }}"
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,33 @@
+- name: 'Clone mjpg-streamer'
+  tags: [git]
+  ansible.builtin.git:
+    repo: '{{ mjpg_streamer_repo }}'
+    dest: "{{ mjpg_streamer_dir }}"
+
+- name: 'Install dependencies'
+  tags: [apt]
+  become: true
+  ansible.builtin.apt:
+    name: '{{ mjpg_streamer_dependencies }}'
+
+- name: 'Compile mjpg-streamer'
+  tags: [build, compile]
+  community.general.make:
+  args:
+    chdir: '{{ mjpg_streamer_compile_dir }}'
+
+- name: 'Install compiled mjpg-streamer binary'
+  tags: [build, compile]
+  become: true
+  community.general.make:
+    target: install
+  args:
+    chdir: '{{ mjpg_streamer_compile_dir }}'
+
+- name: 'Install systemd unit'
+  become: true
+  notify: restart_mjpg_streamer
+  ansible.builtin.template:
+    src: 'templates/mjpg-streamer.service.j2'
+    dest: '{{ mjpg_streamer_systemd_unit }}'
+    mode: 0644

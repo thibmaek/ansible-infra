@@ -1,0 +1,14 @@
+mjpg_streamer_repo: 'https://github.com/jacksonliam/mjpg-streamer'
+mjpg_streamer_dir: '{{ ansible_env.HOME }}/dev/mjpg-streamer'
+mjpg_streamer_compile_dir: '{{ mjpg_streamer_dir }}/mjpg-streamer-experimental'
+mjpg_streamer_systemd_unit: '/etc/systemd/system/mjpg-streamer.service'
+
+mjpg_streamer_dependencies:
+  - cmake
+  - libjpeg-dev
+  - gcc
+  - g++
+
+mjpg_resolution_width: 1280
+mjpg_resolution_height: 720
+mjpg_resolution_fps: 30
