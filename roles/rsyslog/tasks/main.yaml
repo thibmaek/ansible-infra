@@ -58,7 +58,9 @@
     create: true
     mode: 0644
     block: |
-      $template {{ item.name }}_log, "/var/log/rsyslog_ingest_dir/{{ item.name }}.log"
+      $template {{ item.name }}_log, "{{ rsyslog_ingest_dir }}/{{ item.name }}.log"
+      $fileOwner {{ main_user }}
       if $fromhost-ip startswith "{{ item.ip_addr }}" then -?{{ item.name }}_log
+      $fileOwner root
       & stop
   loop: '{{ rsyslog_templates }}'
