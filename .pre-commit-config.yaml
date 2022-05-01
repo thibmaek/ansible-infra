@@ -5,6 +5,7 @@ repos:
       - id: trailing-whitespace
       - id: check-yaml
       - id: check-json
+        exclude: .vscode
 
   - repo: https://github.com/thibmaek/pre-commit
     rev: v1.0.1

@@ -7,7 +7,7 @@
 
     //#region: YAML
     ".ansible-lint": "yaml",
-    ".github/workflows/*.yaml": "yaml",
+    "**/.github/workflows/*.yaml": "yaml",
     ".pre-commit-config.yaml": "yaml",
     ".yamllint": "yaml",
     "inventory.yaml": "yaml",

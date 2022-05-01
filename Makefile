@@ -8,5 +8,6 @@ lint:
 
 dependencies:
 	pip install --upgrade -r requirements.txt
+	asdf reshim python || echo 'asdf not installed'
 	ansible-galaxy install --force -r requirements.yaml
 	pre-commit install
