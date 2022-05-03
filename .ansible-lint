@@ -6,6 +6,7 @@ skip_list:
   - git-latest
   - package-latest
   - no-relative-paths
+  - internal-error
 
 exclude_paths:
   - '$HOME/.ansible/roles'
