@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # Keychain query fields.
 # LABEL is the value you put for "Keychain Item Name" in Keychain.app.
