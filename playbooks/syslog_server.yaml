@@ -1,6 +1,6 @@
 # Playbook to setup a syslog server
 ---
-- hosts: [fabric-lxc]
+- hosts: [proxmox, rpi, vms]
 
   roles:
     - name: 'roles/logrotate'
@@ -9,3 +9,11 @@
       tags: [rsyslog]
       vars:
         rsyslog_templates: []
+
+  tasks:
+    - name: 'Disable kernel logging for LXC'
+      when: "'proxmox' in group_names"
+      ansible.builtin.replace:
+        dest: '/etc/rsyslog.conf'
+        regexp: '^module\(load="imklog"\)$'
+        replace: '#module(load="imklog")'
