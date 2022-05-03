@@ -20,6 +20,11 @@ jobs:
       - name: 'Lint: Ansible + YAML'
         run: make lint
 
+      - name: 'Stub 1Password CLI (op)'
+        run: |
+          echo "exit 0" > /usr/local/bin/op
+          chmod +x /usr/local/bin/op
+
       - name: "Lint extra files"
         uses: github/super-linter@main
         env:
