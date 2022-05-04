@@ -32,6 +32,7 @@ install_packages:
   - gnupg
   - grep
   - htop
+  - httpie
   - jq
   - less
   - lsof

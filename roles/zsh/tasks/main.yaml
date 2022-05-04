@@ -10,6 +10,7 @@
       - docker-compose
       - git
       - git-flow
+      - httpie
       - zsh-autosuggestions
     zsh_ohmy_custom_plugins:
       - name: zsh-autosuggestions
