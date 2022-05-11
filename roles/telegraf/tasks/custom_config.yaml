@@ -1,28 +1,37 @@
 # Tasks related to custom configuration inputs & outputs for Telegraf
 ---
-- name: 'Copy custom plugins to config dir'
+- name: 'Set custom config facts'
+  ansible.builtin.set_fact:
+    telegraf_custom_config_items:
+      - net_iface
+      - os_release
+
+- name: 'Ensure custom plugin directories exist'
   become: true
   tags: [config, custom_config]
   ansible.builtin.file:
-    path: '{{ telegraf_dir }}/custom_plugins/net_iface'
+    path: '{{ telegraf_dir }}/custom_plugins/{{ item }}'
     state: directory
     mode: 0755
     recurse: true
+  loop: '{{ telegraf_custom_config_items }}'
 
-- name: 'Copy custom plugin net_iface'
-  when: ansible_architecture == 'arm'
+- name: 'Copy custom plugins'
+  when: "'arm' in ansible_architecture"
   become: true
   tags: [config, custom_config]
   ansible.builtin.copy:
-    src: ../files/custom_plugins/net_iface/net_iface_linux_arm
-    dest: '{{ telegraf_dir }}/custom_plugins/net_iface/net_iface'
+    src: ../files/custom_plugins/{{ item }}/{{ item }}_linux_arm
+    dest: '{{ telegraf_dir }}/custom_plugins/{{ item }}/{{ item }}'
     mode: 0755
+  loop: '{{ telegraf_custom_config_items }}'
 
-- name: 'Copy custom plugin net_iface'
+- name: 'Copy custom plugins'
   when: ansible_architecture == 'x86_64'
   become: true
   tags: [config, custom_config]
   ansible.builtin.copy:
-    src: ../files/custom_plugins/net_iface/net_iface_linux_amd64
-    dest: '{{ telegraf_dir }}/custom_plugins/net_iface/net_iface'
+    src: ../files/custom_plugins/{{ item }}/{{ item }}_linux_amd64
+    dest: '{{ telegraf_dir }}/custom_plugins/{{ item }}/{{ item }}'
     mode: 0755
+  loop: '{{ telegraf_custom_config_items }}'

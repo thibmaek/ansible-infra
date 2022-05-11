@@ -18,3 +18,7 @@
 [[inputs.exec]]
   commands = ["{{ telegraf_dir }}/custom_plugins/net_iface/net_iface"]
   data_format = "influx"
+
+[[inputs.exec]]
+  commands = ["{{ telegraf_dir }}/custom_plugins/os_release/os_release"]
+  data_format = "influx"
