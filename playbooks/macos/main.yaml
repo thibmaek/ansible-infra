@@ -19,28 +19,31 @@
       - homebrew/services
 
   roles:
-    - role: geerlingguy.mac.dock
-    - role: geerlingguy.mac.homebrew
+    - name: geerlingguy.mac.dock
+      tags: [dock]
+    - name: geerlingguy.mac.homebrew
       tags: [brew]
-    - role: geerlingguy.mac.mas
+    - name: geerlingguy.mac.mas
       tags: [mas]
-    - role: '../../roles/zsh'
-      tags: zsh
+    - name: 'roles/zsh'
+      tags: [zsh]
+    - name: 'roles/powerline'
+      tags: [powerline]
 
   tasks:
     - name: 'Install general packages'
-      homebrew:
-        state: latest
+      ansible.builtin.homebrew:
         name: '{{ item }}'
-      with_items: '{{ install_packages }}'
+        state: latest
+      loop: '{{ install_packages }}'
 
     - name: 'Use brew bash'
       tags: [bash]
       become: true
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: '/etc/shells'
-        state: present
         line: '/usr/local/bin/bash'
+        state: present
 
     - name: 'Install Xcode devtools'
       tags: [dev]
@@ -50,17 +53,17 @@
       failed_when:
         - xcode_devtools_installed.rc != 0
         - '"command line tools are already installed" not in xcode_devtools_installed.stderr'
-      command: 'xcode-select --install'
+      ansible.builtin.command: 'xcode-select --install'
 
     - name: 'Copy dotfiles (common)'
       tags: [dotfiles]
-      synchronize:
+      ansible.posix.synchronize:
         src: '../../files/dotfiles/'
         dest: '{{ ansible_env.HOME }}/'
 
-    - name: 'Powerline Fonts'
-      include_tasks: '../../tasks/powerline-fonts.yaml'
-
-    - name: 'Set Git configuration' # noqa command-instead-of-module no-changed-when
+    - name: 'Set Git configuration'
       tags: [git, dev]
-      command: 'git config --global credential.helper osxkeychain'
+      community.general.git_config:
+        name: 'credential.helper'
+        scope: global
+        value: 'osxkeychain'
