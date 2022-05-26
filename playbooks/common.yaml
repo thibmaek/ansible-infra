@@ -46,6 +46,7 @@
               - cockpit
               - gdisk
               - iotop
+              - lm-sensors
               - openssh-client
               - readline-common
               - smartmontools
