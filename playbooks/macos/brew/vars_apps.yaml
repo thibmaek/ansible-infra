@@ -1,31 +1,45 @@
 homebrew_cask_apps:
   # region: Apps
   - 1password
+  - 1password-cli
+  - aldente
+  - cron
   - docker
   - dozer
+  - fig
   - figma
+  - fork
   - freac
+  - google-cloud-sdk
   - google-backup-and-sync
+  - handbrake
   - home-assistant
-  - hyper
   - imageoptim
   - insomnia
+  - iterm2
   - keka
   - notion
   - openscad
   - plex
   - plexamp
-  - qmoji
+  - raspberry-pi-imager
+  - raycast
   - rectangle
+  - signal
   - spotify
+  - stats
+  - syncthing
   - synology-drive
+  - transmission
   - ultimaker-cura
   - visual-studio-code
   - vlc
-  - vmware-fusion
+  - vnc-viewer
+  - xld
   # endregion
   # region: Fonts
   - font-fira-code
+  - font-fira-code-nerd-font
   - font-fira-mono
   - font-fira-sans
   - font-ibm-plex
