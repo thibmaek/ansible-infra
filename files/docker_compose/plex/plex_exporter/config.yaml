@@ -1,0 +1,9 @@
+address: ":9594"
+
+logLevel: "info"
+
+logFormat: "text"
+
+autoDiscover: true
+
+token: "<token>"
