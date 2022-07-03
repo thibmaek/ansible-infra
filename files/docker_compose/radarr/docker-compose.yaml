@@ -13,3 +13,12 @@ services:
       - /downloads:/downloads
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
+
+  radarr_exporter:
+    image: ghcr.io/onedr0p/exportarr
+    container_name: radarr_exporter
+    env_file: radarr_exporter.env
+    ports:
+      - 9708:9708
+    command: ['radarr']
+    restart: unless-stopped
