@@ -1,7 +1,7 @@
 # You should run this playbook with your root user since it will create the new main
 # user to interact and perform plays with.
 #
-#   e.g $ ansible-playbook playbooks/init.yaml -u root
+#   e.g $ ansible-playbook playbooks/init_server.yaml -u root
 #
 # The `temp_pass` var will need to exist in order for the play to execute
 ---
