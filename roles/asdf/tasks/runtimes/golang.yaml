@@ -13,6 +13,12 @@
     - '"already added" not in asdf_add_golang.stderr'
   ansible.builtin.command: 'asdf plugin add golang'
 
+- name: 'Copy default golang pkgs file'
+  ansible.builtin.copy:
+    src: 'files/.default-golang-pkgs'
+    dest: '{{ ansible_env.HOME }}/.default-golang-pkgs'
+    mode: 0644
+
 - name: 'Install latest go'
   register: asdf_golang_installed
   changed_when: '"already added" not in asdf_golang_installed.stdout'
