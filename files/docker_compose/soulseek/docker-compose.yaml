@@ -2,14 +2,14 @@ version: '3'
 
 services:
   soulseek:
-    image: realies/soulseek:latest
+    image: realies/soulseek
     container_name: soulseek
     env_file: soulseek.env
     ports:
       - 6080:6080
     volumes:
-      - ./data:/root/.SoulseekQt
-      - /logs:/root/Soulseek Chat Logs
+      - ./data:/data/.SoulseekQt
+      - ./logs:/data/Soulseek Chat Logs
       - /downloads:/root/Soulseek Downloads
-      - /uploads:/root/uploads
+      - ./uploads:/data/uploads
     restart: unless-stopped

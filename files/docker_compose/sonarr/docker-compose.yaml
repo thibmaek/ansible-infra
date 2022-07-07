@@ -13,3 +13,12 @@ services:
       - /downloads:/downloads
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
+
+  sonarr_exporter:
+    image: ghcr.io/onedr0p/exportarr
+    container_name: sonarr_exporter
+    env_file: sonarr_exporter.env
+    ports:
+      - 9707:9707
+    command: ['sonarr']
+    restart: unless-stopped

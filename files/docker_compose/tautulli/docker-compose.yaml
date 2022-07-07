@@ -11,3 +11,11 @@ services:
       - ./config:/config
       - /plex/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
     restart: unless-stopped
+
+  tautulli_prometheus_exporter:
+    image: ghcr.io/amalgamated-tools/tautulli-exporter/tautulli-exporter
+    container_name: tautulli_prometheus_exporter
+    env_file: tautulli_prometheus_exporter.env
+    ports:
+      - 9487:9487
+    restart: unless-stopped

@@ -1,6 +1,8 @@
 dlv
 dlv-dap
 go-outline
+gocyclo
+goimports
 gopkgs
 gopls
 staticcheck

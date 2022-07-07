@@ -2,16 +2,16 @@
   connection: local
 
   vars:
-    backup_folder: "{{ ansible_env.HOME }}/ansible_macos_defaults_backup"
+    backup_folder: '{{ ansible_env.HOME }}/ansible_macos_defaults_backup'
 
   tasks:
-    - name: "Quit System Preferences for safety measures"
-      command: |
+    - name: 'Quit System Preferences for safety measures'
+      ansible.builtin.command: |
         osascript -e 'tell application "System Preferences" to quit'
 
     # TODO:
-    - name: "Backup current defaults"
-      shell: |
+    - name: 'Backup current defaults'
+      ansible.builtin.shell: |
         if [ ! -d {{ backup_folder }} ]; then
           mkdir -p {{ backup_folder }}
         fi

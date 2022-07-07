@@ -16,3 +16,12 @@ services:
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
+
+  plex_exporter:
+    image: granra/plex_exporter
+    container_name: plex_exporter
+    ports:
+      - 9594:9594
+    volumes:
+      - ./plex_exporter/config.yaml:/etc/plex_exporter/config.yaml
+    restart: unless-stopped

@@ -7,6 +7,9 @@ proxmox:
     fabric-lxc:
       ansible_host: fabric
       ansible_user: thibmaek
+    pihole-lxc:
+      ansible_host: pihole-lxc
+      ansible_user: thibmaek
     berghain:
       ansible_host: berghain
       ansible_user: thibmaek

@@ -6,7 +6,6 @@ services:
     container_name: grafana
     env_file: grafana.env
     volumes:
-      - ./plugins:/var/lib/grafana/plugins
       - grafana_data:/var/lib/grafana
     ports:
       - 3000:3000

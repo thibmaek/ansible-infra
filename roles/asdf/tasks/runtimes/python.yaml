@@ -42,6 +42,12 @@
     - '"already added" not in asdf_add_python.stderr'
   ansible.builtin.command: 'asdf plugin add python'
 
+- name: 'Copy default Python packages file'
+  ansible.builtin.copy:
+    src: 'files/.default-python-packages'
+    dest: '{{ ansible_env.HOME }}/.default-python-packages'
+    mode: 0644
+
 - name: 'Install latest python 3'
   register: asdf_python_install
   changed_when: '"already added" not in asdf_python_install.stdout'
