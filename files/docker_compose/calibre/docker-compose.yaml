@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  calibre:
+    image: lscr.io/linuxserver/calibre
+    container_name: calibre
+    env_file: calibre.env
+    ports:
+      - 8080:8080
+      - 8081:8081
+    volumes:
+      - ./config:/config
+    restart: unless-stopped
