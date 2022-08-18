@@ -1,0 +1,36 @@
+- name: 'Ensure github3.py is installed to get eko/pihole-exporter release'
+  when: ansible_os_family == 'Debian'
+  become: true
+  ansible.builtin.pip:
+    name: github3.py
+
+- name: 'Get latest release from eko/pihole-exporter Github'
+  register: pihole_exporter_latest_release
+  github_release:
+    action: latest_release
+    user: eko
+    repo: pihole-exporter
+
+- name: 'Grab pihole-exporter binary (x86_64)'
+  when: ansible_architecture == 'x86_64'
+  become: true
+  ansible.builtin.get_url:
+    dest: '{{ pihole_exporter_binary }}'
+    url: "https://github.com/eko/pihole-exporter/releases/download/{{ pihole_exporter_latest_release['tag'] }}/pihole_exporter-linux-amd64"
+    mode: 0755
+
+- name: 'Grab pihole-exporter binary (arm)'
+  when: ansible_architecture == 'arm'
+  become: true
+  ansible.builtin.get_url:
+    dest: '{{ pihole_exporter_binary }}'
+    url: "https://github.com/eko/pihole-exporter/releases/download/{{ pihole_exporter_latest_release['tag'] }}/pihole_exporter-linux-arm"
+    mode: 0755
+
+- name: 'Install systemd unit'
+  become: true
+  notify: restart_pihole_exporter
+  ansible.builtin.template:
+    src: 'templates/pihole-exporter.j2'
+    dest: '{{ pihole_exporter_systemd_unit }}'
+    mode: 0644

@@ -1,0 +1,2 @@
+pihole_exporter_binary: '/usr/local/bin/pihole-exporter'
+pihole_exporter_systemd_unit: '/etc/systemd/system/pihole-exporter.service'

@@ -1,0 +1,13 @@
+[Unit]
+Description=This is a Prometheus exporter for PI-Hole's Raspberry PI ad blocker.
+After=network.target
+
+[Service]
+User={{ main_user }}
+Environment="PIHOLE_HOSTNAME={{ pihole_hostname }}"
+Environment="PIHOLE_PORT={{ pihole_port }}"
+Environment="PIHOLE_API_TOKEN={{ pihole_api_token }}"
+ExecStart={{ pihole_exporter_binary }}
+
+[Install]
+WantedBy=multi-user.target

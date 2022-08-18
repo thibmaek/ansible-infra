@@ -1,0 +1,7 @@
+- name: restart_pihole_exporter
+  become: true
+  ansible.builtin.systemd:
+    name: pihole-exporter
+    daemon_reload: true
+    state: restarted
+    enabled: true
