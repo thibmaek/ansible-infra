@@ -6,7 +6,7 @@ function print_line_break() {
   printf '%20s\n' | tr ' ' -
 }
 
-readarray -d '' composeConfigs < <(find . -type f -name "docker-compose.y*" -print0)
+readarray -d '' composeConfigs < <(find . -maxdepth 2 -type f -name "docker-compose.y*" -print0)
 
 for cfg in "${composeConfigs[@]}"; do
   echo ""
