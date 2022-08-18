@@ -19,12 +19,12 @@
       - homebrew/services
 
   roles:
-    - name: geerlingguy.mac.dock
-      tags: [dock]
     - name: geerlingguy.mac.homebrew
       tags: [brew]
     - name: geerlingguy.mac.mas
       tags: [mas]
+    - name: geerlingguy.mac.dock
+      tags: [dock]
     - name: 'roles/zsh'
       tags: [zsh]
     - name: 'roles/powerline'

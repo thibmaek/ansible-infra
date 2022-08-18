@@ -1,15 +1,21 @@
-mas_installed_app_ids:
-  - 1263070803 # Lungo.app
-  - 1176895641 # Spark.app
-  - 904280696  # Things.app
-  - 568494494  # Pocket.app
-  - 1477385213 # Save to Pocket.app
-  - 975937182  # Fantastical.app
-  - 784801555  # OneNote.app
-  - 1440147259 # AdGuard for Safari
-  - 1191449274 # ToothFairy.app
-  - 1451685025 # WireGuard.app
-  - 1492055171 # Expenses.app
-  - 1458969831 # JSONPeep.app
-  - 1529448980 # Reeder.app
-  - 1545870783 # Color Picker
+mas_installed_apps:
+  - id: 1607635845
+    name: 'Velja.app'
+  - id: 1263070803
+    name: 'Lungo.app'
+  - id: 1176895641
+    name: 'Spark.app'
+  - id: 904280696
+    name: 'Things.app'
+  - id: 1319884285
+    name: 'Blackout.app'
+  - id: 1450640351
+    name: 'Lightweight PDF.app'
+  - id: 975937182
+    name: 'Fantastical.app'
+  - id: 1451685025
+    name: 'WireGuard.app'
+  - id: 1529448980
+    name: 'Reeder.app'
+  - id: 1545870783
+    name: 'System Color Picker.app'
