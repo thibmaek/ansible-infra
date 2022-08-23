@@ -19,6 +19,7 @@
   l = log
   lucky = !sh -c 'git checkout $(git which $1 -m1)' -
   open = "!f() { open $(git remote get-url origin); }; f"
+  pl = pull
   publish = !git push -u origin $(git get-current-branch)
   remotes = remote -v
   s = status
