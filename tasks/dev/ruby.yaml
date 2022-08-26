@@ -1,5 +1,0 @@
-- name: "Install CLI tools via gem"
-  gem:
-    name: "{{ item }}"
-  loop:
-    - bundler
