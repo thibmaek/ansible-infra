@@ -1,2 +1,7 @@
 asdf_git_dir: '{{ ansible_env.HOME }}/.asdf'
 asdf_git_repo: 'https://github.com/asdf-vm/asdf'
+
+asdf_lts_versions:
+  nodejs: 16
+  python: 3
+  ruby: 3

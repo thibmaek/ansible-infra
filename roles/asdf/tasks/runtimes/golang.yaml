@@ -1,11 +1,11 @@
-- name: 'Install prereqs'
+- name: 'Install Go prereqs'
   tags: [apt]
   when: ansible_os_family == 'Debian'
   ansible.builtin.apt:
     name: coreutils
     state: latest
 
-- name: 'Add golang plugin'
+- name: 'Add Go plugin'
   register: asdf_add_golang
   changed_when: '"already added" not in asdf_add_golang.stderr'
   failed_when:
@@ -13,25 +13,20 @@
     - '"already added" not in asdf_add_golang.stderr'
   ansible.builtin.command: 'asdf plugin add golang'
 
-- name: 'Copy default golang pkgs file'
+- name: 'Copy default Go pkgs file'
   ansible.builtin.copy:
     src: 'files/.default-golang-pkgs'
     dest: '{{ ansible_env.HOME }}/.default-golang-pkgs'
     mode: 0644
 
-- name: 'Install latest go'
+- name: 'Install latest Go'
   register: asdf_golang_installed
-  changed_when: '"already added" not in asdf_golang_installed.stdout'
+  changed_when: '"is already installed" not in asdf_golang_installed.stdout'
   failed_when:
     - asdf_golang_installed.rc != 0
     - '"already added" not in asdf_golang_installed.stderr'
   ansible.builtin.command: 'asdf install golang latest'
 
-- name: 'Set global go version'
+- name: 'Set global Go version'
   changed_when: true
   ansible.builtin.command: 'asdf global golang latest'
-
-- name: 'Install additional golang version'
-  when: golang_versions is defined and (golang_versions | length > 0)
-  ansible.builtin.command: 'asdf install golang {{ item }}'
-  loop: '{{ golang_versions }}'

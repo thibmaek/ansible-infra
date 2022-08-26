@@ -1,5 +1,5 @@
 ---
-- name: 'Add nodejs plugin'
+- name: 'Add Node.js plugin'
   register: asdf_add_node
   changed_when: '"already added" not in asdf_add_node.stderr'
   failed_when:
@@ -13,19 +13,14 @@
     dest: '{{ ansible_env.HOME }}/.default-npm-packages'
     mode: 0644
 
-- name: 'Install latest node LTS'
+- name: 'Install Node.js'
   register: asdf_install_node
-  changed_when: '"already added" not in asdf_install_node.stdout'
+  changed_when: '"is already installed" not in asdf_install_node.stdout'
   failed_when:
     - asdf_install_node.rc != 0
     - '"is already installed" not in asdf_install_node.stderr'
-  ansible.builtin.command: 'asdf install nodejs {{ asdf_lts_versions.nodejs }}'
+  ansible.builtin.command: 'asdf install nodejs latest:{{ asdf_lts_versions.nodejs }}'
 
-- name: 'Set global to node LTS'
+- name: 'Set global Node.js version'
   changed_when: true
-  ansible.builtin.command: 'asdf global nodejs {{ asdf_lts_versions.nodejs }}'
-
-- name: 'Install additional nodejs version'
-  when: nodejs_versions is defined and (nodejs_versions | length > 0)
-  ansible.builtin.command: 'asdf install nodejs {{ item }}'
-  loop: '{{ nodejs_versions }}'
+  ansible.builtin.command: 'asdf global nodejs latest:{{ asdf_lts_versions.nodejs }}'

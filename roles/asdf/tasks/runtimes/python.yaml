@@ -1,4 +1,4 @@
-- name: 'Install prereqs'
+- name: 'Install Python prereqs'
   when: ansible_os_family == 'Darwin'
   tags: [brew]
   ansible.builtin.homebrew:
@@ -10,7 +10,7 @@
       - zlib
     state: latest
 
-- name: 'Install prereqs'
+- name: 'Install Python prereqs'
   when: ansible_os_family == 'Debian'
   tags: [apt]
   ansible.builtin.apt:
@@ -34,7 +34,7 @@
       - zlib1g-dev
     state: latest
 
-- name: 'Add python plugin'
+- name: 'Add Python plugin'
   register: asdf_add_python
   changed_when: '"already added" not in asdf_add_python.stderr'
   failed_when:
@@ -48,19 +48,14 @@
     dest: '{{ ansible_env.HOME }}/.default-python-packages'
     mode: 0644
 
-- name: 'Install latest python 3'
+- name: 'Install Python'
   register: asdf_python_install
-  changed_when: '"already added" not in asdf_python_install.stdout'
+  changed_when: '"is already installed" not in asdf_python_install.stdout'
   failed_when:
     - asdf_python_install.rc != 0
-    - '"already added" not in asdf_python_install.stderr'
+    - '"is already installed" not in asdf_python_install.stderr'
   ansible.builtin.command: 'asdf install python latest:{{ asdf_lts_versions.python }}'
 
-- name: 'Set global to python@{{ python_latest.stdout }}'
+- name: 'Set global Python version'
   changed_when: true
   ansible.builtin.command: "asdf global python latest:{{ asdf_lts_versions.python }}"
-
-- name: 'Install additional python version'
-  when: python_versions is defined and (python_versions | length > 0)
-  ansible.builtin.command: 'asdf install python {{ item }}'
-  loop: '{{ python_versions }}'
