@@ -2,7 +2,9 @@ homebrew_cask_apps:
   # region: Apps
   - 1password
   - 1password-cli
+  - airbuddy
   - aldente
+  - carbon-copy-cloner
   - cron
   - docker
   - dozer
@@ -14,11 +16,11 @@ homebrew_cask_apps:
   - handbrake
   - home-assistant
   - imageoptim
-  - insomnia
   - iterm2
   - keka
   - notion
   - openscad
+  - paw
   - plex
   - plexamp
   - raspberry-pi-imager
