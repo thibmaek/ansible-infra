@@ -33,6 +33,7 @@ install_packages:
   - grep
   - htop
   - httpie
+  - iperf3
   - jq
   - less
   - lsof
