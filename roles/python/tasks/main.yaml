@@ -14,3 +14,9 @@
   become: true
   ansible.builtin.pip:
     name: github3.py
+
+- name: 'Install pip packages'
+  become: true
+  ansible.builtin.pip:
+    name:
+      - speedtest-cli
