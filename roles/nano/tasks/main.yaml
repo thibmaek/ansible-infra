@@ -1,11 +1,13 @@
 - name: 'Install prerequisites'
   become: true
+  when: ansible_os_family == 'Debian'
   ansible.builtin.apt:
     name: unzip
     state: latest
 
 - name: 'Install nano'
   become: true
+  when: ansible_os_family == 'Debian'
   ansible.builtin.apt:
     name: nano
     state: latest
