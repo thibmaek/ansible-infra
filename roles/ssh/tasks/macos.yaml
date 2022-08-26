@@ -1,0 +1,20 @@
+- name: 'Ensure .ssh dir exists'
+  ansible.builtin.file:
+    path: '{{ ansible_env.HOME }}/.ssh'
+    state: directory
+    mode: 0700
+
+- name: 'Ensure a keypair exists'
+  tags: [ssh_keys]
+  ansible.builtin.openssh_keypair:
+    path: '{{ ansible_env.HOME }}/.ssh/id_rsa'
+    state: present
+    type: rsa
+    size: 4096
+
+- name: 'Add authorized SSH keys'
+  tags: [ssh_keys]
+  ansible.posix.authorized_key:
+    user: '{{ ansible_user_id }}'
+    key: "{{ lookup('file', item) }}"
+  with_fileglob: '../../files/keys/ssh/*'
