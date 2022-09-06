@@ -35,5 +35,5 @@
   ansible.builtin.template:
     mode: 0755
     src: '{{ item }}'
-    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/{{ item | basename | regex_replace('.j2','.zsh') }}"
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/{{ item | basename | regex_replace('.j2', '') }}"
   with_fileglob: '../templates/dotfiles/*.j2'
