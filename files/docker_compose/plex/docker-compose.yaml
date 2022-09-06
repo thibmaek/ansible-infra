@@ -2,7 +2,7 @@ version: '3'
 
 services:
   plex:
-    image: lscr.io/linuxserver/heimdall
+    image: lscr.io/linuxserver/plex
     container_name: plex
     env_file: plex.env
     network_mode: host
@@ -12,7 +12,7 @@ services:
       - /movies:/data/movies
       - /music:/data/music
       - /videos:/data/videos
-      - /transcode:/transcode
+      - /mnt/transcode:/transcode
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
