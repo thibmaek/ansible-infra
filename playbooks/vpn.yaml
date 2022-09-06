@@ -1,0 +1,15 @@
+# Sets up a VPN server
+---
+- name: 'VPN Server'
+  hosts: all
+
+  vars:
+    subnets:
+      - 192.168.1.0/24
+
+  roles:
+    - name: artis3n.tailscale
+      tags: [tailscale]
+      vars:
+        tailscale_authkey: '{{ vault_tailscale_auth_key }}'
+        tailscale_args: "--advertise-routes={{ subnets | join(',') }}"

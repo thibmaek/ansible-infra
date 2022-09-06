@@ -3,6 +3,7 @@ roles:
   - src: patrickjahns.promtail
   - src: vaulttec.zsh
   - src: woodendoors.ansible_adguard_home
+  - src: artis3n.tailscale
 
 collections:
   - name: geerlingguy.mac
