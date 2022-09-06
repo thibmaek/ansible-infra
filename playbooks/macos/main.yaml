@@ -27,10 +27,28 @@
       tags: [dock]
     - name: 'roles/zsh'
       tags: [zsh]
+    - name: 'roles/starship'
+      tags: [zsh, starship]
     - name: 'roles/powerline'
       tags: [powerline]
+    - name: 'roles/nano'
+      tags: [nano]
+    - name: 'roles/htop'
+      tags: [htop]
+    - name: 'roles/nvim'
+      tags: [nvim]
+    - name: 'roles/ssh'
+      tags: [ssh]
 
   tasks:
+    - name: 'Chown /usr/local/opt'
+      ansible.builtin.file:
+        become: true
+        path: '/usr/local/opt'
+        state: directory
+        owner: '{{ ansible_user }}'
+        mode: 0755
+
     - name: 'Install general packages'
       ansible.builtin.homebrew:
         name: '{{ item }}'
