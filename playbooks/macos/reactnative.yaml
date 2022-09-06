@@ -1,0 +1,41 @@
+# Bootstraps a development environment for React Native
+---
+- hosts: all
+  connection: local
+
+  tasks:
+    - name: 'Install facebook/idb'
+      block:
+        - name: 'Tap facebook/idb'
+          ansible.builtin.homebrew_tap:
+            name: facebook/fb
+            state: present
+        - name: 'Install idb companion'
+          ansible.builtin.homebrew:
+            name: idb-companion
+            state: present
+        - name: 'Install idb CLI tool'
+          ansible.builtin.pip:
+            name: idb
+        - name: 'Get path to idb'
+          register: idb_path
+          ansible.builtin.shell: which idb
+        - name: 'Symlink idb binary'
+          become: true
+          ansible.builtin.file:
+            src: '{{ idb_path.stdout }}'
+            dest: /usr/local/bin/idb
+            state: link
+
+    - name: 'Install Android Studio'
+      ansible.builtin.homebrew_cask:
+        name: 'android-studio'
+        state: latest
+
+    - name: 'Source the Android environment'
+      ansible.builtin.blockinfile:
+        path: '{{ ansible_env.HOME }}/.oh-my-zsh/custom/exports.zsh'
+        block: |
+          export ANDROID_HOME={{ ansible_env.HOME }}/Library/Android/sdk
+          export ANDROID_SDK_ROOT={{ ansible_env.HOME }}/Library/Android/sdk
+          export ANDROID_AVD_HOME={{ ansible_env.HOME }}/.android/avd
