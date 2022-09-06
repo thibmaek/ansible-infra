@@ -3,6 +3,8 @@
 - hosts: all
 
   roles:
+    - name: 'roles/shell'
+      tags: [shell]
     - name: 'roles/motd'
       tags: [motd]
     - name: 'roles/logrotate'
@@ -21,7 +23,6 @@
         path: '{{ ansible_env.HOME }}/{{ item }}'
         state: directory
       loop:
-        - .config
         - data
         - dev
         - downloads

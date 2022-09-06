@@ -1,0 +1,9 @@
+- name: 'Ensure ~/.config dir exists'
+  ansible.builtin.file:
+    mode: 0755
+    path: '{{ ansible_env.HOME }}/.config'
+    state: directory
+
+- name: 'Include bash tasks'
+  tags: [bash]
+  ansible.builtin.include_tasks: 'bash.yaml'

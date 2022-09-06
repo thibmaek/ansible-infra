@@ -1,0 +1,5 @@
+- name: 'Create .bash_profile'
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    mode: 0644
+    state: touch
