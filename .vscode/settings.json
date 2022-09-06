@@ -39,5 +39,9 @@
     "**/telegraf/files/**/*.conf": "toml",
     "**/telegraf/templates/*.conf.j2": "toml",
     //#endregion: TOML
+
+    //#region: Other
+    "**/files/dotfiles/.gitconfig.j2": "properties",
+    //#endregion: Other
   }
 }

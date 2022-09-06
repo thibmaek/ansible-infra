@@ -5,7 +5,9 @@
 #
 # The `temp_pass` var will need to exist in order for the play to execute
 ---
-- hosts: all
+- name: 'Initialize server'
+
+  hosts: all
 
   vars:
     # Force the root user
