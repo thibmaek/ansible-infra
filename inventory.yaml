@@ -1,3 +1,12 @@
+bare_metal:
+  hosts:
+    bati-debian:
+      ansible_host: bati-debian
+      ansible_user: thibmaek
+    berghain:
+      ansible_host: berghain
+      ansible_user: thibmaek
+
 proxmox:
   hosts:
     saule-lxc:
@@ -10,8 +19,8 @@ proxmox:
     pihole-lxc:
       ansible_host: pihole-lxc
       ansible_user: thibmaek
-    berghain:
-      ansible_host: berghain
+    tailscale-lxc:
+      ansible_host: tailscale-lxc
       ansible_user: thibmaek
 
 vms:
@@ -28,10 +37,6 @@ rpi:
       ansible_host: rpi-node-fuse
       node_hostname: rpi-node-fuse
       rev_code: a02082
-    rpi-node-bati:
-      ansible_host: rpi-node-bati
-      node_hostname: rpi-node-bati
-      rev_code: b03114
     rpi-node-kompass:
       ansible_host: rpi-node-kompass
       node_hostname: rpi-node-kompass
