@@ -1,4 +1,5 @@
 homebrew_installed_packages:
+  - cmake
   - diff-so-fancy
   - ffmpeg
   - git-delta
