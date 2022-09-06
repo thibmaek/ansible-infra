@@ -7,8 +7,9 @@ export CONFIG_DIR="{{ ansible_env.HOME }}/.config"
 {% endif %}
 {% if ansible_os_family == 'Darwin' %}
 # Use brew command-not-found
-if brew command command-not-found-init > /dev/null; then
-  eval "$(brew command-not-found-init)"
+HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+if [ -f "$HB_CNF_HANDLER" ]; then
+  source "$HB_CNF_HANDLER";
 fi
 
 # Use brew sbin to path

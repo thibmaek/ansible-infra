@@ -42,7 +42,7 @@
       become: true
       ansible.builtin.lineinfile:
         path: '/etc/shells'
-        line: '/usr/local/bin/bash'
+        line: '/opt/homebrew/bin/bash'
         state: present
 
     - name: 'Install Xcode devtools'
