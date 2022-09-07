@@ -4,6 +4,7 @@ homebrew_installed_packages:
   - ffmpeg
   - git-delta
   - glow
+  - gnu-tar
   - gnutls
   - gzip
   - lazydocker
