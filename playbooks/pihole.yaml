@@ -1,9 +1,12 @@
 ---
 - hosts: [pihole-lxc]
+  name: 'Bootstraps a Pi-hole instance'
 
   tasks:
     - name: 'Check if pihole is available'
-      ansible.builtin.shell: 'command -v pihole'
+      ansible.builtin.file:
+        state: file
+        path: /usr/local/bin/pihole
 
     - name: 'Enable automatic backup'
       ansible.builtin.cron:
@@ -13,9 +16,20 @@
         day: '*'
         month: '*'
         weekday: '*/7'
-        command: 'pihole -a -t bak.tar.gz'
         user: '{{ main_user }}'
-        jobname: 'pihole-auto-backup'
+        job: '/usr/local/bin/pihole -a -t {{ ansible_env.HOME }}/pihole-backups/pihole-$(date +%Y_%m_%d).tar.gz'
+        state: present
+
+    - name: 'Enable automatic update'
+      ansible.builtin.cron:
+        name: 'Automatic pihole update'
+        minute: '00'
+        hour: '00'
+        day: '*'
+        month: '*'
+        weekday: '*'
+        user: '{{ main_user }}'
+        job: '/usr/local/bin/pihole -up'
         state: present
 
     - name: 'Setup Prometheus exporter'
