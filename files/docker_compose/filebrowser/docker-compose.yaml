@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:s6
+    container_name: filebrowser
+    env_file: filebrowser.env
+    ports:
+      - 8083:80
+    volumes:
+      - ./config/settings.json:/config/settings.json
+      - ./data/filebrowser.db:/data/filebrowser.db
+      - ./srv:/srv
+    restart: unless-stopped
