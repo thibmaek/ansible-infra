@@ -1,6 +1,7 @@
 homebrew_installed_packages:
   - cmake
   - diff-so-fancy
+  - fd
   - ffmpeg
   - git-delta
   - glow
