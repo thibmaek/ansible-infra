@@ -17,9 +17,19 @@ services:
       - /dev/dri:/dev/dri
     restart: unless-stopped
 
+  plex_meta_manager:
+    image: lscr.io/linuxserver/plex-meta-manager
+    depends_on: [plex]
+    container_name: plex-meta-manager
+    env_file: plex-meta-manager.env
+    volumes:
+      - ./plex_meta_manager:/config
+    restart: unless-stopped
+
   plex_exporter:
     image: granra/plex_exporter
     container_name: plex_exporter
+    depends_on: [plex]
     ports:
       - 9594:9594
     volumes:

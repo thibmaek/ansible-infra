@@ -1,0 +1,90 @@
+# https://github.com/meisnate12/Plex-Meta-Manager-Configs
+
+libraries:
+  Movies:
+    metadata_path:
+      - file: config/movies.yml
+      - folder: config/movies/
+      - git: PMM/chart/basic
+      - git: PMM/chart/imdb
+    overlay_path:
+      - remove_overlays: false # Set this to true to remove all overlays
+      - file: config/overlays.yml
+      - git: PMM/overlays/imdb_top_250
+      - git: PMM/overlays/runtimes
+
+  TV Shows:
+    metadata_path:
+      - file: config/tvshows.yml
+      - folder: config/tvshows/
+      - git: PMM/chart/basic
+
+    overlay_path:
+      - remove_overlays: false
+      - file: config/overlays.yml
+
+  Music:
+    metadata_path:
+      - file: config/music.yml
+
+playlist_files:
+  - file: config/playlists.yml
+  - git: PMM/playlist
+
+settings:
+  cache: true
+  cache_expiration: 60
+  asset_directory: config/assets
+  asset_folders: true
+  asset_depth: 0
+  create_asset_folders: false
+  prioritize_assets: false
+  dimensional_asset_rename: false
+  download_url_assets: false
+  show_missing_season_assets: false
+  show_missing_episode_assets: false
+  show_asset_not_needed: true
+  sync_mode: append
+  minimum_items: 1
+  default_collection_order:
+  delete_below_minimum: true
+  delete_not_scheduled: false
+  run_again_delay: 2
+  missing_only_released: false
+  only_filter_missing: false
+  show_unmanaged: true
+  show_filtered: false
+  show_options: false
+  show_missing: true
+  show_missing_assets: true
+  save_report: false
+  tvdb_language: eng
+  ignore_ids:
+  ignore_imdb_ids:
+  item_refresh_delay: 0
+  playlist_sync_to_user: all
+  playlist_report: false
+  verify_ssl: true
+  custom_repo:
+  check_nightly: false
+
+webhooks:
+  error:
+  version:
+  run_start:
+  run_end:
+  changes:
+
+plex:
+  url: ''
+  token: ''
+  timeout: 60
+  clean_bundles: false
+  empty_trash: false
+  optimize: false
+
+tmdb:
+  apikey: ''
+  language: en
+  cache_expiration: 60
+  region:
