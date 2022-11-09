@@ -13,3 +13,6 @@ lint_ansible:
 	ansible-lint ./**/*
 
 lint: lint_yaml lint_ansible
+
+export_graph:
+	ansible-playbook-grapher --include-role playbooks/init_server.yaml

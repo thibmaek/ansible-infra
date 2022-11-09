@@ -1,5 +1,6 @@
 ansible
 ansible-lint
+ansible-playbook-grapher
 pre-commit
 yamllint
 jmespath
