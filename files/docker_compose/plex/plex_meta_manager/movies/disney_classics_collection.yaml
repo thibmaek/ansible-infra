@@ -1,0 +1,40 @@
+collections:
+  Disney Classics:
+    sync_mode: sync
+    url_poster: https://theposterdb.com/api/assets/81861
+    sort_title: ++++++++_disney
+    collection_order: release
+
+metadata:
+  '10112': # Aristocats
+    url_poster: https://theposterdb.com/api/assets/81881
+  '8587': # Lion King
+    url_poster: https://theposterdb.com/api/assets/81893
+  '9479': # Nightmare Before Christmas
+    url_poster: https://theposterdb.com/api/assets/50015
+  '14813': # Mickey's Christmas Carol
+    url_poster: https://theposterdb.com/api/assets/21814
+  '10948': # The Fox and the Hound
+    url_poster: https://theposterdb.com/api/assets/81885
+  '53565': # Steamboat Willie
+    url_poster: https://theposterdb.com/api/assets/111983
+  '10895': # Pinocchio
+    url_poster: https://theposterdb.com/api/assets/81863
+  '756': # Fantasia
+    url_poster: https://theposterdb.com/api/assets/81864
+  '12092': # Alice In Wonderland
+    url_poster: https://theposterdb.com/api/assets/81874
+  '10693': # Peter Pan
+    url_poster: https://theposterdb.com/api/assets/81875
+  '9078': # The Sword In The Stone
+    url_poster: https://theposterdb.com/api/assets/81879
+  '11886': # Robin Hood
+    url_poster: https://theposterdb.com/api/assets/81882
+  '250480': # The Many Adventures of Winnie the Pooh
+    url_poster: https://theposterdb.com/api/assets/81883
+  '812': # Aladdin
+    url_poster: https://theposterdb.com/api/assets/81892
+  '11970': # Hercules
+    url_poster: https://theposterdb.com/api/assets/81896
+  '109445': # Frozen
+    url_poster: https://theposterdb.com/api/assets/81914
