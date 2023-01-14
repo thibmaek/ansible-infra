@@ -12,6 +12,7 @@ libraries:
       - file: config/overlays.yml
       - git: PMM/overlays/imdb_top_250
       - git: PMM/overlays/runtimes
+      - git: PMM/overlays/mediastinger
 
   TV Shows:
     metadata_path:
@@ -22,6 +23,10 @@ libraries:
     overlay_path:
       - remove_overlays: false
       - file: config/overlays.yml
+      - git: PMM/overlays/video_format
+        template_variables:
+          overlay_level: episode
+      - git: PMM/overlays/streaming
 
   Music:
     metadata_path:
