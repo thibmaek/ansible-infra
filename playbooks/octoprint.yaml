@@ -10,3 +10,24 @@
       tags: [octodash]
       ansible.builtin.include_role:
         name: 'roles/octodash'
+
+    - name: 'Add backup strategy via restic'
+      tags: [restic]
+      block:
+        - name: 'Copy backup script'
+          ansible.builtin.copy:
+            src: '../files/restic/backup_octoprint.sh'
+            dest: '{{ ansible_env.HOME }}/backup.sh'
+            mode: 0755
+
+        - name: 'Configure cron for auto backup'
+          ansible.builtin.cron:
+            name: 'Automatic restic backup'
+            minute: '00'
+            hour: '00'
+            day: '*'
+            month: '*'
+            weekday: '00'
+            user: '{{ main_user }}'
+            job: '{{ ansible_env.HOME }}/backup.sh >> /tmp/restic_backup.log 2>&1'
+            state: present
