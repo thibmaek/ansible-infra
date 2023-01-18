@@ -1,13 +1,14 @@
 # Common playbook to recurringly run on existing hosts
 ---
-- hosts: all
+- name: 'Common'
+  hosts: all
 
   roles:
-    - name: 'roles/nano'
+    - role: 'roles/nano'
       tags: [nano]
-    - name: 'roles/htop'
+    - role: 'roles/htop'
       tags: [htop]
-    - name: 'roles/nvim'
+    - role: 'roles/nvim'
       tags: [nvim]
 
   tasks:

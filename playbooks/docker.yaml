@@ -1,8 +1,9 @@
 ---
-- hosts: all
+- name: 'Docker'
+  hosts: all
 
   roles:
-    - 'roles/docker'
+    - role: 'roles/docker'
 
   tasks:
     - name: 'Copy compose configs'

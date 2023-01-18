@@ -1,7 +1,9 @@
 # Ref: https://linuxize.com/post/how-to-install-and-configure-vnc-on-ubuntu-20-04/
 ---
-- hosts: all
+- name: 'VNC'
+
+  hosts: all
 
   roles:
-    - name: 'roles/tigervnc'
+    - role: 'roles/tigervnc'
       tags: [tigervnc]

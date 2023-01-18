@@ -1,9 +1,10 @@
 # Sets up a fully functional file server
 ---
-- hosts: all
+- name: 'File server'
+  hosts: all
 
   roles:
-    - name: 'roles/smb'
+    - role: 'roles/smb'
       tags: [smb]
       vars:
         samba_users:
@@ -15,7 +16,7 @@
           #   read_only: false
           #   allow_guest: true
 
-    - name: 'roles/nfs'
+    - role: 'roles/nfs'
       tags: [nfs]
       vars:
         nfs_mounts:

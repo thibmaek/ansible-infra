@@ -1,6 +1,8 @@
 # macOS playbook to run on a local maching
 ---
-- hosts: localhost
+- name: 'macOS Setup'
+
+  hosts: localhost
   connection: local
 
   vars_files:
@@ -19,25 +21,25 @@
       - homebrew/services
 
   roles:
-    - name: geerlingguy.mac.homebrew
+    - role: geerlingguy.mac.homebrew
       tags: [brew]
-    - name: geerlingguy.mac.mas
+    - role: geerlingguy.mac.mas
       tags: [mas]
-    - name: geerlingguy.mac.dock
+    - role: geerlingguy.mac.dock
       tags: [dock]
-    - name: 'roles/zsh'
+    - role: 'roles/zsh'
       tags: [zsh]
-    - name: 'roles/starship'
+    - role: 'roles/starship'
       tags: [zsh, starship]
-    - name: 'roles/powerline'
+    - role: 'roles/powerline'
       tags: [powerline]
-    - name: 'roles/nano'
+    - role: 'roles/nano'
       tags: [nano]
-    - name: 'roles/htop'
+    - role: 'roles/htop'
       tags: [htop]
-    - name: 'roles/nvim'
+    - role: 'roles/nvim'
       tags: [nvim]
-    - name: 'roles/ssh'
+    - role: 'roles/ssh'
       tags: [ssh]
 
   tasks:

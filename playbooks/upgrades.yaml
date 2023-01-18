@@ -1,4 +1,6 @@
-- hosts: all
+---
+- name: 'Upgrades'
+  hosts: all
 
   serial: 2
 

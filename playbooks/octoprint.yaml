@@ -1,5 +1,7 @@
 ---
-- hosts: rpi
+- name: 'Octoprint'
+
+  hosts: rpi
 
   tasks:
     - name: 'Setup 3.5 TFT touch display'

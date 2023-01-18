@@ -7,6 +7,8 @@ skip_list:
   - package-latest
   - no-relative-paths
   - internal-error
+  - name[casing]
 
 exclude_paths:
   - '$HOME/.ansible/roles'
+  - files/docker_compose

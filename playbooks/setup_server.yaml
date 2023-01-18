@@ -1,19 +1,20 @@
 # Run this after initializing a server with init_server.yaml
 ---
-- hosts: all
+- name: 'Setup server'
+  hosts: all
 
   roles:
-    - name: 'roles/shell'
+    - role: 'roles/shell'
       tags: [shell]
-    - name: 'roles/motd'
+    - role: 'roles/motd'
       tags: [motd]
-    - name: 'roles/logrotate'
+    - role: 'roles/logrotate'
       tags: [logs]
-    - name: 'roles/tmux'
+    - role: 'roles/tmux'
       tags: [tmux]
-    - name: 'roles/python'
+    - role: 'roles/python'
       tags: [python]
-    - name: 'roles/duf'
+    - role: 'roles/duf'
       tags: [duf]
 
   tasks:

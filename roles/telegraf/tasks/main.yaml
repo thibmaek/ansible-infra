@@ -18,7 +18,7 @@
   tags: [apt]
   ansible.builtin.apt_repository:
     # yamllint disable-line rule:line-length
-    repo: 'deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable'
+    repo: 'deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable'
     filename: telegraf
     state: present
 
@@ -33,7 +33,7 @@
 - name: 'Copy config directory'
   become: true
   tags: [config]
-  ansible.builtin.synchronize:
+  ansible.posix.synchronize:
     src: '../files/config_dir/'
     dest: '{{ telegraf_dir }}'
 
@@ -42,7 +42,7 @@
   tags: [config]
   ansible.builtin.template:
     src: '{{ item }}'
-    dest: "{{ telegraf_dir }}/telegraf.d/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "{{ telegraf_dir }}/telegraf.d/{{ item | basename | regex_replace('.j2', '') }}"
     mode: 0644
   with_fileglob: '../templates/*.j2'
 

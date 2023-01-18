@@ -1,41 +1,42 @@
-- hosts: volumio
+- name: 'Volumio setup'
+
+  hosts: volumio
+
   tasks:
-    - name: "Update Volumio to the latest version"
-      tags:
-        - update
+    - name: 'Update Volumio to the latest version'
+      tags: [update]
       register: volumio_update
       changed_when: '"No update available" not in volumio_update.stdout'
-      command: volumio updater forceupdate --yes
+      ansible.builtin.command: volumio updater forceupdate --yes
 
-    - name: "Sync radio favorites"
-      copy:
+    - name: 'Sync radio favorites'
+      ansible.builtin.copy:
         dest: /data/favourites/radio-favourites
         src: ./files/radio-favourites
         mode: 0644
 
-    - name: "Update music database"
-      command: mpc update NAS
+    - name: 'Update music database'
       register: mpc_update
       changed_when: '"Updating DB" in mpc_update.stdout'
+      ansible.builtin.command: mpc update NAS
 
-    - name: "Create custom plugin dir"
-      file:
+    - name: 'Create custom plugin dir'
+      ansible.builtin.file:
         path: "{{ ansible_env.HOME }}/custom_plugins"
         state: directory
         mode: 0755
 
-    - name: "Download Soundcloud plugin"
-      tags:
-        - plugin
-      git:
+    - name: 'Download Soundcloud plugin'
+      tags: [plugin]
+      ansible.builtin.git:
         repo: https://github.com/patrickkfkan/volumio-soundcloud.git
         dest: "{{ ansible_env.HOME }}/custom_plugins/volumio-soundcloud"
 
-    - name: "Install Soundcloud plugin" # noqa no-changed-when
-      command: volumio plugin install
-      tags:
-        - plugin
-      args:
-        chdir: "{{ ansible_env.HOME }}/custom_plugins/volumio-soundcloud"
+    - name: 'Install Soundcloud plugin'
+      tags: [plugin]
       vars:
         ansible_command_timeout: 60
+      changed_when: true
+      ansible.builtin.command: volumio plugin install
+      args:
+        chdir: "{{ ansible_env.HOME }}/custom_plugins/volumio-soundcloud"

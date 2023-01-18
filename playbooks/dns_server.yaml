@@ -1,9 +1,10 @@
 # Set up a DNS server with optional adblocking via AdGuard Home
 ---
-- hosts: all
+- name: 'DNS Server'
+  hosts: all
 
   roles:
-    - name: woodendoors.ansible_adguard_home
+    - role: woodendoors.ansible_adguard_home
       tags: [adguard]
       become: true
       vars:

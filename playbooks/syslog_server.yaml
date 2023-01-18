@@ -1,11 +1,12 @@
 # Playbook to setup a syslog server
 ---
-- hosts: [proxmox, rpi, vms]
+- name: 'Syslog server'
+  hosts: [proxmox, rpi, vms]
 
   roles:
-    - name: 'roles/logrotate'
+    - role: 'roles/logrotate'
       tags: [logs]
-    - name: 'roles/rsyslog'
+    - role: 'roles/rsyslog'
       tags: [rsyslog]
       vars:
         rsyslog_templates: []

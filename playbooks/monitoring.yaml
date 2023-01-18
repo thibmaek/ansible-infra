@@ -4,7 +4,9 @@
 #       when the cloudalchemy.node_exporter is included in a play
 #       see https://github.com/cloudalchemy/ansible-node-exporter/issues/168
 ---
-- hosts: all
+- name: 'Monitoring'
+
+  hosts: all
 
   vars_prompt:
     - name: influxdb_token
@@ -14,18 +16,18 @@
       prompt: "Loki host (IP + port)"
 
   roles:
-    - name: cloudalchemy.node_exporter
+    - role: cloudalchemy.node_exporter
       tags: [prometheus]
 
-    - name: 'roles/telegraf'
+    - role: 'roles/telegraf'
       tags: [telegraf]
       vars:
         synology_nas_host:
 
-    - name: 'roles/glances'
+    - role: 'roles/glances'
       tags: [glances]
 
-    - name: patrickjahns.promtail
+    - role: patrickjahns.promtail
       tags: [promtail]
       vars:
         promtail_version: latest

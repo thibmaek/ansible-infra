@@ -1,17 +1,20 @@
 # Ref: https://blog.r0b.io/post/minimal-rpi-kiosk/
 # This playbook is meant to be ran against a Lite install (headless/no desktop GUI)
 ---
-- hosts: rpi
+- name: 'Raspberry Pi Kiosk'
+
+  hosts: rpi
+
   tasks:
     - name: 'Upgrade apt packages'
       become: true
-      apt:
+      ansible.builtin.apt:
         upgrade: yes
         update_cache: true
 
     - name: 'Install required packages'
       become: true
-      apt:
+      ansible.builtin.apt:
         name:
           - chromium-browser
           - unclutter
@@ -26,15 +29,17 @@
       block:
         - name: 'Set default target to multi-user'
           become: true
-          command: 'systemctl set-default multi-user.target'
+          register: systemd_default
+          changed_when: '"Creating symlink" in systemd_default.rc'
+          ansible.builtin.command: 'systemctl set-default multi-user.target'
         - name: 'Symlink default getty service to drop-in'
           become: true
-          file:
+          ansible.builtin.file:
             src: '/lib/systemd/system/getty@.service'
             dest: '/etc/systemd/system/getty.target.wants/getty@tty1.service'
             state: link
         - name: 'Ensure autologin in drop-in service'
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: '/etc/systemd/system/getty@tty1.service.d/autologin.conf'
             block: |
               [Service]
@@ -43,9 +48,10 @@
               EOF
 
     - name: 'Auto-start X Server'
-      blockinfile:
+      ansible.builtin.blockinfile:
         create: true
         path: '{{ ansible_env.HOME }}/.bash_profile'
+        mode: 0644
         block: |
           if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
             startx
@@ -53,12 +59,13 @@
 
     - name: "Check if Ansible var 'kiosk_url' is set"
       when: kiosk_url is undefined
-      meta: end_host
+      ansible.builtin.meta: end_host
 
     - name: 'Auto-start Chromium when starting X Server'
-      blockinfile:
+      ansible.builtin.blockinfile:
         create: true
         path: "{{ ansible_env.HOME }}/.xinitrc"
+        mode: 0644
         block: |
           #!/usr/bin/env sh
           xset -dpms
@@ -81,7 +88,7 @@
             --disable-pinch
 
     - name: 'Reboot'
-      reboot:
+      ansible.builtin.reboot:
         msg: 'Reboot initiated by Ansible'
         connect_timeout: 5
         reboot_timeout: 600

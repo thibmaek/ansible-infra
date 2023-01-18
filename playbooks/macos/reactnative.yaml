@@ -1,6 +1,7 @@
 # Bootstraps a development environment for React Native
 ---
-- hosts: all
+- name: 'React Native'
+  hosts: all
   connection: local
 
   tasks:

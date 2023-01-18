@@ -20,8 +20,7 @@
       - cmake
       - liblog4cpp5-dev
       - libv4l-dev
-    upgrade: yes
-    update_cache: true
+    state: latest
 
 - name: 'Prepare install'
   changed_when: true

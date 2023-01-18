@@ -1,4 +1,6 @@
-- hosts: localhost
+- name: 'macOS Defaults'
+
+  hosts: localhost
   connection: local
 
   vars:
@@ -6,6 +8,7 @@
 
   tasks:
     - name: 'Quit System Preferences for safety measures'
+      changed_when: true
       ansible.builtin.command: |
         osascript -e 'tell application "System Preferences" to quit'
 
@@ -13,6 +16,7 @@
     - name: 'Backup current defaults'
       tags: [backup]
       register: defaults_backup
+      changed_when: true
       failed_when:
         - defaults_backup.rc != 0
         - '"does not exist" not in defaults_backup.stderr'
@@ -21,7 +25,7 @@
           mkdir -p {{ backup_folder }}
         fi
 
-        defaults read {{ item }} >> {{ backup_folder }}/{{item}}.plist
+        defaults read {{ item }} >> {{ backup_folder }}/{{ item }}.plist
       loop:
         - NSGlobalDomain
         - com.apple.finder
@@ -33,150 +37,177 @@
         - com.apple.Safari
         - com.apple.TimeMachine
 
-    - name: "Finder: Use small sidebar icons"
+    - name: 'Finder: Use small sidebar icons'
       tags: [finder]
-      command: defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
+      changed_when: true
+      ansible.builtin.command: defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
 
-    - name: "Finder: Expand save dialog by default"
+    - name: 'Finder: Expand save dialog by default' # noqa command-instead-of-shell
       tags: [finder]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
         defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
         defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
         defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 
-    - name: "Finder: Set new finder window to open ~/Downloads"
+    - name: 'Finder: Set new finder window to open ~/Downloads' # noqa command-instead-of-shell
       tags: [finder]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.finder NewWindowTarget -string "PfLo"
         defaults write com.apple.finder NewWindowTargetPath -string "file://{{ ansible_env.HOME }}/Downloads/"
 
-    - name: "Finder: Show external volumes on Desktop"
+    - name: 'Finder: Show external volumes on Desktop' # noqa command-instead-of-shell
       tags: [finder]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
         defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
         defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
-    - name: "Finder: Show status and path bar"
+    - name: 'Finder: Show status and path bar' # noqa command-instead-of-shell
       tags: [finder]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.finder ShowStatusBar -bool true
         defaults write com.apple.finder ShowPathbar -bool true
 
-    - name: "Finder: Search current folder by default"
+    - name: 'Finder: Search current folder by default'
       tags: [finder]
-      command: defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
-    - name: "Finder: Don't create .DS_Store files on external volumes"
+    - name: "Finder: Don't create .DS_Store files on external volumes" # noqa command-instead-of-shell
       tags: [finder]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
         defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-    - name: "Finder: Show the user Library folder"
+    - name: 'Finder: Show the user Library folder' # noqa command-instead-of-shell
       tags: [finder]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         chflags nohidden {{ ansible_env.HOME }}/Library
         xattr -d com.apple.FinderInfo {{ ansible_env.HOME }}/Library
 
-    - name: "Finder: Expand Open With in File Info panel"
+    - name: 'Finder: Expand Open With in File Info panel'
       tags: [finder]
-      command: |
+      changed_when: true
+      ansible.builtin.command: |
         defaults write com.apple.finder FXInfoPanesExpanded -dict \
           General -bool true \
           OpenWith -bool true
 
     - name: "Finder: Disable the 'Are you sure you want to open' for apps"
       tags: [finder]
-      command: defaults write com.apple.LaunchServices LSQuarantine -bool false
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.LaunchServices LSQuarantine -bool false
 
-    - name: "Finder: Update keyboard shortcuts"
-      tags: [fidner]
-      shell: |
+    - name: 'Finder: Update keyboard shortcuts' # noqa command-instead-of-shell
+      tags: [finder]
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.finder NSUserKeyEquivalents -dict-add "Show Next Tab" -string "@]"
         defaults write com.apple.finder NSUserKeyEquivalents -dict-add "Show Previous Tab" -string "@["
 
-    - name: "Dock: Set dock icons to 60pt"
+    - name: 'Dock: Set dock icons to 60pt'
       tags: [dock]
-      command: defaults write com.apple.dock tilesize -int 60
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.dock tilesize -int 60
 
     - name: "Dock: Don't show recent apps"
       tags: [dock]
-      command: defaults write com.apple.dock show-recents -bool false
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.dock show-recents -bool false
 
     - name: "Dock: Don't automatically rearrange spaces"
       tags: [dock]
-      command: defaults write com.apple.dock mru-spaces -bool false
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.dock mru-spaces -bool false
 
-    - name: "Dock: Set top right corner to show Notification Centre"
+    - name: 'Dock: Set top right corner to show Notification Centre' # noqa command-instead-of-shell
       tags: [dock]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.dock wvous-tr-corner -int 12
         defaults write com.apple.dock wvous-tr-modifier -int 0
 
-    - name: "Keyboard: Disable spelling corrections"
+    - name: 'Keyboard: Disable spelling corrections' # noqa command-instead-of-shell
       tags: [keyboard]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
         defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
         defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
         defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
-    - name: "Keyboard: Disable press-and-hold"
+    - name: 'Keyboard: Disable press-and-hold'
       tags: [keyboard]
-      command: defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+      changed_when: true
+      ansible.builtin.command: defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
-    - name: "Keyboard: Set fast key repeat rate"
+    - name: 'Keyboard: Set fast key repeat rate' # noqa command-instead-of-shell
       tags: [keyboard]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write NSGlobalDomain KeyRepeat -int 1
         defaults write NSGlobalDomain InitialKeyRepeat -int 10
 
-    - name: "Trackpad: Enable tap to click"
+    - name: 'Trackpad: Enable tap to click' # noqa command-instead-of-shell
       tags: [trackpad]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
         defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
         defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
-    - name: "Trackpad: Disable natural scroll"
+    - name: 'Trackpad: Disable natural scroll'
       tags: [trackpad]
-      command: defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+      changed_when: true
+      ansible.builtin.command: defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
-    - name: "Trackpad: Use ctrl-scroll to zoom"
-      become: true
+    - name: 'Trackpad: Use ctrl-scroll to zoom' # noqa command-instead-of-shell
       tags: [trackpad]
-      shell: |
+      become: true
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
         defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
         defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
-    - name: "Safari: Show full URL in navbar"
+    - name: 'Safari: Show full URL in navbar'
       tags: [safari]
-      command: defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
     - name: "Safari: Don't auto open safe files"
       tags: [safari]
-      command: defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 
-    - name: "Safari: Enable debug menu"
+    - name: 'Safari: Enable debug menu'
       tags: [safari]
-      command: defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
 
-    - name: "Safari: Enable the developer menu"
+    - name: 'Safari: Enable the developer menu' # noqa command-instead-of-shell
       tags: [safari]
-      shell: |
+      changed_when: true
+      ansible.builtin.shell: |
         defaults write com.apple.Safari IncludeDevelopMenu -bool true
         defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
         defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
 
-    - name: "Time Machine: Do not prompt to use new external volumes"
+    - name: 'Time Machine: Do not prompt to use new external volumes'
       tags: [time_machine]
-      command: defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+      changed_when: true
+      ansible.builtin.command: defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
-    - name: "Restart affected services"
-      shell: killall {{ item }}
+    - name: 'Restart affected services' # noqa command-instead-of-shell
+      changed_when: true
+      ansible.builtin.shell: killall {{ item }}
       loop:
         - Finder
         - Dock

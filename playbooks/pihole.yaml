@@ -1,6 +1,7 @@
 ---
-- hosts: [pihole-lxc]
-  name: 'Bootstraps a Pi-hole instance'
+- name: 'Bootstraps a Pi-hole instance'
+
+  hosts: [pihole-lxc]
 
   tasks:
     - name: 'Check if pihole is available'
