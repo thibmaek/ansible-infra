@@ -1,0 +1,21 @@
+- name: 'Check if logrotate is installed'
+  register: logrotate_installed
+  failed_when: logrotate_installed.rc > 1
+  changed_when: logrotate_installed == 1
+  ansible.builtin.command: dpkg-query -W logrotate
+
+- name: 'Include logrotate config'
+  when: logrotate_installed.rc == 0
+  tags: [logrotate]
+  become: true
+  ansible.builtin.template:
+    src: 'templates/rsyslog_ingest.j2'
+    dest: "{{ logrotate_conf_dir }}/{{ item | basename | regex_replace('.j2', '') }}"
+    mode: 0644
+
+- name: 'Restart logrotate'
+  when: logrotate_installed.rc == 0
+  ansible.builtin.systemd:
+    name: logrotate
+    state: restarted
+    enabled: true

@@ -64,3 +64,6 @@
       $fileOwner root
       & stop
   loop: '{{ rsyslog_templates }}'
+
+- name: 'Include logrotate tasks'
+  ansible.builtin.include_tasks: './logrotate.yaml'

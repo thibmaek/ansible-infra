@@ -1,0 +1,16 @@
+{{ rsyslog_ingest_dir }}/*.log {
+  rotate 5
+
+  weekly
+
+  maxsize 10M
+
+  missingok
+  notifempty
+  compress
+
+  sharedscripts
+	postrotate
+		/usr/lib/rsyslog/rsyslog-rotate
+	endscript
+}
