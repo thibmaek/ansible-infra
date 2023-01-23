@@ -16,8 +16,7 @@
   tags: [apt]
   ansible.builtin.apt:
     name: cmake
-    upgrade: yes
-    update_cache: true
+    state: latest
 
 - name: 'Make build directory'
   tags: [build, compile]

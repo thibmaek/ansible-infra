@@ -1,7 +1,9 @@
-- when: ansible_os_family == 'Debian'
+- name: 'Load tasks (Debian)'
+  when: ansible_os_family == 'Debian'
   ansible.builtin.include_tasks: './debian.yaml'
 
-- when: ansible_os_family == 'Darwin'
+- name: 'Load tasks (macOS)'
+  when: ansible_os_family == 'Darwin'
   ansible.builtin.include_tasks: './macos.yaml'
 
 - name: 'Add Starship to Bash'
