@@ -7,12 +7,18 @@ bare_metal:
       ansible_host: berghain
       ansible_user: thibmaek
 
+pve:
+  hosts:
+    saule-pve:
+      ansible_host: saule-pve
+    panorama-pve:
+      ansible_host: panorama-pve
+
 proxmox:
   hosts:
     saule-lxc:
       ansible_host: saule
       ansible_user: thibmaek
-      docker_compose_sync:
     fabric-lxc:
       ansible_host: fabric
       ansible_user: thibmaek

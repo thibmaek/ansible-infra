@@ -1,0 +1,82 @@
+# Playbook to run against PVE hosts
+---
+- name: 'PVE (Proxmox VE)'
+
+  hosts: [pve]
+
+  tasks:
+    - name: 'Install mail notification dependencies'
+      tags: [apt, notification, mail]
+      ansible.builtin.apt:
+        name:
+          - libsasl2-modules
+          - mailutils
+          - postfix-pcre
+        state: latest
+
+    - name: 'Write postfix SMTP credentials'
+      tags: [notification, mail]
+      block:
+        - name: 'Embed credentials in /etc/postfix/sasl_passwd'
+          ansible.builtin.lineinfile:
+            line: 'smtp.gmail.com {{ vault_smtp_username }}:{{ vault_smtp_password }}'
+            path: /etc/postfix/sasl_passwd
+            create: true
+            mode: 0600
+        - name: 'Hash postfix credentials'
+          changed_when: false
+          ansible.builtin.command: 'postmap hash:/etc/postfix/sasl_passwd'
+
+    - name: 'Configure postfix-pcre'
+      ansible.builtin.blockinfile:
+        path: /etc/postfix/smtp_header_checks
+        create: true
+        mode: 0600
+        block: |
+          /^From:.*/ REPLACE From: {{ ansible_host }}-alerting {{ ansible_host }}@something.com
+
+    - name: 'Hash PCRE config'
+      changed_when: false
+      ansible.builtin.command: 'postmap hash:/etc/postfix/smtp_header_checks'
+
+    - name: 'Disable default postfix relayhost'
+      tags: [notification, mail]
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: '^relayhost'
+        line: '#relayhost ='
+
+    - name: 'Add Gmail config to postfix config'
+      tags: [notification, mail]
+      ansible.builtin.blockinfile:
+        mode: 0600
+        path: /etc/postfix/main.cf
+        block: |
+          # Gmail config
+          relayhost = smtp.gmail.com:587
+          smtp_use_tls = yes
+          smtp_sasl_auth_enable = yes
+          smtp_sasl_security_options =
+          smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+          smtp_tls_CAfile = /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
+          smtp_tls_session_cache_database = btree:/var/lib/postfix/smtp_tls_session_cache
+          smtp_tls_session_cache_timeout = 3600s
+          smtp_header_checks = pcre:/etc/postfix/smtp_header_checks
+
+    - name: 'Restart postfix'
+      tags: [notification, mail]
+      changed_when: true
+      ansible.builtin.command: 'postfix reload'
+
+    - name: 'Display success prompt'
+      tags: [notification, mail]
+      ansible.builtin.pause:
+        seconds: 1
+        prompt: |
+          ==============================================================================
+            Email alerting configured!
+
+            Be sure to update the default receiving email address in:
+            * Datacenter > Permissions > Users > root
+            * Datacenter > Backup
+          ==============================================================================
