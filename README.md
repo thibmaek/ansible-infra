@@ -35,3 +35,9 @@ Common plays (like common.yaml and upgrades.yaml) are available with make:
 
 - `make play_common`
 - `make play_upgrade`
+
+## Encrypting secrets (via vault)
+
+```console
+$ ansible-vault encrypt_string 'secret' --name 'var_name'
+```
