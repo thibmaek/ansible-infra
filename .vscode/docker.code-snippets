@@ -1,0 +1,30 @@
+{
+  "Compose (Base)": {
+    "scope": "dockercompose",
+    "description": "Base docker compose config",
+    "prefix": "compose",
+    "body": [
+      "version: '3'",
+      "",
+      "services:",
+      "  ${service}:",
+      "    image: ${image}",
+      "    container_name: ${service}",
+      "    env_file: ${service}.env",
+      "    ports:",
+      "    volumes:",
+      "      - ./config:/config",
+      "    restart: unless-stopped",
+    ],
+  },
+  "Compose env file": {
+    "scope": "dotenv",
+    "description": "Compose env file",
+    "prefix": "env",
+    "body": [
+      "PGID=1000",
+      "PUID=1000",
+      "TZ=Europe/Brussels",
+    ],
+  },
+}
