@@ -59,8 +59,8 @@
     - name: 'Copy scripts folder'
       tags: [scripts]
       ansible.builtin.copy:
-        src: '../files/scripts'
-        dest: '{{ ansible_env.HOME }}/'
+        src: '../files/scripts/common'
+        dest: '{{ ansible_env.HOME }}/script'
         mode: 0755
 
     - name: 'Set timezone'

@@ -1,0 +1,11 @@
+---
+- name: 'Unifi Cloudkey'
+
+  hosts: unifi_cloudkey
+
+  tasks:
+    - name: 'Sync Mongodb repair script'
+      ansible.builtin.copy:
+        src: '../files/scripts/unifi_cloudkey'
+        dest: '{{ ansible_env.HOME }}/'
+        mode: 0755
