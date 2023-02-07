@@ -8,35 +8,42 @@ homebrew_cask_apps:
   - cron
   - docker
   - dozer
+  - elgato-stream-deck
   - fig
   - figma
   - fork
   - freac
   - google-cloud-sdk
+  - ha-menu
   - handbrake
   - home-assistant
   - imageoptim
   - iterm2
   - keka
+  - keyfinder
+  - marta
+  - meta
   - notion
   - openscad
-  - paw
   - plex
   - plexamp
+  - rapidapi
   - raspberry-pi-imager
   - raycast
   - rectangle
   - signal
+  - slack
   - spotify
-  - stats
   - syncthing
   - synology-drive
+  - tailscale
   - transmission
   - ultimaker-cura
   - visual-studio-code
   - vlc
   - vnc-viewer
   - xld
+  - zoom
   # endregion
   # region: Fonts
   - font-fira-code
