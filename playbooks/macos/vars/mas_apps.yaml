@@ -11,11 +11,13 @@ mas_installed_apps:
     name: 'Blackout.app'
   - id: 1450640351
     name: 'Lightweight PDF.app'
-  - id: 975937182
-    name: 'Fantastical.app'
-  - id: 1451685025
-    name: 'WireGuard.app'
   - id: 1529448980
     name: 'Reeder.app'
   - id: 1545870783
     name: 'System Color Picker.app'
+  - id: 1596706466
+    name: 'Speediness'
+  - id: 1469995354
+    name: 'Broadcasts'
+  - id: 6444667067
+    name: 'Hyperduck'
