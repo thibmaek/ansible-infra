@@ -10,6 +10,7 @@ services:
     volumes:
       - ./config:/config
       - /plex/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
+      - ./scripts:/custom_scripts
     restart: unless-stopped
 
   tautulli_prometheus_exporter:
