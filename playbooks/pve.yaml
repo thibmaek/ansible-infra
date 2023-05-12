@@ -4,7 +4,26 @@
 
   hosts: [pve]
 
+  vars:
+    proxmoxlib_path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+
+  handlers:
+    - name: restart_pveproxy
+      become: true
+      ansible.builtin.systemd:
+        name: pveproxy
+        state: restarted
+        enabled: true
+
   tasks:
+    - name: "Remove 'No valid subscription' popup"
+      notify: restart_pveproxy
+      ansible.builtin.replace:
+        path: '{{ proxmoxlib_path }}'
+        regexp: >-
+          (^\s+)(Ext.Msg.show\(\{\s+title:\s+gettext\('No valid subscription)
+        replace: '\1void({ //\2'
+
     - name: 'Install mail notification dependencies'
       tags: [apt, notification, mail]
       ansible.builtin.apt:
