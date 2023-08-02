@@ -1,4 +1,5 @@
 homebrew_installed_packages:
+  - bat-extras
   - cmake
   - diff-so-fancy
   - fd
