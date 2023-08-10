@@ -1,0 +1,29 @@
+- name: 'Download Plexamp Headless'
+  become: true
+  ansible.builtin.get_url:
+    dest: "{{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_version }}.tar.bz2"
+    url: "{{ plexamp_headless_archive_url }}"
+    mode: 0755
+
+- name: 'Extract Plexamp archive'
+  ansible.builtin.shell: |
+    bzip2 -d {{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_version }}.tar.bz2
+    tar xvf {{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_version }}.tar
+
+- name: 'Copy systemd unit'
+  become: true
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/plexamp/plexamp.service"
+    dest: /lib/systemd/system/plexamp.service
+    owner: root
+    group: root
+    mode: 0644
+    remote_src: true
+
+- name: 'Enable & start the plexamp service'
+  become: true
+  ansible.builtin.systemd:
+    state: restarted
+    name: plexamp
+    enabled: true
+    daemon_reload: true
