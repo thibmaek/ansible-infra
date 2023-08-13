@@ -1,0 +1,37 @@
+# This playbook is meant to be ran against a Retropie install
+---
+- name: 'Retropie'
+
+  hosts: retropie
+
+  vars:
+    retropie_config_dir: /opt/retropie
+    roms_dir: /home/pi/RetroPie/roms
+
+  tasks:
+    - name: 'Make sure mosquitto is installed'
+      ansible.builtin.apt:
+        name: mosquitto-clients
+        state: latest
+
+    - name: 'Setup MQTT forwarding'
+      ansible.builtin.blockinfile:
+        path: '{{ retropie_config_dir }}/configs/all/runcommand-{{ item }}.sh'
+        create: true
+        mode: 0755
+        block: |
+          #! /usr/env/bin bash
+          MQTT_BROKER=""
+          MQTT_PORT="1883"
+          MQTT_USER="retropie"
+          MQTT_PASS=""
+          MQTT_TOPIC="retropie/$HOSTNAME/{{ item }}"
+
+          JSON_PAYLOAD="{\"system\": \"$1\", \"emulator\": \"$2\", \"rom_path\": \"$3\"}"
+
+          mosquitto_pub -h "$MQTT_BROKER" -p "$MQTT_PORT" \
+            -u "$MQTT_USER" -P "$MQTT_PASS" \
+            -t "$MQTT_TOPIC" -m "$JSON_PAYLOAD"
+      loop:
+        - onstart
+        - onend
