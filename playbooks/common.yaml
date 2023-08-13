@@ -44,7 +44,6 @@
             name:
               - apparmor-utils
               - avahi-daemon
-              - cockpit
               - fd-find
               - gdisk
               - iotop
