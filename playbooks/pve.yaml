@@ -99,3 +99,44 @@
             * Datacenter > Permissions > Users > root
             * Datacenter > Backup
           ==============================================================================
+
+    - name: 'Forward mails to Gotify'
+      tags: [notification, mail, gotify]
+      block:
+        - name: 'Create Gotify script'
+          ansible.builtin.blockinfile:
+            create: true
+            path: /usr/bin/gotify.sh
+            mode: 0755
+            owner: root
+            group: www-data
+            block: |
+              #! /usr/bin/env bash
+              GOTIFY_HOST=""
+              GOTIFY_PORT=""
+              GOTIFY_TOKEN=""
+
+              NOTIF_TITLE="Proxmox"
+              NOTIF_MESSAGE="$(grep -P '^SUBJECT:' - | cut -d' ' -f2-)"
+
+              curl -X POST "$GOTIFY_HOST:$GOTIFY_PORT/message?token=$GOTIFY_TOKEN" \
+                -F "title=$NOTIF_TITLE" \
+                -F "message=$NOTIF_MESSAGE" \
+                > /dev/null 2>&1
+        - name: 'Add Gotify script to mail forwarding'
+          ansible.builtin.lineinfile:
+            path: /root/.forward
+            line: '|/usr/bin/gotify.sh'
+        - name: 'Display next steps'
+          ansible.builtin.pause:
+            seconds: 1
+            prompt: |
+              ==============================================================================
+                Email forwarding to Gotify configured!
+
+                Be sure to update the following variables in /usr/bin/gotify.sh
+                * GOTIFY_HOST, GOTIFY_PORT, GOTIFY_TOKEN
+
+                You can test locally by executing:
+                  $ echo 'SUBJECT: foo bar' | /usr/sbin/sendmail -bm -N never -f root root@localhost
+              ==============================================================================
