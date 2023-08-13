@@ -39,20 +39,13 @@ vms:
 rpi:
   hosts:
     # For revision codes: grep Revision /proc/cpuinfo
-    rpi-node-fuse:
-      ansible_host: rpi-node-fuse
-      node_hostname: rpi-node-fuse
-      rev_code: a02082
-    rpi-node-kompass:
-      ansible_host: rpi-node-kompass
-      node_hostname: rpi-node-kompass
-      rev_code: a02082
     rpi-node-kiosk:
       ansible_host: rpi-node-kiosk
       node_hostname: rpi-node-kiosk
-    rpi-node-raspbian:
-      ansible_host: rpi-node-raspbian
-      node_hostname: rpi-node-raspbian
+    plexamp-headless:
+      ansible_host: plexamp-headless
+    retropie:
+      ansible_host: retropie
 
 volumio:
   hosts:
