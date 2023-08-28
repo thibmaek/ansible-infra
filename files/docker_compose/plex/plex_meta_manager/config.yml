@@ -36,6 +36,12 @@ playlist_files:
   - file: config/playlists.yml
   - git: PMM/playlist
 
+dynamic_collections:
+  TMDB_Collections:
+    type: tmdb_collection
+    remove_suffix: 'Collection'
+    remove_prefix: 'The'
+
 settings:
   cache: true
   cache_expiration: 60
