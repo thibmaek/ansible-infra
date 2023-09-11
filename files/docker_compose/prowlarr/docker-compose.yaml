@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  sonarr:
+    image: lscr.io/linuxserver/prowlarr
+    container_name: prowlarr
+    env_file: prowlarr.env
+    ports:
+      - 9696:9696
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
