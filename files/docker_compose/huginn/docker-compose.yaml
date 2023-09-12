@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  huginn:
+    image: ghcr.io/huginn/huginn
+    container_name: huginn
+    env_file: huginn.env
+    ports:
+      - 3000:3000
+    restart: unless-stopped
