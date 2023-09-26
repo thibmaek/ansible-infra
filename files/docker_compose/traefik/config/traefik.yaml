@@ -1,0 +1,37 @@
+---
+api:
+  dashboard: true
+
+entryPoints:
+  web:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: :443
+    http:
+      tls:
+        certResolver: leresolver
+        domains:
+          - main: 'int.domain.com'
+
+providers:
+  docker:
+    exposedByDefault: false
+
+certificatesResolvers:
+  leresolver:
+    acme:
+      email: ''
+      storage: acme.json
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - 1.1.1.1:53
+          - 1.0.0.1:53
+
+log:
+  level: DEBUG

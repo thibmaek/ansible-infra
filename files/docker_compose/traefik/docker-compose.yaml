@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik
+    container_name: traefik
+    env_file: traefik.env
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/acme.json:/config/acme.json
+      - ./config/traefik.yaml:/config/traefik.yml
+    restart: always
+    labels:
+      - traefik.enable=true
