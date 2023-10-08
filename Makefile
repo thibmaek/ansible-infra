@@ -5,7 +5,7 @@ dependencies:
 	pre-commit install
 
 lint_shell:
-	shellcheck files/scripts/*.sh
+	shellcheck files/scripts/**/*.sh
 	shellcheck files/restic/*.sh
 
 lint_yaml:
