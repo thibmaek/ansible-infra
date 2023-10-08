@@ -11,7 +11,7 @@
     line: '. "{{ asdf_git_dir }}/completions/asdf.bash"'
 
 - name: 'Source asdf.sh'
-  when: asdf_via_git
+  when: asdf_via_brew
   ansible.builtin.blockinfile:
     path: '{{ ansible_env.HOME }}/.bashrc'
     block: |
