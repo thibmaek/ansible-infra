@@ -16,7 +16,7 @@
       loop: '{{ docker_compose_sync }}'
 
     - name: 'Sync compose configs'
-      when: docker_compose_sync is none or (docker_compose_sync | length <= 0)
+      when: docker_compose_sync is undefined or (docker_compose_sync | length <= 0)
       tags: [compose]
       ansible.posix.synchronize:
         src: '../files/docker_compose/'

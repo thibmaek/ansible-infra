@@ -51,7 +51,7 @@
     name: docker
     state: present
 
-- name: 'Add user "{{ main_user }}" to group docker'
+- name: 'Add main user to group docker'
   become: true
   ansible.builtin.user:
     append: yes

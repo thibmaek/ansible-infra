@@ -17,34 +17,12 @@
         state: directory
         recurse: true
 
-- name: 'Ensure github3.py is installed to get docker/compose release'
-  become: true
-  ansible.builtin.pip:
-    name: github3.py
-
-- name: 'Grab latest docker/compose binary'
+- name: 'Install docker-compose'
   tags: [compose]
-  block:
-    - name: 'Get latest release from docker/compose Github'
-      register: docker_compose_latest_release
-      github_release:
-        action: latest_release
-        user: docker
-        repo: compose
-
-    - name: 'Grab docker-compose binary (x86_64)'
-      when: ansible_architecture == 'x86_64'
-      ansible.builtin.get_url:
-        dest: '{{ docker_cli_plugin_dir }}/docker-compose'
-        url: "https://github.com/docker/compose/releases/download/{{ docker_compose_latest_release['tag'] }}/docker-compose-linux-x86_64"
-        mode: 0755
-
-    - name: 'Grab docker-compose binary (arm)'
-      when: ansible_architecture == 'arm'
-      ansible.builtin.get_url:
-        dest: '{{ docker_cli_plugin_dir }}/docker-compose'
-        url: "https://github.com/docker/compose/releases/download/{{ docker_compose_latest_release['tag'] }}/docker-compose-linux-armv7"
-        mode: 0755
+  become: true
+  ansible.builtin.apt:
+    name: docker-compose-plugin
+    state: latest
 
 - name: 'Ensure the docker-compose folder exists'
   tags: [compose]

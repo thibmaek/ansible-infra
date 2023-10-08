@@ -8,7 +8,7 @@
     - '04EE7237B7D453EC'
     - '648ACFD622F3D138'
 
-- name: 'Add {{ ansible_distribution_release }}-backports repository'
+- name: 'Add backports repository'
   become: true
   tags: [apt]
   ansible.builtin.apt_repository:
@@ -24,13 +24,13 @@
     update_cache: yes
 
 - name: 'Switch to pip3'
-  alternatives:
+  community.general.alternatives:
     name: pip
     link: '/usr/bin/pip'
     path: '/usr/bin/pip3'
 
 - name: 'Switch to python3'
-  alternatives:
+  community.general.alternatives:
     name: python
     link: '/usr/bin/python'
     path: '/usr/bin/python3'
