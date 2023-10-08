@@ -28,6 +28,9 @@ proxmox:
     tailscale-lxc:
       ansible_host: tailscale-lxc
       ansible_user: thibmaek
+    saule-vm:
+      ansible_host: saule-vm
+      ansible_user: thibmaek
 
 vms:
   hosts:
