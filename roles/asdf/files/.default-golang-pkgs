@@ -1,8 +1,7 @@
-dlv
-dlv-dap
-go-outline
-gocyclo
-goimports
-gopkgs
-gopls
-staticcheck
+github.com/go-delve/delve/cmd/dlv
+github.com/lukehoban/go-outline
+github.com/fzipp/gocyclo/cmd/gocyclo
+golang.org/x/tools/cmd/goimports
+github.com/uudashr/gopkgs/cmd/gopkgs
+golang.org/x/tools/gopls
+honnef.co/go/tools/cmd/staticcheck

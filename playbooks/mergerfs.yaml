@@ -1,0 +1,30 @@
+---
+- name: 'Mergerfs'
+
+  hosts: all
+
+  vars:
+    mergerfs_mounts:
+      - path: /mnt/mergerfs
+        branches:
+          - /mnt/pool-*
+        options: cache.files=off,minfreespace=30G,fsname=mergerfs
+    mergerfs_tools_dir: '/opt/mergerfs/mergerfs-ctl'
+    mergerfs_tools_repo: 'https://github.com/trapexit/mergerfs-tools'
+
+  roles:
+    - tigattack.mergerfs
+
+  tasks:
+    - name: 'Clone mergerfs-tools repo'
+      tags: [git]
+      ansible.builtin.git:
+        repo: '{{ mergerfs_tools_repo }}'
+        dest: '{{ mergerfs_tools_dir }}'
+
+    - name: 'Install mergerfs-tools'
+      tags: [build, compile]
+      community.general.make:
+        target: install
+      args:
+        chdir: '{{ mergerfs_tools_dir }}'
