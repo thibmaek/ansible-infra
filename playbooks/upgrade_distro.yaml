@@ -1,0 +1,74 @@
+---
+- name: 'Upgrade distro'
+
+  hosts: all
+
+  vars:
+    from_distro: bullseye
+    to_distro: bookworm
+
+  tasks:
+    - name: 'Upgrade apt packages'
+      tags: [apt]
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: true
+
+    - name: 'Reboot'
+      tags: [reboot]
+      become: true
+      ansible.builtin.reboot:
+        msg: 'Reboot initiated by Ansible'
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: whoami
+
+    - name: 'Replace in file'
+      tags: [replace]
+      become: true
+      ansible.builtin.replace:
+        path: /etc/apt/sources.list
+        regexp: '{{ from_distro }}'
+        replace: '{{ to_distro }}'
+        backup: true
+
+    - name: 'Upgrade apt packages'
+      tags: [apt]
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: false
+
+    - name: 'Full upgrade'
+      tags: [apt]
+      become: true
+      changed_when: false
+      failed_when: false
+      ansible.builtin.command: apt full-upgrade -y
+
+    - name: 'Reboot'
+      tags: [reboot]
+      become: true
+      ansible.builtin.reboot:
+        msg: 'Reboot initiated by Ansible'
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: whoami
+
+    - name: 'Check if line in file /etc/os-release exists'
+      changed_when: false
+      failed_when: false
+      register: os_release
+      ansible.builtin.command: grep -q 'VERSION_CODENAME="{{ to_distro }}"' /etc/os-release
+
+    - name: 'Clean up old packages'
+      when: os_release.rc == 0
+      become: true
+      ansible.builtin.apt:
+        autoremove: true
+        purge: true
