@@ -22,6 +22,7 @@ install_packages:
   - bash-completion
   - bat
   - binwalk
+  - btop
   - coreutils
   - curl
   - exa
