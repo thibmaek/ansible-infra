@@ -1,0 +1,3 @@
+duf_gh_user: muesli
+duf_gh_repo_name: duf
+duf_gh_repo: 'https://github.com/{{ duf_gh_user }}/{{ duf_gh_repo_name }}'

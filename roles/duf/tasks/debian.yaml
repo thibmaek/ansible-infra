@@ -5,12 +5,12 @@
   changed_when: duf_installed == 1
   ansible.builtin.command: dpkg-query -W duf
 
-- name: 'Get latest release from muesli/duf Github'
+- name: 'Get latest duf release from Github'
   register: duf_latest_release
-  github_release:
+  community.general.github_release:
     action: latest_release
-    user: muesli
-    repo: duf
+    user: '{{ duf_gh_user }}'
+    repo: '{{ duf_gh_repo_name }}'
 
 - name: 'Set .deb output file name'
   ansible.builtin.set_fact:
@@ -23,7 +23,7 @@
   become: true
   ansible.builtin.get_url:
     dest: "{{ duf_deb_output_path }}"
-    url: "https://github.com/muesli/duf/releases/download/{{ duf_latest_release['tag'] }}/duf_{{ duf_latest_release['tag'] | regex_replace('v', '') }}_linux_amd64.deb"
+    url: "{{ duf_gh_repo }}/releases/download/{{ duf_latest_release['tag'] }}/duf_{{ duf_latest_release['tag'] | regex_replace('v', '') }}_linux_amd64.deb"
     mode: 0755
 
 - name: 'Grab duf .deb package (arm)'
@@ -33,7 +33,7 @@
   become: true
   ansible.builtin.get_url:
     dest: "{{ duf_deb_output_path }}"
-    url: "https://github.com/muesli/duf/releases/download/{{ duf_latest_release['tag'] }}/duf_{{ duf_latest_release['tag'] | regex_replace('v', '') }}_linux_arm64.deb"
+    url: "{{ duf_gh_repo }}/releases/download/{{ duf_latest_release['tag'] }}/duf_{{ duf_latest_release['tag'] | regex_replace('v', '') }}_linux_arm64.deb"
     mode: 0755
 
 - name: 'Install duf.deb package'
