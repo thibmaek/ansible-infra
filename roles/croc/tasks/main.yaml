@@ -1,0 +1,9 @@
+- name: 'Install croc from .deb package'
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.include_tasks: './debian.yaml'
+
+- name: 'Install duf'
+  when: ansible_os_family == 'Darwin'
+  community.general.homebrew:
+    name: croc
+    state: latest

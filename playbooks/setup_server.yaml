@@ -16,6 +16,8 @@
       tags: [python]
     - role: 'roles/duf'
       tags: [duf]
+    - role: 'roles/croc'
+      tags: [croc]
 
   tasks:
     - name: 'Make home subdirectories'

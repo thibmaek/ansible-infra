@@ -1,0 +1,50 @@
+---
+- name: 'Check if croc is installed'
+  register: croc_installed
+  failed_when: croc_installed.rc > 1
+  changed_when: croc_installed == 1
+  ansible.builtin.command: dpkg-query -W croc
+
+- name: 'Get latest croc release from Github'
+  register: croc_latest_release
+  community.general.github_release:
+    action: latest_release
+    user: '{{ croc_gh_user }}'
+    repo: '{{ croc_gh_repo_name }}'
+
+- name: 'Set .deb output file name'
+  ansible.builtin.set_fact:
+    croc_deb_output_path: "{{ tmp_dir }}/croc_{{ croc_latest_release['tag'] }}.deb"
+
+- name: 'Grab croc .deb package (x86_64)'
+  when:
+    - ansible_architecture == 'x86_64'
+    - croc_installed.rc == 1
+  become: true
+  ansible.builtin.get_url:
+    dest: "{{ croc_deb_output_path }}"
+    url: "{{ croc_gh_repo }}/releases/download/{{ croc_latest_release['tag'] }}/croc_{{ croc_latest_release['tag'] | regex_replace('v', '') }}_Linux-64bit.deb"
+    mode: 0755
+
+- name: 'Grab croc .deb package (arm)'
+  when:
+    - ansible_architecture == 'arm'
+    - croc_installed.rc == 1
+  become: true
+  ansible.builtin.get_url:
+    dest: "{{ croc_deb_output_path }}"
+    url: "{{ croc_gh_repo }}/releases/download/{{ croc_latest_release['tag'] }}/croc_{{ croc_latest_release['tag'] | regex_replace('v', '') }}_Linux-ARM.deb"
+    mode: 0755
+
+- name: 'Install croc.deb package'
+  when: croc_installed.rc == 1
+  become: true
+  ansible.builtin.apt:
+    deb: '{{ croc_deb_output_path }}'
+
+- name: 'Remove downloaded deb package'
+  when: croc_installed.rc == 1
+  become: true
+  ansible.builtin.file:
+    path: '{{ croc_deb_output_path }}'
+    state: absent

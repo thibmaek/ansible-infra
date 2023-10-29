@@ -1,0 +1,3 @@
+croc_gh_user: schollz
+croc_gh_repo_name: croc
+croc_gh_repo: 'https://github.com/{{ croc_gh_user }}/{{ croc_gh_repo_name }}'
