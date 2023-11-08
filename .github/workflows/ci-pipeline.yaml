@@ -7,6 +7,7 @@ on:
 
 jobs:
   lint_core:
+    name: 'Lint Ansible'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -20,17 +21,20 @@ jobs:
       - name: 'Lint: Ansible + YAML'
         run: make lint
 
+  lint_extra:
+    name: 'Lint extra files'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
       - name: 'Stub 1Password CLI (op)'
         run: |
           echo "exit 0" > /usr/local/bin/op
           chmod +x /usr/local/bin/op
 
-      - name: "Lint extra files"
+      - name: 'Superlinter'
         uses: github/super-linter@main
         env:
-          VALIDATE_ANSIBLE: false
-          VALIDATE_YAML: false
-          VALIDATE_GO: false
           VALIDATE_BASH: true
           VALIDATE_BASH_EXEC: true
           VALIDATE_DOCKERFILE: true
