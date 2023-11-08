@@ -66,6 +66,10 @@
     name: docker
     state: started
 
+- name: 'Expose the Prometheus metrics endpoint'
+  tags: [prometheus]
+  ansible.builtin.include_tasks: 'prometheus.yaml'
+
 - name: 'Include Docker Compose tasks'
   tags: [compose]
   ansible.builtin.include_tasks: 'compose.yaml'

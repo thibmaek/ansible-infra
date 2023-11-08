@@ -1,0 +1,25 @@
+- name: 'Check if daemon.json exists'
+  register: daemon_json
+  ansible.builtin.stat:
+    path: '{{ docker_daemon_json_path }}'
+
+- name: 'Create daemon.json'
+  when: not daemon_json.stat.exists
+  become: true
+  ansible.builtin.blockinfile:
+    path: '{{ docker_daemon_json_path }}'
+    group: '{{ ansible_user }}'
+    owner: '{{ ansible_user }}'
+    mode: 0644
+    create: true
+    block: |
+      { "metrics-addr": "127.0.0.1:9323" }
+
+- name: 'Add metrics-addr to daemon.json'
+  when: not daemon_json.stat.exists
+  become: true
+  ansible.builtin.lineinfile:
+    path: '{{ docker_daemon_json_path }}'
+    regexp: '^(.*)"metrics-addr":(.*)$'
+    line: '"metrics-addr": "127.0.0.1:9323"'
+    backrefs: true

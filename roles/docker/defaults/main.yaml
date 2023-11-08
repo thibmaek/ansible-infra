@@ -15,3 +15,5 @@ docker_pkgs:
   - containerd.io
 
 docker_cli_plugin_dir: '{{ ansible_env.HOME }}/.docker/cli-plugins'
+
+docker_daemon_json_path: '/etc/docker/daemon.json'
