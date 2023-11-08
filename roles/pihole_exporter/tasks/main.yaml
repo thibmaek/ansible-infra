@@ -6,7 +6,7 @@
 
 - name: 'Get latest release from eko/pihole-exporter Github'
   register: pihole_exporter_latest_release
-  github_release:
+  community.general.github_release:
     action: latest_release
     user: eko
     repo: pihole-exporter

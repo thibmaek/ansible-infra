@@ -4,11 +4,11 @@
   hosts: all
 
   roles:
-    - role: 'roles/nano'
+    - role: nano
       tags: [nano]
-    - role: 'roles/htop'
+    - role: htop
       tags: [htop]
-    - role: 'roles/nvim'
+    - role: nvim
       tags: [nvim]
 
   tasks:

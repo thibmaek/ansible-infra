@@ -5,16 +5,16 @@
   ## urls will be written to each interval.
   # urls = ["unix:///var/run/influxdb.sock"]
   # urls = ["udp://127.0.0.1:8089"]
-  urls = ["{{ influxdb.url }}"]
+  urls = ["{{ telegraf_influxdb_details.url }}"]
 
   ## Token for authentication.
-  token = "{{ influxdb_token }}"
+  token = "{{ telegraf_influxdb_details }}"
 
   ## Organization is the name of the organization you wish to write to.
-  organization = "{{ influxdb.org }}"
+  organization = "{{ telegraf_influxdb_details.org }}"
 
   ## Destination bucket to write into.
-  bucket = "{{ influxdb.database }}"
+  bucket = "{{ telegraf_influxdb_details.database }}"
 
   ## The value of this tag will be used to determine the bucket.  If this
   ## tag is not set the 'bucket' option is used as the default.

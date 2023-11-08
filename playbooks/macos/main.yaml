@@ -27,32 +27,32 @@
       tags: [mas]
     - role: geerlingguy.mac.dock
       tags: [dock]
-    - role: 'roles/zsh'
+    - role: zsh
       tags: [zsh]
-    - role: 'roles/starship'
+    - role: starship
       tags: [zsh, starship]
-    - role: 'roles/powerline'
+    - role: powerline
       tags: [powerline]
-    - role: 'roles/nano'
+    - role: nano
       tags: [nano]
-    - role: 'roles/htop'
+    - role: htop
       tags: [htop]
-    - role: 'roles/nvim'
+    - role: nvim
       tags: [nvim]
-    - role: 'roles/ssh'
+    - role: ssh
       tags: [ssh]
 
   tasks:
     - name: 'Chown /usr/local/opt'
+      become: true
       ansible.builtin.file:
-        become: true
         path: '/usr/local/opt'
         state: directory
         owner: '{{ ansible_user }}'
         mode: 0755
 
     - name: 'Install general packages'
-      ansible.builtin.homebrew:
+      community.general.homebrew:
         name: '{{ item }}'
         state: latest
       loop: '{{ install_packages }}'

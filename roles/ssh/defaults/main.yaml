@@ -1,1 +1,1 @@
-sshd_configure_port: '{{ 9000 | random(start=2000) }}'
+ssh_configure_port: '{{ 9000 | random(start=2000) }}'

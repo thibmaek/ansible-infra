@@ -29,7 +29,7 @@
     | smbpasswd -s -a {{ item.username }}
   args:
     executable: /bin/bash
-  loop: "{{ samba_users }}"
+  loop: "{{ smb_users }}"
   no_log: true
 
 - name: 'Copy smb.conf'

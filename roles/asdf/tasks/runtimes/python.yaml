@@ -1,7 +1,7 @@
 - name: 'Install Python prereqs'
   when: ansible_os_family == 'Darwin'
   tags: [brew]
-  ansible.builtin.homebrew:
+  community.general.homebrew:
     name:
       - openssl
       - readline

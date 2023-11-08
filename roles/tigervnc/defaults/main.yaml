@@ -1,6 +1,6 @@
 tigervnc_config_dir: '{{ ansible_env.HOME }}/.vnc'
 tigervnc_systemd_unit: '/etc/systemd/system/vncserver@.service'
 
-vnc_resolution_width: 1024
-vnc_resolution_height: 600
-vnc_resolution_dpi: 96
+tigervnc_vnc_resolution_width: 1024
+tigervnc_vnc_resolution_height: 600
+tigervnc_vnc_resolution_dpi: 96

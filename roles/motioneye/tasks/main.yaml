@@ -9,7 +9,7 @@
   tags: [apt]
   become: true
   ansible.builtin.apt:
-    name: '{{ motion_dependencies }}'
+    name: '{{ motioneye_motion_dependencies }}'
     state: latest
 
 - name: 'Install motioneye'

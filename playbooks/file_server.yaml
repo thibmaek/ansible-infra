@@ -4,10 +4,10 @@
   hosts: all
 
   roles:
-    - role: 'roles/smb'
+    - role: smb
       tags: [smb]
       vars:
-        samba_users:
+        smb_users:
           - username: '{{ main_user }}'
             password:
         smb_dirs:
@@ -16,7 +16,7 @@
           #   read_only: false
           #   allow_guest: true
 
-    - role: 'roles/nfs'
+    - role: nfs
       tags: [nfs]
       vars:
         nfs_mounts:

@@ -5,7 +5,7 @@
     name: rsyslog
 
 - name: 'Enable UDP ingestion'
-  when: ingest_udp
+  when: rsyslog_ingest_udp
   tags: [config]
   become: true
   notify: restart_rsyslog
@@ -22,7 +22,7 @@
         replace: 'input(type="imudp" port="514")'
 
 - name: 'Enable TCP ingestion'
-  when: ingest_tcp
+  when: rsyslog_ingest_tcp
   tags: [config]
   become: true
   notify: restart_rsyslog

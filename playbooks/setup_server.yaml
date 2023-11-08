@@ -4,19 +4,19 @@
   hosts: all
 
   roles:
-    - role: 'roles/shell'
+    - role: shell
       tags: [shell]
-    - role: 'roles/motd'
+    - role: motd
       tags: [motd]
-    - role: 'roles/logrotate'
+    - role: logrotate
       tags: [logs]
-    - role: 'roles/tmux'
+    - role: tmux
       tags: [tmux]
-    - role: 'roles/python'
+    - role: python
       tags: [python]
-    - role: 'roles/duf'
+    - role: duf
       tags: [duf]
-    - role: 'roles/croc'
+    - role: croc
       tags: [croc]
 
   tasks:
@@ -33,8 +33,8 @@
 
     - name: 'Include ZSH role'
       ansible.builtin.include_role:
-        name: 'roles/zsh'
+        name: zsh
 
     - name: 'Include Starship role'
       ansible.builtin.include_role:
-        name: 'roles/starship'
+        name: starship

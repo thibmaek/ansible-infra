@@ -1,5 +1,5 @@
-ingest_udp: true
-ingest_tcp: true
+rsyslog_ingest_udp: true
+rsyslog_ingest_tcp: true
 
 rsyslog_config_dir: /etc/rsyslog.d
 rsyslog_ingest_dir: /var/log/rsyslog_ingest

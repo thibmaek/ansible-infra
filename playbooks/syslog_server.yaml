@@ -4,9 +4,9 @@
   hosts: [proxmox, rpi, vms]
 
   roles:
-    - role: 'roles/logrotate'
+    - role: logrotate
       tags: [logs]
-    - role: 'roles/rsyslog'
+    - role: rsyslog
       tags: [rsyslog]
       vars:
         rsyslog_templates: []

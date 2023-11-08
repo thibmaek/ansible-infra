@@ -27,8 +27,8 @@
     mode: 0644
     path: '{{ ansible_env.HOME }}/.vnc/config'
     block: |
-      geometry={{ vnc_resolution_width }}x{{ vnc_resolution_height }}
-      dpi={{ vnc_resolution_dpi }}
+      geometry={{ tigervnc_vnc_resolution_width }}x{{ tigervnc_vnc_resolution_height }}
+      dpi={{ tigervnc_vnc_resolution_dpi }}
 
 - name: 'Create systemd unit'
   become: true

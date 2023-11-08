@@ -11,7 +11,7 @@
     - name: 'OctoDash'
       tags: [octodash]
       ansible.builtin.include_role:
-        name: 'roles/octodash'
+        name: octodash
 
     - name: 'Add backup strategy via restic'
       tags: [restic]

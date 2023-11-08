@@ -9,6 +9,6 @@ mjpg_streamer_dependencies:
   - gcc
   - g++
 
-mjpg_resolution_width: 1280
-mjpg_resolution_height: 720
-mjpg_resolution_fps: 30
+mjpg_streamer_resolution_width: 1280
+mjpg_streamer_resolution_height: 720
+mjpg_streamer_resolution_fps: 30

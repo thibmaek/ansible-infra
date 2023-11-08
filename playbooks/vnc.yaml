@@ -5,5 +5,5 @@
   hosts: all
 
   roles:
-    - role: 'roles/tigervnc'
+    - role: tigervnc
       tags: [tigervnc]

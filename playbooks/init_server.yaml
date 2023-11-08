@@ -68,7 +68,7 @@
     - name: 'Include SSH role'
       tags: [ssh]
       ansible.builtin.include_role:
-        name: 'roles/ssh'
+        name: ssh
 
     - name: 'Ensure capability is correctly set for ping on Proxmox hosts'
       when: "'proxmox' in group_names"

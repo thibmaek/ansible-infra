@@ -4,5 +4,5 @@
   hosts: all
 
   roles:
-    - role: roles/asdf
+    - role: asdf
       tags: [asdf]

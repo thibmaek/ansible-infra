@@ -1,4 +1,4 @@
-influxdb:
+telegraf_influxdb_details:
   url: "http://192.168.1.18:8086"
   database: telegraf
   org: thibmaek

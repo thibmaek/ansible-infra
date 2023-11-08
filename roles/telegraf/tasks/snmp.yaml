@@ -14,18 +14,18 @@
       become: true
       ansible.builtin.unarchive:
         src: 'https://global.download.synology.com/download/Document/Software/DeveloperGuide/Firmware/DSM/All/enu/Synology_MIB_File.zip'
-        dest: '{{ snmp_mibs_dir }}/'
+        dest: '{{ telegraf_snmp_mibs_dir }}/'
         remote_src: true
     - name: 'Move Synology mibs to correct dir'
       become: true
       changed_when: true
-      ansible.builtin.shell: 'mv *.txt {{ snmp_mibs_dir }}/'
+      ansible.builtin.shell: 'mv *.txt {{ telegraf_snmp_mibs_dir }}/'
       args:
-        chdir: '{{ snmp_mibs_dir }}/Synology_MIB_File'
+        chdir: '{{ telegraf_snmp_mibs_dir }}/Synology_MIB_File'
     - name: 'Remove stale folder'
       become: true
       ansible.builtin.file:
-        path: '{{ snmp_mibs_dir }}/Synology_MIB_File'
+        path: '{{ telegraf_snmp_mibs_dir }}/Synology_MIB_File'
         state: absent
 
 - name: 'Download base mibs'

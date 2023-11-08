@@ -8,17 +8,18 @@
     - name: 'Install facebook/idb'
       block:
         - name: 'Tap facebook/idb'
-          ansible.builtin.homebrew_tap:
+          community.general.homebrew_tap:
             name: facebook/fb
             state: present
         - name: 'Install idb companion'
-          ansible.builtin.homebrew:
+          community.general.homebrew:
             name: idb-companion
             state: present
         - name: 'Install idb CLI tool'
           ansible.builtin.pip:
             name: idb
-        - name: 'Get path to idb'
+        - name: 'Get path to idb' # noqa: command-instead-of-shell
+          changed_when: false
           register: idb_path
           ansible.builtin.shell: which idb
         - name: 'Symlink idb binary'
@@ -29,7 +30,7 @@
             state: link
 
     - name: 'Install Android Studio'
-      ansible.builtin.homebrew_cask:
+      community.general.homebrew_cask:
         name: 'android-studio'
         state: latest
 

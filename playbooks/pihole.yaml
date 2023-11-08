@@ -36,11 +36,11 @@
     - name: 'Setup Prometheus exporter'
       tags: [prometheus]
       ansible.builtin.include_role:
-        name: 'roles/pihole_exporter'
+        name: pihole_exporter
       vars:
-        pihole_hostname: 'localhost'
-        pihole_port: '80'
-        pihole_api_token: '8c341d2a6607f23b893f41475ed7fb6f035fc96a8bbc6c585ac8d9dfb04dc3d5'
-
+        pihole_exporter_pihole:
+          hostname: 'localhost'
+          port: 80
+          api_token: '8c341d2a6607f23b893f41475ed7fb6f035fc96a8bbc6c585ac8d9dfb04dc3d5'
 
 # https://github.com/vmstan/gravity-sync/wiki/Installing

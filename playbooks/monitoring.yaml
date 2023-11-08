@@ -19,12 +19,12 @@
     - role: cloudalchemy.node_exporter
       tags: [prometheus]
 
-    - role: 'roles/telegraf'
+    - role: telegraf
       tags: [telegraf]
       vars:
-        synology_nas_host:
+        synology_nas_host: # noqa: var-naming[no-role-prefix]
 
-    - role: 'roles/glances'
+    - role: glances
       tags: [glances]
 
     - role: patrickjahns.promtail

@@ -25,4 +25,5 @@
       {{ motd_content.stdout }}
     mode: 0644
 
-- ansible.builtin.include_tasks: './custom.yaml'
+- name: 'Include custom MOTD tasks'
+  ansible.builtin.include_tasks: './custom.yaml'

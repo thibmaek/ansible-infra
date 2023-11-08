@@ -4,9 +4,9 @@ After=network.target
 
 [Service]
 User={{ main_user }}
-Environment="PIHOLE_HOSTNAME={{ pihole_hostname }}"
-Environment="PIHOLE_PORT={{ pihole_port }}"
-Environment="PIHOLE_API_TOKEN={{ pihole_api_token }}"
+Environment="PIHOLE_HOSTNAME={{ pihole_exporter_pihole.hostname }}"
+Environment="PIHOLE_PORT={{ pihole_exporter_pihole.port }}"
+Environment="PIHOLE_API_TOKEN={{ pihole_exporter_pihole.api_token }}"
 ExecStart={{ pihole_exporter_binary }}
 
 [Install]

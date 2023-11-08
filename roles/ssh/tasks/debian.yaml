@@ -15,7 +15,7 @@
 
 - name: 'Set new sshd port to use'
   ansible.builtin.set_fact:
-    sshd_port: '{{ sshd_configure_port }}'
+    sshd_port: '{{ ssh_configure_port }}'
 
 - name: 'Copy sshd config'
   become: true

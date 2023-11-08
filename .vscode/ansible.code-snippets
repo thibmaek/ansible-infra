@@ -1,0 +1,8 @@
+{
+  "Skip Ansible lint": {
+    "scope": "ansible",
+    "description": "Skips a rule from Ansible lint",
+    "prefix": ["skip", "ignore", "disable"],
+    "body": "# noqa: var-naming[no-role-prefix]"
+  },
+}

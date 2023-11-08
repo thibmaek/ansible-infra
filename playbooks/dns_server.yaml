@@ -8,6 +8,6 @@
       tags: [adguard]
       become: true
       vars:
-        adguard_home_version: '0.91'
-        adguard_home_base_path: /opt/adguard_home
-        adguard_home_user: root
+        adguard_home_version: '0.91' # noqa: var-naming[no-role-prefix]
+        adguard_home_base_path: /opt/adguard_home # noqa: var-naming[no-role-prefix]
+        adguard_home_user: root # noqa: var-naming[no-role-prefix]

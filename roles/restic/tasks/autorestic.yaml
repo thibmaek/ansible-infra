@@ -18,7 +18,7 @@
   block:
     - name: 'Get latest release from cupcakearmy/autorestic Github'
       register: autorestic_latest_release
-      github_release:
+      community.general.github_release:
         action: latest_release
         user: cupcakearmy
         repo: autorestic
@@ -45,8 +45,7 @@
 
     - name: 'Unpack autorestic release'
       changed_when: true
-      ansible.builtin.command:
-        shell: >
-          bzip2 -d {{ autorestic_archive }} && mv {{ autorestic_archive | regex_replace('.bz2', '') }} /usr/local/bin/autorestic
+      ansible.builtin.command: >
+        bzip2 -d {{ autorestic_archive }} && mv {{ autorestic_archive | regex_replace('.bz2', '') }} /usr/local/bin/autorestic
       args:
         chdir: '{{ tmp_dir }}'

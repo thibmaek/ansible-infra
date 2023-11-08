@@ -4,7 +4,7 @@
   hosts: rpi
 
   roles:
-    - role: 'roles/mjpg_streamer'
+    - role: mjpg_streamer
       tags: [mjpg_streamer]
       when: has_csi_camera is defined and has_csi_camera
 

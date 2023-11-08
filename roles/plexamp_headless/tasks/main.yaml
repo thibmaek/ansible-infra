@@ -1,14 +1,15 @@
 - name: 'Download Plexamp Headless'
   become: true
   ansible.builtin.get_url:
-    dest: "{{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_version }}.tar.bz2"
+    dest: "{{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_headless_version }}.tar.bz2"
     url: "{{ plexamp_headless_archive_url }}"
     mode: 0755
 
 - name: 'Extract Plexamp archive'
-  ansible.builtin.shell: |
-    bzip2 -d {{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_version }}.tar.bz2
-    tar xvf {{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_version }}.tar
+  changed_when: true
+  ansible.builtin.command: |
+    bzip2 -d {{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_headless_version }}.tar.bz2
+    tar xvf {{ ansible_env.HOME }}/plexamp-headless-{{ plexamp_headless_version }}.tar
 
 - name: 'Copy systemd unit'
   become: true
