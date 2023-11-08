@@ -39,5 +39,5 @@ Common plays (like common.yaml and upgrades.yaml) are available with make:
 ## Encrypting secrets (via vault)
 
 ```console
-$ ansible-vault encrypt_string 'secret' --name 'var_name'
+ansible-vault encrypt_string 'secret' --name 'var_name'
 ```

@@ -12,7 +12,7 @@ RETENTION_MONTHS=18
 RETENTION_YEARS=3
 
 # shellcheck disable=SC1091
-source {{ restic_auto_dir }}/restic-env
+source "{{ restic_auto_dir }}/restic-env"
 
 # Remove locks in case other stale processes kept them in
 restic unlock &

@@ -11,7 +11,7 @@ while read -r line; do
   # Loop over each version of the tool name
   for version in $(asdf list "$tool_name"); do
     # When version not in `global_versions` array from .tool-versions file
-    # shellcheck disable=SC2199
+    # shellcheck disable=SC2199,SC2076
     if [[ ! " ${global_versions[@]} " =~ " ${version} " ]]; then
       echo "Removing $tool_name version $version"
       asdf uninstall "$tool_name" "$version"
