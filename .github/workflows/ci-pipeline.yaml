@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: 'Install runtimes (asdf)'
-        uses: asdf-vm/actions/install@v1
+        uses: asdf-vm/actions/install@v2
 
       - name: 'Install dependencies'
         run: make dependencies
