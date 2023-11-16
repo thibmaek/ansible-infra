@@ -51,5 +51,6 @@ homebrew_cask_apps:
   - font-fira-mono
   - font-fira-sans
   - font-ibm-plex
+  - font-monaspace
   - font-permanent-marker
   # endregion
