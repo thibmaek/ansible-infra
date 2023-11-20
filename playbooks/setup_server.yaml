@@ -29,7 +29,6 @@
         - data
         - dev
         - downloads
-        - drivers
 
     - name: 'Include ZSH role'
       ansible.builtin.include_role:
