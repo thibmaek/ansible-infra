@@ -12,6 +12,7 @@ homebrew_installed_packages:
   - lazydocker
   - lazygit
   - mas
+  - netcat
   - pkg-config
   - readline
   - shfmt

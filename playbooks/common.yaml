@@ -48,6 +48,7 @@
               - gdisk
               - iotop
               - lm-sensors
+              - netcat-openbsd
               - openssh-client
               - readline-common
               - smartmontools

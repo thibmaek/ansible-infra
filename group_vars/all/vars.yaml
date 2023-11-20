@@ -44,7 +44,6 @@ install_packages:
   - ncdu
   - neofetch
   - neovim
-  - netcat
   - nmap
   - openssl
   - rsync
