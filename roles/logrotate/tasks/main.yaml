@@ -10,6 +10,12 @@
   ansible.builtin.stat:
     path: '/var/mail/{{ main_user }}'
 
+- name: 'Check if root mail is present'
+  become: true
+  register: root_mail
+  ansible.builtin.stat:
+    path: '/var/mail/root'
+
 - name: 'Copy logrotate configurations'
   become: true
   tags: [config]

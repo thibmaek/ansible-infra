@@ -15,7 +15,7 @@
   compress
 }
 {% endif %}
-
+{% if root_mail.stat.exists %}
 /var/mail/root {
   su root mail
 
@@ -31,3 +31,4 @@
   # Compresses rotated logs, default:
   compress
 }
+{% endif %}
