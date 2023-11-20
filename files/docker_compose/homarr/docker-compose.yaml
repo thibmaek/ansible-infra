@@ -11,5 +11,6 @@ services:
       - ./config:/app/data/configs
       - ./icons:/app/public/icons
       - ./images:/app/public/img
+      - ./data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
