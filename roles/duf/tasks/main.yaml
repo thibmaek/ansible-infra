@@ -1,6 +1,16 @@
 - name: 'Install duf from .deb package'
-  when: ansible_os_family == 'Debian'
-  ansible.builtin.include_tasks: './debian.yaml'
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_distribution_version | version_compare('12', '<')
+  ansible.builtin.include_tasks: './debian_11.yaml'
+
+- name: 'Install duf'
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_distribution_version | version_compare('12', '>=')
+  ansible.builtin.apt:
+    name: duf
+    state: latest
 
 - name: 'Install duf'
   when: ansible_os_family == 'Darwin'
