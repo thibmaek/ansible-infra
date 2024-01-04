@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  olivetin:
+    container_name: olivetin
+    image: jamesread/olivetin
+    ports:
+      - 1337:1337
+    volumes:
+      - ./config:/config
+      - ./config.yaml:/etc/OliveTin/config.yaml
+      - /var/run/docker.sock:/var/run/docker.sock
+    user: root
+    restart: unless-stopped
