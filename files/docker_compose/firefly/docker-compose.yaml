@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  firefly_core:
+    image: fireflyiii/core
+    container_name: firefly_core
+    env_file: firefly.env
+    ports:
+      - 8885:8080
+    volumes:
+      - ./upload:/var/www/html/storage/upload
+    depends_on: [firefly_db]
+    restart: unless-stopped
+
+  firefly_db:
+    image: mariadb
+    container_name: firefly_db
+    env_file: firefly.env
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
