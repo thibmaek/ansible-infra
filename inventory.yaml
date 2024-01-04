@@ -13,6 +13,8 @@ pve:
       ansible_host: saule-pve
     panorama-pve:
       ansible_host: panorama-pve
+    pve-jassie:
+      ansible_host: pve-jassie
 
 proxmox:
   hosts:
@@ -31,6 +33,10 @@ proxmox:
     saule-vm:
       ansible_host: saule-vm
       ansible_user: thibmaek
+    jassie-docker:
+      ansible_host: jassie-docker
+    jassie-plex:
+      ansible_host: jassie-plex
 
 vms:
   hosts:
