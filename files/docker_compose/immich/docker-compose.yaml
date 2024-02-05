@@ -1,0 +1,55 @@
+version: '3'
+
+name: immich
+
+services:
+  immich_server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    depends_on:
+      - redis
+      - postgres
+    env_file: .env
+    ports:
+      - 2283:3001
+    volumes:
+      - ${UPLOAD_LOCATION}:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    command: ["start.sh", "immich"]
+
+  immich_microservices:
+    container_name: immich_microservices
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    depends_on:
+      - redis
+      - postgres
+    extends:
+      file: hwaccel.yaml
+      service: hwaccel_vaapi
+    volumes:
+      - ${UPLOAD_LOCATION}:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    command: ["start.sh", "microservices"]
+
+  immich_machine_learning:
+    container_name: immich_machine_learning
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+    env_file: .env
+    volumes:
+      - ./ml_model_cache:/cache
+    restart: always
+
+  redis:
+    container_name: immich_redis
+    image: redis:6.2.5-alpine
+    restart: always
+
+  postgres:
+    container_name: immich_postgres
+    image: tensorchord/pgvecto-rs:pg14-v0.1.11@sha256:0335a1a22f8c5dd1b697f14f079934f5152eaaa216c09b61e293be285491f8ee
+    env_file: .env
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    restart: always

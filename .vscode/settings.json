@@ -17,6 +17,7 @@
 
     //#region: Docker
     "**/files/docker_compose/**/docker-compose.yaml": "dockercompose",
+    "**/files/docker_compose/immich/hwacell.yaml": "dockercompose",
     //#endregion: Docker
 
     //#region: Bash

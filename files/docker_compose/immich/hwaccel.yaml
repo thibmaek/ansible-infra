@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  hwaccel_vaapi:
+    devices:
+      - /dev/dri:/dev/dri
+
+  hwaccel_vaapi_wsl2:
+    volumes:
+      - /usr/lib/wsl:/usr/lib/wsl
+    environment:
+      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
+      - LIBVA_DRIVER_NAME=d3d12
+
+  hwaccel_nvidia:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu,video]
