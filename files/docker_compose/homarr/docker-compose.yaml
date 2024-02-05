@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  heimdall:
+  homarr:
     image: ghcr.io/ajnart/homarr
     container_name: homarr
     env_file: homarr.env
