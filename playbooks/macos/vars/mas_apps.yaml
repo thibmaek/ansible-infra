@@ -1,23 +1,31 @@
 mas_installed_apps:
   - id: 1607635845
-    name: 'Velja.app'
+    name: 'Velja'
   - id: 1263070803
-    name: 'Lungo.app'
-  - id: 1176895641
-    name: 'Spark.app'
+    name: 'Lungo'
+  - id: 6445813049
+    name: 'Spark Desktop '
   - id: 904280696
-    name: 'Things.app'
+    name: 'Things'
   - id: 1319884285
-    name: 'Blackout.app'
+    name: 'Blackout'
   - id: 1450640351
-    name: 'Lightweight PDF.app'
+    name: 'Lightweight PDF'
   - id: 1529448980
-    name: 'Reeder.app'
+    name: 'Reeder'
   - id: 1545870783
-    name: 'System Color Picker.app'
+    name: 'System Color Picker'
+  - id: 409201541
+    name: 'Pages'
+  - id: 409203825
+    name: 'Numbers'
   - id: 1596706466
     name: 'Speediness'
   - id: 1469995354
     name: 'Broadcasts'
   - id: 6444667067
     name: 'Hyperduck'
+  - id: 1586435171
+    name: 'Actions'
+  - id: 1569813296
+    name: '1Password for Safari'

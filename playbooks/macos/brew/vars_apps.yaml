@@ -4,9 +4,10 @@ homebrew_cask_apps:
   - 1password-cli
   - airbuddy
   - aldente
+  - balenaetcher
   - carbon-copy-cloner
-  - cron
   - docker
+  - dockutil
   - dozer
   - elgato-stream-deck
   - fig
@@ -14,16 +15,23 @@ homebrew_cask_apps:
   - fork
   - freac
   - google-cloud-sdk
+  - gpg-suite-no-mail
+  - grandperspective
   - ha-menu
   - handbrake
   - home-assistant
   - imageoptim
+  - ipatool
   - iterm2
   - keka
   - keyfinder
-  - marta
+  - kopiaui
   - meta
+  - mqtt-explorer
+  - ngrok
   - notion
+  - notion-calendar
+  - obsidian
   - openscad
   - plex
   - plexamp
@@ -31,17 +39,21 @@ homebrew_cask_apps:
   - raspberry-pi-imager
   - raycast
   - rectangle
-  - signal
+  - rekordbox
   - slack
+  - sonos
   - spotify
   - syncthing
   - synology-drive
   - tailscale
   - transmission
   - ultimaker-cura
+  - unison
   - visual-studio-code
   - vlc
+  - vmware-fusion
   - vnc-viewer
+  - xcodes
   - xld
   - zoom
   # endregion
