@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  service:
+  openbooks:
     image: evanbuss/openbooks
     container_name: openbooks
     env_file: openbooks.env

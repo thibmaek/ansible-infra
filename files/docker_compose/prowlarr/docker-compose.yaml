@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  sonarr:
+  prowlarr:
     image: lscr.io/linuxserver/prowlarr
     container_name: prowlarr
     env_file: prowlarr.env
