@@ -10,13 +10,3 @@ services:
     volumes:
       - ./data:/var/lib/influxdb2
     restart: always
-
-  # chronograf:
-  #   depends_on: influxdb
-  #   image: chronograf:latest
-  #   container_name: chronograf
-  #   ports:
-  #     - 3434:8888
-  #   volumes:
-  #     - ./chronograf_data:/var/lib/chronograf
-  #   restart: unless-stopped
