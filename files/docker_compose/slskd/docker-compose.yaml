@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  slskd:
+    image: slskd/slskd
+    container_name: slskd
+    env_file: slskd.env
+    ports:
+      - 5030:5030
+      - 5031:5031
+      - 50300:50300
+    volumes:
+      - ./data:/app
+    restart: unless-stopped

@@ -24,6 +24,7 @@ repos:
     rev: v6.11.0
     hooks:
       - id: ansible-lint
+        exclude: ^(files/docker_compose/)
         args:
           - "CI=true"
 
