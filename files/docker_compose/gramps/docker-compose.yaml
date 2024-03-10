@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  grampsweb:
+    image: ghcr.io/gramps-project/grampsweb
+    container_name: grampsweb
+    depends_on: [grampsweb_redis]
+    env_file: gramps.env
+    ports:
+      - 80:5000
+    volumes:
+      - ./data/users:/app/users
+      - ./data/index:/app/indexdir
+      - ./data/thumb_cache:/app/thumbnail_cache
+      - ./data/cache:/app/cache
+      - ./data/secret:/app/secret
+      - ./db:/root/.gramps/grampsdb
+      - ./data/media:/app/media
+      - ./data/tmp:/tmp
+    restart: unless-stopped
+
+  grampsweb_celery:
+    image: ghcr.io/gramps-project/grampsweb
+    container_name: grampsweb_celery
+    depends_on: [grampsweb_redis]
+    env_file: gramps.env
+    volumes:
+      - ./data/users:/app/users
+      - ./data/index:/app/indexdir
+      - ./data/thumb_cache:/app/thumbnail_cache
+      - ./data/cache:/app/cache
+      - ./data/secret:/app/secret
+      - ./db:/root/.gramps/grampsdb
+      - ./data/media:/app/media
+      - ./data/tmp:/tmp
+    command: celery -A gramps_webapi.celery worker --loglevel=INFO
+
+  grampsweb_redis:
+    image: redis:alpine
+    container_name: grampsweb_redis
+    restart: always
