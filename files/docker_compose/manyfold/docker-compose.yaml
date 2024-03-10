@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    image: ghcr.io/manyfold3d/manyfold
+    container_name: manyfold_app
+    env_file: manyfold.env
+    ports:
+      - 3214:3214
+    volumes:
+      - ./data:/libraries
+    restart: unless-stopped
+    depends_on: [db, redis]
+
+  db:
+    image: postgres:15
+    container_name: manyfold_db
+    env_file: manyfold.env
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: manyfold_redis
+    restart: unless-stopped
