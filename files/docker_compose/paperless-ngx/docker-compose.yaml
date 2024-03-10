@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  paperless_redis:
+    container_name: paperless_redis
+    image: redis:7.2-alpine
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ./data/redis:/data
+    environment:
+      REDIS_ARGS: "--save 60 10"
+
+  paperless_postgres:
+    container_name: paperless_postgres
+    image: postgres:16.0-alpine
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_DB: paperless-ngx
+      POSTGRES_PASSWORD: dbpass
+
+  paperless:
+    container_name: paperless
+    image: ghcr.io/paperless-ngx/paperless-ngx
+    restart: unless-stopped
+    ports:
+      - 8010:8000
+    depends_on: [paperless_redis, paperless_postgres]
+    volumes:
+      - ./data/paperless/data:/usr/src/paperless/data
+      - ./data/paperless/media:/usr/src/paperless/media
+      - ./data/paperless/export:/usr/src/paperless/export
+      - ./data/paperless/consume:/usr/src/paperless/consume
+    env_file: paperless.env
