@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  kopia:
+    container_name: kopia
+    image: kopia/kopia
+    hostname: kopia
+    env_file: kopia.env
+    ports:
+      - 51515:51515
+    volumes:
+      - ./config:/app/config
+      - ./data/cache:/app/cache
+      - ./data/logs:/app/logs
+      - ./backup_dir:/data/backup)dir:ro
+    restart: unless-stopped
+    command: ['server', 'start', '--disable-csrf-token-checks', '--insecure', '--address=0.0.0.0:51515', '--server-username=root', '--server-password=root']
