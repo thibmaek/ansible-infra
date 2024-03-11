@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  unmanic:
+    image: josh5/unmanic
+    container_name: unmanic
+    env_file: unmanic.env
+    ports:
+      - 8888:8888
+    volumes:
+      - ./config:/config
+      - ./cache:/tmp/unmanic
+      - ./library:/library
