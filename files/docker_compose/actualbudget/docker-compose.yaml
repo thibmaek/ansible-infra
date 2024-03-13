@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  actual_server:
+    image: docker.io/actualbudget/actual-server
+    container_name: actualbudget
+    env_file: actualbudget.env
+    ports:
+      - 5006:5006
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
