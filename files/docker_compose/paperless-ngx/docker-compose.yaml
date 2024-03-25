@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   paperless_redis:
     container_name: paperless_redis

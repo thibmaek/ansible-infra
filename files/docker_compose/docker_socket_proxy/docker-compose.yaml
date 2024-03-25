@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   docker_socket_proxy:
     image: tecnativa/docker-socket-proxy

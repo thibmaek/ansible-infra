@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   prometheus_pve_exporter:
     image: prompve/prometheus-pve-exporter

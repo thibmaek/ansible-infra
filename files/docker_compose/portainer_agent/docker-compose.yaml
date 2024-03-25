@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   portainer_agent:
     image: portainer/agent

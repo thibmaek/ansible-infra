@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   unifi_poller:
     image: golift/unifi-poller

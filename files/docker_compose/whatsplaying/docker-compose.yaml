@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   whatsplaying:
     image: ghcr.io/gloaysa/whatsplaying:latest

@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   grampsweb:
     image: ghcr.io/gramps-project/grampsweb

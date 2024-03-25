@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   op_connect_api:
     image: 1password/connect-api

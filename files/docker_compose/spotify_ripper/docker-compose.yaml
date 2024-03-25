@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   spotify_ripper:
     image: thibmaek/spotify-ripper

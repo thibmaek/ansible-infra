@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   diun:
     image: ghcr.io/crazy-max/diun

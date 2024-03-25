@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd

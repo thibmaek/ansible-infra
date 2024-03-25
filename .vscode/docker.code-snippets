@@ -4,8 +4,6 @@
     "description": "Base docker compose config",
     "prefix": "compose",
     "body": [
-      "version: '3'",
-      "",
       "services:",
       "  ${service}:",
       "    image: ${image}",
