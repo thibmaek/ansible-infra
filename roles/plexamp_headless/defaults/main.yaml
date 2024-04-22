@@ -1,2 +1,2 @@
-plexamp_headless_version: 'v4.8.2'
+plexamp_headless_version: 'v4.10.1'
 plexamp_headless_archive_url: 'https://plexamp.plex.tv/headless/Plexamp-Linux-headless-{{ plexamp_headless_version }}.tar.bz2'
