@@ -1,0 +1,5 @@
+# Output of `librespot -d ?` (https://github.com/dtcooper/raspotify/wiki/Basic-Setup-Guide#alsa-backend-default)
+raspotify_sound_device: hw:CARD=Headphones,DEV=0
+raspotify_device_type: speaker
+raspotify_script_url: https://dtcooper.github.io/raspotify/install.sh
+raspotify_config_file: /etc/raspotify/conf
