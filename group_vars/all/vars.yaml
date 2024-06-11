@@ -25,7 +25,7 @@ install_packages:
   - btop
   - coreutils
   - curl
-  - exa
+  - eza
   - findutils
   - fzf
   - gcc
