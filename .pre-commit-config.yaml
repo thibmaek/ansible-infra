@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.6.0
     hooks:
       - id: trailing-whitespace
       - id: check-yaml
@@ -15,13 +15,13 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/IamTheFij/docker-pre-commit
-    rev: v2.1.1
+    rev: v3.0.1
     hooks:
       - id: docker-compose-check
         files: docker-compose.yaml$
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v6.11.0
+    rev: v24.6.0
     hooks:
       - id: ansible-lint
         exclude: ^(files/docker_compose/)
