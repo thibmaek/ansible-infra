@@ -4,3 +4,4 @@ set softtabstop=0
 set noexpandtab
 set smartindent
 set smarttab
+set rtp+=/opt/homebrew/opt/fzf

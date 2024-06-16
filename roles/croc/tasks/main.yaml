@@ -2,7 +2,7 @@
   when: ansible_os_family == 'Debian'
   ansible.builtin.include_tasks: './debian.yaml'
 
-- name: 'Install duf'
+- name: 'Install croc'
   when: ansible_os_family == 'Darwin'
   community.general.homebrew:
     name: croc
