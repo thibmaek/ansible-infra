@@ -1,0 +1,8 @@
+- name: 'Install eza (from source repo)'
+  when: ansible_os_family == 'Debian'
+  ansible.builtin.include_tasks: './debian.yaml'
+
+- name: 'Install eza'
+  when: ansible_os_family == 'Darwin'
+  community.general.homebrew:
+    name: eza

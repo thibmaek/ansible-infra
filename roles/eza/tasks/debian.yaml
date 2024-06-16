@@ -1,0 +1,17 @@
+- name: 'Download GPG key for EZA repository'
+  become: true
+  ansible.builtin.apt_key:
+    url: '{{ eza_gpg_key_url }}'
+    keyring: '{{ eza_gpg_key_dest }}'
+
+- name: 'Add EZA repository to sources list'
+  become: true
+  ansible.builtin.apt_repository:
+    repo: 'deb [signed-by={{ eza_gpg_key_dest }}] {{ eza_deb_repo }} stable main'
+    state: present
+
+- name: 'Install EZA package'
+  become: true
+  ansible.builtin.apt:
+    name: eza
+    update_cache: true
