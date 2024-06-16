@@ -112,10 +112,10 @@
         defaults write com.apple.finder NSUserKeyEquivalents -dict-add "Show Next Tab" -string "@]"
         defaults write com.apple.finder NSUserKeyEquivalents -dict-add "Show Previous Tab" -string "@["
 
-    - name: 'Dock: Set dock icons to 60pt'
+    - name: 'Dock: Set dock icons to 45pt'
       tags: [dock]
       changed_when: true
-      ansible.builtin.command: defaults write com.apple.dock tilesize -int 60
+      ansible.builtin.command: defaults write com.apple.dock tilesize -int 45
 
     - name: "Dock: Don't show recent apps"
       tags: [dock]
@@ -178,21 +178,25 @@
         defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
     - name: 'Safari: Show full URL in navbar'
+      become: true
       tags: [safari]
       changed_when: true
       ansible.builtin.command: defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
     - name: "Safari: Don't auto open safe files"
+      become: true
       tags: [safari]
       changed_when: true
       ansible.builtin.command: defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 
     - name: 'Safari: Enable debug menu'
+      become: true
       tags: [safari]
       changed_when: true
       ansible.builtin.command: defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
 
     - name: 'Safari: Enable the developer menu' # noqa command-instead-of-shell
+      become: true
       tags: [safari]
       changed_when: true
       ansible.builtin.shell: |

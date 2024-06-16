@@ -3,19 +3,15 @@ homebrew_cask_apps:
   - 1password
   - 1password-cli
   - airbuddy
-  - aldente
+  - aldente # should only run when battery is available
   - balenaetcher
-  - carbon-copy-cloner
+  - bruno
   - docker
   - dockutil
   - dozer
   - elgato-stream-deck
-  - fig
   - figma
-  - fork
   - freac
-  - google-cloud-sdk
-  - gpg-suite-no-mail
   - grandperspective
   - ha-menu
   - handbrake
@@ -24,22 +20,18 @@ homebrew_cask_apps:
   - ipatool
   - iterm2
   - keka
-  - keyfinder
   - kopiaui
   - meta
   - mqtt-explorer
-  - ngrok
   - notion
   - notion-calendar
   - obsidian
   - openscad
   - plex
   - plexamp
-  - rapidapi
   - raspberry-pi-imager
   - raycast
   - rectangle
-  - rekordbox
   - slack
   - sonos
   - spotify
@@ -51,9 +43,6 @@ homebrew_cask_apps:
   - unison
   - visual-studio-code
   - vlc
-  - vmware-fusion
-  - vnc-viewer
-  - xcodes
   - xld
   - zoom
   # endregion
@@ -63,6 +52,7 @@ homebrew_cask_apps:
   - font-fira-mono
   - font-fira-sans
   - font-ibm-plex
+  - font-jetbrains-mono
   - font-monaspace
   - font-permanent-marker
   # endregion

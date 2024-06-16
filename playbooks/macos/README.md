@@ -16,5 +16,6 @@ ansible-galaxy install -r requirements.yaml
 
 ```console
 export CI=true
-ansible-playbook playbooks/macos/main.yaml --ask-become-pass
+ansible-playbook playbooks/macos/main.yaml --ask-become-pass --step --verbose
+ansible-playbook playbooks/macos/defaults.yaml --ask-become-pass --step --verbose
 ```

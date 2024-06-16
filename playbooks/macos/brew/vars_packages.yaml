@@ -19,6 +19,6 @@ homebrew_installed_packages:
   - ssh-copy-id
   - starship
   - trash
-  - youtube-dl
+  - yt-dlp
   - zsh
   - zsh-completions

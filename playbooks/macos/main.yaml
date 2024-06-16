@@ -13,11 +13,7 @@
   vars:
     homebrew_upgrade_all_packages: no
     homebrew_taps:
-      - homebrew/cask-drivers
-      - homebrew/cask-fonts
-      - homebrew/cask-versions
       - homebrew/command-not-found
-      - homebrew/core
       - homebrew/services
 
   roles:
@@ -41,6 +37,8 @@
       tags: [nvim]
     - role: ssh
       tags: [ssh]
+    - role: eza
+      tags: [eza]
 
   tasks:
     - name: 'Chown /usr/local/opt'
@@ -69,10 +67,10 @@
       tags: [dev]
       become: true
       register: xcode_devtools_installed
-      changed_when: '"command line tools are already installed" not in xcode_devtools_installed.stderr'
+      changed_when: '"Command line tools are already installed" not in xcode_devtools_installed.stderr'
       failed_when:
         - xcode_devtools_installed.rc != 0
-        - '"command line tools are already installed" not in xcode_devtools_installed.stderr'
+        - '"Command line tools are already installed" not in xcode_devtools_installed.stderr'
       ansible.builtin.command: 'xcode-select --install'
 
     - name: 'Copy dotfiles (common)'
