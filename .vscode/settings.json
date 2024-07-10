@@ -26,6 +26,7 @@
     "**/files/dotfiles/mac/**": "shellscript",
     "**/*.sh.j2": "shellscript",
     "**/roles/zsh/templates/**/*.j2": "shellscript",
+    "**/roles/zsh/files/**/*": "shellscript",
     //#endregion: Bash
 
     //#region: JSON
