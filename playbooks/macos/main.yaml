@@ -39,6 +39,8 @@
       tags: [ssh]
     - role: eza
       tags: [eza]
+    - role: croc
+      tags: [croc]
 
   tasks:
     - name: 'Chown /usr/local/opt'
