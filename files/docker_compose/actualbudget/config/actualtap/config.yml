@@ -1,0 +1,21 @@
+# Unique ID
+api_key: "527D6AAA-B22A-4D48-9DC8-C203139E5531"
+
+# URL to actual server
+actual_url: "https://actualbudget"
+
+# Password for your Actual Budget Server
+actual_password: ""
+
+# The name of your budget or Sync ID of the budget
+actual_budget: "My Finances"
+
+# The Unique Id of an account you want transactions to default too
+actual_default_account_id: ""
+
+# If the Merchant name is missing, but the Amount still has a value, a transaction can be created with this as the payee name
+actual_backup_payee: "Unknown (Tap)"
+
+# Mapping of Tap to Pay account to Actual Account ID
+account_mappings:
+  checking: ""

@@ -8,3 +8,11 @@ services:
     volumes:
       - ./data:/data
     restart: unless-stopped
+
+  actualtap:
+    container_name: actualtap
+    image: ghcr.io/bobokun/actualtap-py:latest
+    ports:
+      - 8000s:8000
+    volumes:
+      - ./config/actualtap:/config
