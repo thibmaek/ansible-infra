@@ -1,0 +1,12 @@
+services:
+  openwebui:
+    container_name: openwebui
+    image: ghcr.io/open-webui/open-webui
+    env_file: openwebui.env
+    volumes:
+      - ./data:/app/backend/data
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    extra_hosts:
+      - host.docker.internal:host-gateway
